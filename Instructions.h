@@ -180,3 +180,19 @@ class BTFSS : public InstructionBase
 
 		void execute(const uint16_t& opcode) override;
 };
+
+class ADDLW : public InstructionBase
+{
+	public:
+		ADDLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class ANDLW : public InstructionBase
+{
+	public:
+		ANDLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};

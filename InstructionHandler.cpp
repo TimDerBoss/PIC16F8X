@@ -38,8 +38,8 @@ InstructionHandler::InstructionHandler(RegisterData& rd)
 	instructions.emplace_back(ADD_INSTRUCTION(BTFSS, 0xFC00, 0x1C00));
 //
 //	// Literal and control operations
-//	instructions.emplace_back(ADD_INSTRUCTION(ADDLW, 0xFE00, 0x3E00));
-//	instructions.emplace_back(ADD_INSTRUCTION(ANDLW, 0xFF00, 0x3900));
+	instructions.emplace_back(ADD_INSTRUCTION(ADDLW, 0xFE00, 0x3E00));
+	instructions.emplace_back(ADD_INSTRUCTION(ANDLW, 0xFF00, 0x3900));
 //	instructions.emplace_back(ADD_INSTRUCTION(CALL, 0xF800, 0x2000));
 //	instructions.emplace_back(ADD_INSTRUCTION(CLRWDT, 0xFFFF, 0x0064));
 //	instructions.emplace_back(ADD_INSTRUCTION(GOTO, 0xF800, 0x2800));
