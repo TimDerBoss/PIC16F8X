@@ -196,3 +196,91 @@ class ANDLW : public InstructionBase
 
 		void execute(const uint16_t& opcode) override;
 };
+
+class CALL : public InstructionBase
+{
+	public:
+		CALL(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class CLRWDT : public InstructionBase
+{
+	public:
+		CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class GOTO : public InstructionBase
+{
+	public:
+		GOTO(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class IORLW : public InstructionBase
+{
+	public:
+		IORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class MOVLW : public InstructionBase
+{
+	public:
+		MOVLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class RETFIE : public InstructionBase
+{
+	public:
+		RETFIE(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class RETLW : public InstructionBase
+{
+	public:
+		RETLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class RETURN : public InstructionBase
+{
+	public:
+		RETURN(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class SLEEP : public InstructionBase
+{
+	public:
+		SLEEP(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class SUBLW : public InstructionBase
+{
+	public:
+		SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};
+
+class XORLW : public InstructionBase
+{
+	public:
+		XORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+
+		void execute(const uint16_t& opcode) override;
+};

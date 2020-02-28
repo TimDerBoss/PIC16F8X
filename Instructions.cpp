@@ -443,3 +443,126 @@ void ANDLW::execute(const uint16_t& opcode)
 	registerData.increasePCBy(1);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
+
+CALL::CALL(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void CALL::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	registerData.stack.emplace(registerData.getPC() + 1);
+	registerData.setPC(data.k);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+CLRWDT::CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void CLRWDT::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+GOTO::GOTO(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void GOTO::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+IORLW::IORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void IORLW::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+MOVLW::MOVLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void MOVLW::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+RETFIE::RETFIE(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void RETFIE::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void RETLW::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+RETURN::RETURN(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void RETURN::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+SLEEP::SLEEP(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void SLEEP::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+SUBLW::SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void SUBLW::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}
+
+XORLW::XORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+	: InstructionBase(identifier, mask, value, rd)
+{
+}
+
+void XORLW::execute(const uint16_t& opcode)
+{
+	auto data = getInstructionData(opcode);
+	printf("%s 0x%X\n", identifier.c_str(), data.k);
+}

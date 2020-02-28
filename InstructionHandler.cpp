@@ -27,7 +27,7 @@ InstructionHandler::InstructionHandler(RegisterData& rd)
 	instructions.emplace_back(ADD_INSTRUCTION(NOP, 0xFF9F, 0x0000));
 	instructions.emplace_back(ADD_INSTRUCTION(RLF, 0xFF00, 0x0D00));
 	instructions.emplace_back(ADD_INSTRUCTION(RRF, 0xFF00, 0x0C00));
-//	instructions.emplace_back(ADD_INSTRUCTION(SUBWF, 0xFF00, 0x0200));
+	instructions.emplace_back(ADD_INSTRUCTION(SUBWF, 0xFF00, 0x0200));
 	instructions.emplace_back(ADD_INSTRUCTION(SWAPF, 0xFF00, 0x0E00));
 	instructions.emplace_back(ADD_INSTRUCTION(XORWF, 0xFF00, 0x0600));
 
@@ -40,18 +40,17 @@ InstructionHandler::InstructionHandler(RegisterData& rd)
 //	// Literal and control operations
 	instructions.emplace_back(ADD_INSTRUCTION(ADDLW, 0xFE00, 0x3E00));
 	instructions.emplace_back(ADD_INSTRUCTION(ANDLW, 0xFF00, 0x3900));
-//	instructions.emplace_back(ADD_INSTRUCTION(CALL, 0xF800, 0x2000));
-//	instructions.emplace_back(ADD_INSTRUCTION(CLRWDT, 0xFFFF, 0x0064));
-//	instructions.emplace_back(ADD_INSTRUCTION(GOTO, 0xF800, 0x2800));
-//	instructions.emplace_back(ADD_INSTRUCTION(IORLW, 0xFF00, 0x3800));
-//	instructions.emplace_back(ADD_INSTRUCTION(MOVLW, 0xFC00, 0x3000));
-//	instructions.emplace_back(ADD_INSTRUCTION(RETFIE, 0xFFFF, 0x0009));
-//	instructions.emplace_back(ADD_INSTRUCTION(RETLW, 0xFC00, 0x3400));
-//	instructions.emplace_back(ADD_INSTRUCTION(RETURN, 0xFFFF, 0x0008));
-//	instructions.emplace_back(ADD_INSTRUCTION(SLEEP, 0xFFFF, 0x0063));
-//	instructions.emplace_back(ADD_INSTRUCTION(SUBLW, 0xFF00, 0x3C00));
-//	instructions.emplace_back(ADD_INSTRUCTION(SUBLW, 0xFF00, 0x3D00));
-//	instructions.emplace_back(ADD_INSTRUCTION(XORLW, 0xFF00, 0x3A00));
+	instructions.emplace_back(ADD_INSTRUCTION(CALL, 0xF800, 0x2000));
+	instructions.emplace_back(ADD_INSTRUCTION(CLRWDT, 0xFFFF, 0x0064));
+	instructions.emplace_back(ADD_INSTRUCTION(GOTO, 0xF800, 0x2800));
+	instructions.emplace_back(ADD_INSTRUCTION(IORLW, 0xFF00, 0x3800));
+	instructions.emplace_back(ADD_INSTRUCTION(MOVLW, 0xFC00, 0x3000));
+	instructions.emplace_back(ADD_INSTRUCTION(RETFIE, 0xFFFF, 0x0009));
+	instructions.emplace_back(ADD_INSTRUCTION(RETLW, 0xFC00, 0x3400));
+	instructions.emplace_back(ADD_INSTRUCTION(RETURN, 0xFFFF, 0x0008));
+	instructions.emplace_back(ADD_INSTRUCTION(SLEEP, 0xFFFF, 0x0063));
+	instructions.emplace_back(ADD_INSTRUCTION(SUBLW, 0xFE00, 0x3C00));
+	instructions.emplace_back(ADD_INSTRUCTION(XORLW, 0xFF00, 0x3A00));
 }
 
 std::shared_ptr<InstructionBase> InstructionHandler::decode(const uint16_t& opcode)

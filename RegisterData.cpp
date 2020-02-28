@@ -68,3 +68,17 @@ uint16_t RegisterData::getPhysicalAddress(uint8_t address)
 	// printf("Accessing Address 0x%X at Bank %d\n", address, (memoryMap[0x03] >> 5) & 1);
 	return address;
 }
+
+uint16_t RegisterData::getPC()
+{
+	uint16_t programCounter = 0;
+	programCounter |= (readData(0x2) & 0xFF);
+	programCounter |= ((readData(0xA) & 0x1F) << 8);
+	return programCounter;
+}
+
+void RegisterData::setPC(const uint16_t& value)
+{
+	writeData(0x2, value & 0xFF);
+	writeData(0xA, value >> 8 & 0x1F);
+}
