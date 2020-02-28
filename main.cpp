@@ -1,40 +1,50 @@
 #include <vector>
 #include <memory>
+#include <thread>
 #include <fmt/format.h>
+
+#include <QApplication>
+#include <QCommandLineOption>
+
 #include "CPU.h"
 #include "LSTParser.h"
+#include "SimulatorUi.h"
 
-#include <thread>
+std::thread simulatorThread;
 
-#include <fstream>
-
-int main()
+int main(int argc, char* argv[])
 {
-	try {
-		LSTParser parser;
-		parser.readFile("/home/tfa/Desktop/PIC16F8X/BCDCounter.lst");
-		parser.parseLstFile();
+	QApplication app(argc, argv);
+	QMainWindow wnd;
+	Ui::MainWindow mainWin;
+	mainWin.setupUi(&wnd);
+	wnd.show();
 
-		CPU cpu;
-		auto instruction = cpu.instructionHandler.decode(parser.getLstOpcodeInfo()[0].opcode);
-		instruction->execute(parser.getLstOpcodeInfo()[0].opcode);
-		while(cpu.registerData.getPC() < parser.getLstOpcodeInfo().size())
-		{
-			auto& opcode = parser.getLstOpcodeInfo()[cpu.registerData.getPC()].opcode;
-			instruction = cpu.instructionHandler.decode(opcode);
-			instruction->execute(opcode);
+	simulatorThread = std::thread([&] {
+		try {
+			LSTParser parser;
+			parser.readFile("/home/tfa/Desktop/PIC16F8X/BCDCounter.lst");
+			parser.parseLstFile();
+
+			CPU cpu;
+			auto instruction = cpu.instructionHandler.decode(parser.getLstOpcodeInfo()[0].opcode);
+			instruction->execute(parser.getLstOpcodeInfo()[0].opcode);
+			while (cpu.registerData.getPC() < parser.getLstOpcodeInfo().size()) {
+				auto& opcode = parser.getLstOpcodeInfo()[cpu.registerData.getPC()].opcode;
+				instruction = cpu.instructionHandler.decode(opcode);
+				instruction->execute(opcode);
+
+				mainWin.setText(cpu, 0);
+				std::this_thread::sleep_for(std::chrono::milliseconds(5));
+			}
+		} catch (std::exception& e) {
+			printf("ERROR: %s\n", e.
+				what()
+			);
 		}
+	});
 
-		//printf("Carry: %d\n", cpu.registerData.getBit(0x3, 0));
-		//fmt::print("Register: 0b{:b}\nW: 0b{:b}\n", cpu.registerData.readData(0xC), cpu.cpuRegisters.w);
-	} catch (
-		std::exception& e
-	) {
-		printf("ERROR: %s\n", e.
-			what()
-		);
-	}
-
+	app.exec();
 /*
 rd.resetPowerOn();
 rd.setBit(3, 5, true);

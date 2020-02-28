@@ -300,7 +300,20 @@ SUBWF
 
 void SUBWF::execute(const uint16_t& opcode)
 {
-	throw std::runtime_error(fmt::format("Not implemented: {}", identifier));
+	auto data = getInstructionData(opcode);
+	auto& w = registerData.cpuRegisters.w;
+	int result = registerData.readData(data.f) - w;
+	if (!data.d) {
+		w = static_cast<uint8_t>(result);
+	} else {
+		registerData.writeData(data.f, static_cast<uint8_t>(result));
+	}
+	registerData.setBit(0x3, 0x0, result >= 0); // carry bit
+	// TODO: fix DC
+	registerData.setBit(0x3, 0x1, false); // digit carry
+	registerData.setBit(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
+	registerData.increasePCBy(1);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 }
 
 
@@ -573,7 +586,16 @@ SUBLW::SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 
 void SUBLW::execute(const uint16_t& opcode)
 {
-	throw std::runtime_error(fmt::format("Not implemented: {}", identifier));
+	auto data = getInstructionData(opcode);
+	auto& w = registerData.cpuRegisters.w;
+	int result = registerData.readData(data.k) - w;
+	w = static_cast<uint8_t>(result);
+	registerData.setBit(0x3, 0x0, result >= 0); // carry bit
+	// TODO: fix DC
+	registerData.setBit(0x3, 0x1, false); // digit carry
+	registerData.setBit(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
+	registerData.increasePCBy(1);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 }
 
 XORLW::XORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)

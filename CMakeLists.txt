@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 include("cmake/HunterGate.cmake")
 HunterGate(
@@ -10,7 +11,10 @@ HunterGate(
 
 project(PIC18)
 
-add_executable(PIC18 main.cpp LSTParser.cpp InstructionBase.cpp RegisterData.cpp Instructions.cpp InstructionHandler.cpp CPU.cpp)
+add_executable(PIC18 main.cpp LSTParser.cpp InstructionBase.cpp RegisterData.cpp Instructions.cpp InstructionHandler.cpp CPU.cpp SimulatorUi.h)
+
 hunter_add_package(fmt)
 find_package(fmt CONFIG REQUIRED)
-target_link_libraries(PIC18 fmt::fmt)
+find_package(Qt5Widgets REQUIRED)
+
+target_link_libraries(PIC18 fmt::fmt Qt5::Widgets)
