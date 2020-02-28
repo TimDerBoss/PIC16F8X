@@ -1,4 +1,7 @@
 #pragma once
+
+#include <vector>
+#include <string>
 #include <regex>
 
 struct LSTOpcodeInfo
@@ -14,8 +17,13 @@ class LSTParser
 		void readFile(const std::string& fileName);
 		void parseLstFile();
 
+		const std::vector<LSTOpcodeInfo>& getLstOpcodeInfo()
+		{
+			return lstOpcodeInfo;
+		}
+
 	private:
 		std::vector<std::string> lstFile;
-		std::vector<LSTOpcodeInfo> lstOcInfo;
+		std::vector<LSTOpcodeInfo> lstOpcodeInfo;
 		std::regex lstRegex;
 };

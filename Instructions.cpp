@@ -1,5 +1,6 @@
 #include "Instructions.h"
 #include <iostream>
+#include <fmt/format.h>
 
 #include "RegisterData.h"
 #include "CPU.h"
@@ -299,7 +300,7 @@ SUBWF
 
 void SUBWF::execute(const uint16_t& opcode)
 {
-	throw std::runtime_error("Not implemented");
+	throw std::runtime_error(fmt::format("Not implemented: {}", identifier));
 }
 
 
@@ -464,8 +465,7 @@ CLRWDT::CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 
 void CLRWDT::execute(const uint16_t& opcode)
 {
-	auto data = getInstructionData(opcode);
-	printf("%s 0x%X\n", identifier.c_str(), data.k);
+	throw std::runtime_error(fmt::format("Not implemented: {}", identifier));
 }
 
 GOTO::GOTO(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
@@ -476,6 +476,7 @@ GOTO::GOTO(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 void GOTO::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
+	registerData.setPC(data.k);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
 
@@ -487,6 +488,11 @@ IORLW::IORLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 void IORLW::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
+	auto& w = registerData.cpuRegisters.w;
+	uint8_t result = w | data.k;
+	w = result;
+	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.increasePCBy(1);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
 
@@ -498,6 +504,8 @@ MOVLW::MOVLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 void MOVLW::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
+	registerData.cpuRegisters.w = data.k;
+	registerData.increasePCBy(1);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
 
@@ -509,6 +517,11 @@ RETFIE::RETFIE(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 void RETFIE::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
+	if(registerData.stack.empty())
+		throw std::runtime_error("Stack is empty!");
+	registerData.setPC(registerData.stack.top());
+	registerData.stack.pop();
+	registerData.setBit(0xB, 7, true); // GIE
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
 
@@ -520,6 +533,11 @@ RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 void RETLW::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
+	if(registerData.stack.empty())
+		throw std::runtime_error("Stack is empty!");
+	registerData.setPC(registerData.stack.top());
+	registerData.stack.pop();
+	registerData.cpuRegisters.w = data.k;
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
 
@@ -531,6 +549,10 @@ RETURN::RETURN(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 void RETURN::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
+	if(registerData.stack.empty())
+		throw std::runtime_error("Stack is empty!");
+	registerData.setPC(registerData.stack.top());
+	registerData.stack.pop();
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
 
@@ -541,8 +563,7 @@ SLEEP::SLEEP(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 
 void SLEEP::execute(const uint16_t& opcode)
 {
-	auto data = getInstructionData(opcode);
-	printf("%s 0x%X\n", identifier.c_str(), data.k);
+	throw std::runtime_error(fmt::format("Not implemented: {}", identifier));
 }
 
 SUBLW::SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
@@ -552,8 +573,7 @@ SUBLW::SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 
 void SUBLW::execute(const uint16_t& opcode)
 {
-	auto data = getInstructionData(opcode);
-	printf("%s 0x%X\n", identifier.c_str(), data.k);
+	throw std::runtime_error(fmt::format("Not implemented: {}", identifier));
 }
 
 XORLW::XORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
@@ -564,5 +584,10 @@ XORLW::XORLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 void XORLW::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
+	auto& w = registerData.cpuRegisters.w;
+	uint8_t result = w ^ data.k;
+	w = result;
+	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.increasePCBy(1);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }

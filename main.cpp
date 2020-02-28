@@ -2,34 +2,27 @@
 #include <memory>
 #include <fmt/format.h>
 #include "CPU.h"
+#include "LSTParser.h"
+
+#include <thread>
+
 #include <fstream>
-#include <sstream>
 
 int main()
 {
 	try {
-		CPU cpu;
-		//cpu.registerData.writeData(12, 0xFF);
-		//uint16_t opcode = 0b0001000010001100;
-		//auto instruction = cpu.instructionHandler.decode(opcode);
-		//instruction->execute(opcode);
+		LSTParser parser;
+		parser.readFile("/home/tfa/Desktop/PIC16F8X/BCDCounter.lst");
+		parser.parseLstFile();
 
-		std::ifstream file("/home/tfa/Desktop/bcdcounter.LST");
-		if (file.is_open()) {
-			std::string line;
-			while (getline(file, line)) {
-				if(line[0] != ' ')
-				{
-					auto opcode = line.substr(5, 9);
-					unsigned int x;
-					std::stringstream ss;
-					ss << std::hex << opcode;
-					ss >> x;
-					auto instruction = cpu.instructionHandler.decode(x);
-					instruction->execute(x);
-				}
-			}
-			file.close();
+		CPU cpu;
+		auto instruction = cpu.instructionHandler.decode(parser.getLstOpcodeInfo()[0].opcode);
+		instruction->execute(parser.getLstOpcodeInfo()[0].opcode);
+		while(cpu.registerData.getPC() < parser.getLstOpcodeInfo().size())
+		{
+			auto& opcode = parser.getLstOpcodeInfo()[cpu.registerData.getPC()].opcode;
+			instruction = cpu.instructionHandler.decode(opcode);
+			instruction->execute(opcode);
 		}
 
 		//printf("Carry: %d\n", cpu.registerData.getBit(0x3, 0));

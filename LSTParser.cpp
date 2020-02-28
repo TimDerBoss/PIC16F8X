@@ -1,7 +1,6 @@
 #include "LSTParser.h"
 
 #include <fstream>
-#include <sstream>
 #include <fmt/format.h>
 
 LSTParser::LSTParser()
@@ -18,22 +17,24 @@ void LSTParser::readFile(const std::string& fileName)
 			lstFile.push_back(line);
 		}
 		file.close();
+	} else {
+		throw std::runtime_error(fmt::format("File not found: {}\n", fileName));
 	}
-	throw std::runtime_error(fmt::format("File not found: {}\n", fileName));
 }
 
 void LSTParser::parseLstFile()
 {
-	for (auto& line:lstFile) {
-		std::smatch match;
-		if (std::regex_match(line, match, lstRegex)) {
+	for (std::string line : lstFile) {
+		line = line.substr(0, line.length() - 2);
+		std::smatch matches;
+		if (std::regex_match(line, matches, lstRegex)) {
 			// Index of the object in the vector is the instruction number
 			LSTOpcodeInfo loi{};
-			loi.lineInFile = stoi(match[3]);
+			loi.lineInFile = stoi(matches[3]);
 			std::stringstream ss;
-			ss << std::hex << match[2];
+			ss << std::hex << matches[2];
 			ss >> loi.opcode;
-			lstOcInfo.push_back(loi);
+			lstOpcodeInfo.push_back(loi);
 		}
 	}
 }

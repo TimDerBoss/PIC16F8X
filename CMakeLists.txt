@@ -10,7 +10,7 @@ HunterGate(
 
 project(PIC18)
 
-add_executable(PIC18 main.cpp InstructionBase.cpp RegisterData.cpp Instructions.cpp InstructionHandler.cpp CPU.cpp)
+add_executable(PIC18 main.cpp LSTParser.cpp InstructionBase.cpp RegisterData.cpp Instructions.cpp InstructionHandler.cpp CPU.cpp)
 hunter_add_package(fmt)
 find_package(fmt CONFIG REQUIRED)
 target_link_libraries(PIC18 fmt::fmt)
