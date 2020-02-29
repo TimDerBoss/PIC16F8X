@@ -11,10 +11,15 @@ HunterGate(
 
 project(PIC18)
 
-add_executable(PIC18 main.cpp LSTParser.cpp InstructionBase.cpp RegisterData.cpp Instructions.cpp InstructionHandler.cpp CPU.cpp SimulatorUi.h)
+set(OpenGlLinkers -lglut -lGLU -lGL) # setting all the Glut libraries as one variable.
+add_executable(PIC18 main.cpp LSTParser.cpp InstructionBase.cpp RegisterData.cpp Instructions.cpp InstructionHandler.cpp CPU.cpp)
 
 hunter_add_package(fmt)
 find_package(fmt CONFIG REQUIRED)
-find_package(Qt5Widgets REQUIRED)
 
-target_link_libraries(PIC18 fmt::fmt Qt5::Widgets)
+hunter_add_package(wxWidgets)
+find_package(wxWidgets REQUIRED core base)
+
+
+include(${wxWidgets_USE_FILE})
+target_link_libraries(PIC18 fmt::fmt ${OpenGlLinkers} ${wxWidgets_LIBRARIES})
