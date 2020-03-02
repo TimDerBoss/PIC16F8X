@@ -1,5 +1,7 @@
-#include "Form1.h"
+#include "MainForm.h"
+#include "LogForm.h"
 #include "LSTParser.h"
+
 #include <thread>
 #include <Windows.h>
 
@@ -10,12 +12,12 @@ using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
 using namespace System::Security::Permissions;
 
-[assembly:AssemblyTitleAttribute(L"CppCLRWinformsProjekt")] ;
+[assembly:AssemblyTitleAttribute(L"PIC16F8X_Simulator")] ;
 [assembly:AssemblyDescriptionAttribute(L"")] ;
 [assembly:AssemblyConfigurationAttribute(L"")] ;
 [assembly:AssemblyCompanyAttribute(L"")] ;
-[assembly:AssemblyProductAttribute(L"CppCLRWinformsProjekt")] ;
-[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2019")] ;
+[assembly:AssemblyProductAttribute(L"PIC16F8X_Simulator")] ;
+[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2020")] ;
 [assembly:AssemblyTrademarkAttribute(L"")] ;
 [assembly:AssemblyCultureAttribute(L"")] ;
 
@@ -28,13 +30,13 @@ using namespace System::Security::Permissions;
 using namespace System::Windows::Forms;
 
 [STAThreadAttribute]
-void main(array<String^>^ args) {
+int main(array<String^>^ args) {
 	CPU cpu;
 
 
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	CppCLRWinformsProjekt::Form1 form;
+	PIC16F8X_Simulator::MainForm form;
 
 	try {
 		cpu.initialize("BCDCounter.lst");
@@ -46,4 +48,5 @@ void main(array<String^>^ args) {
 	catch (std::exception& e) {
 		MessageBoxA(GetActiveWindow(), fmt::format("%s failed: %s", __FUNCTION__, e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
 	}
+	return 0;
 }

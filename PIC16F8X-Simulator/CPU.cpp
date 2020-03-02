@@ -1,5 +1,6 @@
 #include "CPU.h"
-#include "format.h"
+
+#include <FormatString.h>
 
 #include <Windows.h>
 

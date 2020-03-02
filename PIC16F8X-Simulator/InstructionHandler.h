@@ -1,9 +1,9 @@
+#include "InstructionBase.h"
+
 #include <vector>
 #include <unordered_map>
 #include <memory>
 #include <cstdint>
-
-#include "InstructionBase.h"
 
 class RegisterData;
 

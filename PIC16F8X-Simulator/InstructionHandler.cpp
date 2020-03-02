@@ -4,7 +4,8 @@
 #include "Instructions.h"
 #include "InstructionHandler.h"
 #include "RegisterData.h"
-#include "format.h"
+
+#include <FormatString.h>
 
 
 #define ADD_INSTRUCTION(i, mask, value) std::make_shared<i>(#i, mask, value, rd)

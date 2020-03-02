@@ -1,8 +1,9 @@
 #include "InstructionBase.h"
 #include "RegisterData.h"
-#include <iostream>
 
-#include "format.h"
+#include <FormatString.h>
+
+#include <iostream>
 
 InstructionBase::InstructionBase(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd, int cycles)
 	: mask(mask)

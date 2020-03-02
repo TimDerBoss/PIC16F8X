@@ -1,8 +1,9 @@
 #include "Instructions.h"
-#include <iostream>
 #include "RegisterData.h"
 #include "CPU.h"
-#include "format.h"
+
+#include <iostream>
+#include <FormatString.h>
 
 ADDWF::ADDWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
 	: InstructionBase(identifier, mask, value, rd)

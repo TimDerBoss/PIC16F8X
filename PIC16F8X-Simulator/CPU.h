@@ -1,10 +1,11 @@
 #pragma once
-#include <cstdint>
-#include <string>
 
 #include "LSTParser.h"
 #include "RegisterData.h"
 #include "InstructionHandler.h"
+
+#include <cstdint>
+#include <string>
 
 struct CPURegisters {
 	uint8_t w{ 0 };

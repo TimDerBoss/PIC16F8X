@@ -1,7 +1,7 @@
 #include "RegisterData.h"
 #include "CPU.h"
 
-#include "format.h"
+#include <FormatString.h>
 
 RegisterData::RegisterData(CPURegisters& cpuRegisters)
 	: cpuRegisters(cpuRegisters)
@@ -32,6 +32,7 @@ void RegisterData::resetPowerOn()
 	writeData(0x1, 0xFF);
 	writeData(0x5, 0xFF);
 	writeData(0x6, 0xFF);
+	setBit(0x03, 5, false); // Bank 0
 }
 
 void RegisterData::writeData(const uint8_t& address, unsigned char value)

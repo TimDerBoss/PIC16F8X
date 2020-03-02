@@ -23,9 +23,6 @@
     <ClInclude Include="Resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Form1.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="CPU.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -44,14 +41,14 @@
     <ClInclude Include="RegisterData.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="format.h">
+    <ClInclude Include="MainForm.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="LogForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Form1.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="InstructionBase.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -68,6 +65,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="CPU.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="MainForm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

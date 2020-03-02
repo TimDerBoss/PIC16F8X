@@ -1,5 +1,6 @@
 #include "LSTParser.h"
-#include "format.h"
+
+#include <FormatString.h>
 
 #include <fstream>
 #include <sstream>

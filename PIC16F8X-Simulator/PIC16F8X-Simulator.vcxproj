@@ -75,8 +75,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\tfa\source\repos\PIC16F8X-Simulator\fmt\include;$(IncludePath)</IncludePath>
-    <SourcePath>C:\Users\tfa\source\repos\PIC16F8X-Simulator\fmt\src;$(SourcePath)</SourcePath>
+    <IncludePath>$(SolutionDir)Global\StdWrapper;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)Global\StdWrapper;$(SourcePath)</SourcePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
@@ -87,8 +87,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\tfa\source\repos\PIC16F8X-Simulator\fmt\include;$(IncludePath)</IncludePath>
-    <SourcePath>C:\Users\tfa\source\repos\PIC16F8X-Simulator\fmt\src;$(SourcePath)</SourcePath>
+    <IncludePath>$(SolutionDir)Global\StdWrapper;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)Global\StdWrapper;$(SourcePath)</SourcePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
@@ -160,10 +160,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPU.h" />
-    <ClInclude Include="Form1.h">
+    <ClInclude Include="LogForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="format.h" />
+    <ClInclude Include="MainForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="InstructionBase.h" />
     <ClInclude Include="InstructionHandler.h" />
     <ClInclude Include="Instructions.h" />
@@ -173,7 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPU.cpp" />
-    <ClCompile Include="Form1.cpp" />
+    <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="InstructionBase.cpp" />
     <ClCompile Include="InstructionHandler.cpp" />
     <ClCompile Include="Instructions.cpp" />
@@ -191,8 +193,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.h</DependentUpon>
+    <EmbeddedResource Include="LogForm.resx">
+      <DependentUpon>LogForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
