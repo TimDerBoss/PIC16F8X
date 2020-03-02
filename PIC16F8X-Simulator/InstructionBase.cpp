@@ -1,13 +1,15 @@
 #include "InstructionBase.h"
 #include "RegisterData.h"
 #include <iostream>
-#include <fmt/format.h>
 
-InstructionBase::InstructionBase(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
+#include "format.h"
+
+InstructionBase::InstructionBase(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd, int cycles)
 	: mask(mask)
 	, value(value)
 	, identifier(identifier)
 	, registerData(rd)
+	, cycles(cycles)
 {
 }
 
@@ -36,7 +38,17 @@ InstructionBase::InstructionData InstructionBase::getInstructionData(const uint1
 			data.k = opcode & 0x00FFu;
 			break;
 		default:
-			throw std::runtime_error(fmt::format("Unknown instruction data type: 0b{0:b} (0x{0:X})", commandType));
+			throw std::runtime_error(fmt::format("Unknown instruction data type: 0x%X", commandType));
 	}
 	return data;
+}
+
+const int& InstructionBase::getCycles()
+{
+	return cycles;
+}
+
+void InstructionBase::setCycles(int count)
+{
+	cycles = count;
 }

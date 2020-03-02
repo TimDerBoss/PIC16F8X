@@ -4,8 +4,8 @@
 #include "Instructions.h"
 #include "InstructionHandler.h"
 #include "RegisterData.h"
+#include "format.h"
 
-#include <fmt/format.h>
 
 #define ADD_INSTRUCTION(i, mask, value) std::make_shared<i>(#i, mask, value, rd)
 
@@ -65,6 +65,6 @@ std::shared_ptr<InstructionBase> InstructionHandler::decode(const uint16_t& opco
 				return i;
 			}
 		}
-		throw std::runtime_error(fmt::format("Requested instruction is not implemented: 0b{0:b} (0x{0:X})", opcode));
+		throw std::runtime_error(fmt::format("Requested instruction is not implemented: 0x%X", opcode));
 	}
 }

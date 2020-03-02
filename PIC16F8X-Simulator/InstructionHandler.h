@@ -1,6 +1,3 @@
-//
-// Created by tfa on 26.02.20.
-//
 #include <vector>
 #include <unordered_map>
 #include <memory>

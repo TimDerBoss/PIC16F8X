@@ -1,7 +1,7 @@
 #include "RegisterData.h"
 #include "CPU.h"
 
-#include <fmt/format.h>
+#include "format.h"
 
 RegisterData::RegisterData(CPURegisters& cpuRegisters)
 	: cpuRegisters(cpuRegisters)
@@ -57,7 +57,7 @@ void RegisterData::increasePCBy(uint16_t amount)
 uint16_t RegisterData::getPhysicalAddress(uint8_t address)
 {
 	if (address > 0x7F) {
-		throw std::runtime_error(fmt::format("Tried to access memory address at 0x{:X}. Max allowed: 0x7F", address));
+		throw std::runtime_error(fmt::format("Tried to access memory address at 0x%X. Max allowed: 0x7F", address));
 	}
 	// if bank 1
 	if ((memoryMap[0x03] >> 5) & 1) {

@@ -17,10 +17,8 @@ class LSTParser
 		void readFile(const std::string& fileName);
 		void parseLstFile();
 
-		const std::vector<LSTOpcodeInfo>& getLstOpcodeInfo()
-		{
-			return lstOpcodeInfo;
-		}
+		const std::vector<LSTOpcodeInfo>& getLstOpcodeInfo();
+		const std::vector<std::string>& getFile();
 
 	private:
 		std::vector<std::string> lstFile;
