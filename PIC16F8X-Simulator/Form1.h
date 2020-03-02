@@ -234,7 +234,6 @@ namespace CppCLRWinformsProjekt {
 			// 
 			// rtbprogramOutput
 			// 
-			this->rtbprogramOutput->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->rtbprogramOutput->Location = System::Drawing::Point(12, 257);
 			this->rtbprogramOutput->Name = L"rtbprogramOutput";
 			this->rtbprogramOutput->ReadOnly = true;
@@ -281,8 +280,8 @@ namespace CppCLRWinformsProjekt {
 		{
 			rtbprogramOutput->SelectAll();
 			rtbprogramOutput->SelectionBackColor = rtbprogramOutput->BackColor;
-			if (index < 0 || index >= rtbprogramOutput->Lines->Length)
-				return;
+			if (index > rtbprogramOutput->Lines->Length)
+				index = rtbprogramOutput->Lines->Length;
 			auto start = rtbprogramOutput->GetFirstCharIndexFromLine(index);  // Get the 1st char index of the appended text
 			auto length = rtbprogramOutput->Lines[index]->Length;
 			rtbprogramOutput->Select(start, length);                 // Select from there to the end

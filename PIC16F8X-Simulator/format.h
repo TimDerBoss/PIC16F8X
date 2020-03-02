@@ -9,38 +9,42 @@
 class fmt
 {
 public:
-	// base case of recursion, no more arguments
-	static void format_impl(std::stringstream& ss, const char* format) {
-		while (*format) {
-			if (*format == '%' && *++format != '%') // %% == % (not a format directive)
-				throw std::invalid_argument("not enough arguments !\n");
-			ss << *format++;
+	template<typename T>
+	struct StringConverter {
+		static T convert(T value) {
+			return value;
 		}
+	};
+
+	template<>
+	struct StringConverter<std::string> {
+		static const char* convert(const std::string& value) {
+			return value.c_str();
+		}
+	};
+
+	template<typename ... Args>
+	static std::string fmtImpl(const std::string& format, Args ... args) {
+		// Calculate buffer size
+		int size = snprintf(nullptr, 0, format.c_str(), args...) + 1;
+
+		// Error checking
+		if (size == 0) {
+			throw std::runtime_error(std::string("Invalid format string: ") + "\"" + format + "\"");
+		}
+
+		// Allocate buffer
+		std::unique_ptr<char[]> buf(new char[size]);
+		// Create formatted string
+		snprintf(buf.get(), size, format.c_str(), args...);
+
+		return std::string(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
 	}
 
-	template <typename Arg, typename... Args>
-	static void format_impl(std::stringstream& ss, const char* format, Arg arg, Args... args) {
-		while (*format) {
-			if (*format == '%' && *++format != '%') {
-				auto current_format_qualifier = *format;
-				switch (current_format_qualifier) {
-				case 'd': if (!std::is_integral<Arg>()) throw std::invalid_argument("%d introduces integral argument");
-					// etc.
-				}
-				// it's true you'd have to handle many more format qualifiers, but on a safer basis
-				ss << arg; // arg type is deduced
-				return format_impl(ss, ++format, args...); // one arg less
-			}
-			ss << *format++;
-		} // the format string is exhausted and we still have args : throw
-		throw std::invalid_argument("Too many arguments\n");
-	}
-
-	template <typename... Args>
-	static std::string format(const char* fmt, Args... args) {
-		std::stringstream ss;
-		format_impl(ss, fmt, args...);
-		return ss.str();
+	template<typename ... Args>
+	static std::string format(const std::string& format, Args ... args)
+	{
+		return fmtImpl(format, StringConverter<Args>::convert(args)...);
 	}
 
 };
