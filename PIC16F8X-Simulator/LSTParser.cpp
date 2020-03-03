@@ -20,7 +20,7 @@ void LSTParser::readFile(const std::string& fileName)
 		}
 		file.close();
 	} else {
-		throw std::runtime_error(fmt::format("File not found: %s\n", fileName));
+		throw std::runtime_error(fmt::format("%s: File not found: %s\n", __FUNCTION__, fileName));
 	}
 }
 

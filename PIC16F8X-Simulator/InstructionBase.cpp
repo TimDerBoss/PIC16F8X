@@ -39,7 +39,7 @@ InstructionBase::InstructionData InstructionBase::getInstructionData(const uint1
 			data.k = opcode & 0x00FFu;
 			break;
 		default:
-			throw std::runtime_error(fmt::format("Unknown instruction data type: 0x%X", commandType));
+			throw std::runtime_error(fmt::format("%s: Unknown instruction data type: 0x%X", __FUNCTION__, commandType));
 	}
 	return data;
 }

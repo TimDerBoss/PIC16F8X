@@ -536,7 +536,7 @@ void RETFIE::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
 	if(registerData.stack.empty())
-		throw std::runtime_error("Stack is empty!");
+		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
 	registerData.stack.pop();
 	registerData.setBit(0xB, 7, true); // GIE
@@ -552,7 +552,7 @@ void RETLW::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
 	if(registerData.stack.empty())
-		throw std::runtime_error("Stack is empty!");
+		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
 	registerData.stack.pop();
 	registerData.cpuRegisters.w = static_cast<uint8_t>(data.k);
@@ -568,7 +568,7 @@ void RETURN::execute(const uint16_t& opcode)
 {
 	auto data = getInstructionData(opcode);
 	if(registerData.stack.empty())
-		throw std::runtime_error("Stack is empty!");
+		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
 	registerData.stack.pop();
 	printf("%s 0x%X\n", identifier.c_str(), data.k);

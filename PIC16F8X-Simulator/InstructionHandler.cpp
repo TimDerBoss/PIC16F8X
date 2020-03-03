@@ -66,6 +66,6 @@ std::shared_ptr<InstructionBase> InstructionHandler::decode(const uint16_t& opco
 				return i;
 			}
 		}
-		throw std::runtime_error(fmt::format("Requested instruction is not implemented: 0x%X", opcode));
+		throw std::runtime_error(fmt::format("%s: Requested instruction is not implemented: 0x%X", __FUNCTION__, opcode));
 	}
 }
