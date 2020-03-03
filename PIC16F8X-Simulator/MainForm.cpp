@@ -1,5 +1,4 @@
 #include "MainForm.h"
-#include "LogForm.h"
 #include "LSTParser.h"
 
 #include <thread>

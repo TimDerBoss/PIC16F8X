@@ -1,6 +1,5 @@
 #pragma once
 
-#include "LogForm.h"
 #include "CPU.h"
 #include <FormatString.h>
 
@@ -119,6 +118,7 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::GroupBox^ gbOption;
 
 	private: System::Windows::Forms::GroupBox^ gbStatus;
+private: System::Windows::Forms::Button^ btnIgnore;
 
 
 
@@ -188,6 +188,7 @@ namespace PIC16F8X_Simulator {
 			this->btnReset = (gcnew System::Windows::Forms::Button());
 			this->updateTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->rtbprogramOutput = (gcnew System::Windows::Forms::RichTextBox());
+			this->btnIgnore = (gcnew System::Windows::Forms::Button());
 			this->gbFSR->SuspendLayout();
 			this->panel1->SuspendLayout();
 			this->gbOption->SuspendLayout();
@@ -681,15 +682,26 @@ namespace PIC16F8X_Simulator {
 			this->rtbprogramOutput->Location = System::Drawing::Point(12, 233);
 			this->rtbprogramOutput->Name = L"rtbprogramOutput";
 			this->rtbprogramOutput->ReadOnly = true;
-			this->rtbprogramOutput->Size = System::Drawing::Size(710, 181);
+			this->rtbprogramOutput->Size = System::Drawing::Size(710, 92);
 			this->rtbprogramOutput->TabIndex = 7;
 			this->rtbprogramOutput->Text = L"";
+			// 
+			// btnIgnore
+			// 
+			this->btnIgnore->Location = System::Drawing::Point(327, 140);
+			this->btnIgnore->Name = L"btnIgnore";
+			this->btnIgnore->Size = System::Drawing::Size(75, 23);
+			this->btnIgnore->TabIndex = 8;
+			this->btnIgnore->Text = L"Ignore";
+			this->btnIgnore->UseVisualStyleBackColor = true;
+			this->btnIgnore->Click += gcnew System::EventHandler(this, &MainForm::btnIgnore_Click);
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(737, 405);
+			this->ClientSize = System::Drawing::Size(1077, 485);
+			this->Controls->Add(this->btnIgnore);
 			this->Controls->Add(this->rtbprogramOutput);
 			this->Controls->Add(this->btnStep);
 			this->Controls->Add(this->btnReset);
@@ -698,7 +710,6 @@ namespace PIC16F8X_Simulator {
 			this->Controls->Add(this->gbFSR);
 			this->Name = L"MainForm";
 			this->Text = L"Form1";
-			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			this->gbFSR->ResumeLayout(false);
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
@@ -712,7 +723,6 @@ namespace PIC16F8X_Simulator {
 #pragma endregion
 	public:
 		CPU* cpuRef = nullptr;
-		LogForm logForm;
 
 		void setCpu(CPU* cpu)
 		{
@@ -791,14 +801,17 @@ namespace PIC16F8X_Simulator {
 	private: System::Void btnStep_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (cpuRef) {
 			cpuRef->singleStep();
-			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile, System::Drawing::Color::OrangeRed);
+			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile, System::Drawing::Color::Gold);
 		}
-	}
-	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
-		logForm.Show();
 	}
 	private: System::Void btnReset_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	}
-	};
+	private: System::Void btnIgnore_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (cpuRef) {
+			cpuRef->registerData.increasePCBy(1);
+			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile, System::Drawing::Color::OrangeRed);
+		}
+	}
+};
 }
