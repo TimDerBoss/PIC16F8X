@@ -20,9 +20,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="CPU.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -72,5 +69,8 @@
     <Image Include="app.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="RobotoMono.ttf" />
   </ItemGroup>
 </Project>

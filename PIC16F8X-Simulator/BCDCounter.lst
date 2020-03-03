@@ -6,72 +6,107 @@
                     00006           PORTA EQU 5
                     00007           TRISA EQU 5
                     00008           FZERO EQU 2
-                    00009           
-                    00010           RCOUNT EQU 0Ch
-                    00011           RFLANKE EQU 010h
-                    00012           
-                    00013           
-                    00014           device 16F84
-                    00015  INIT     
-0000 1683           00016           BSF STATUS, B_RP0 ; zu Bank 1 wechseln
-0001 3004           00017           MOVLW 4h   ; Port a pin 3 ist output, rest ist input
-0002 0085           00018           MOVWF TRISA   ; Tris a setzen
-0003 3000           00019           MOVLW 00h   ; Port b ist komplett Output
-0004 0086           00020           MOVWF TRISB   ; Tris b setzen
-0005 1283           00021           BCF STATUS, B_RP0 ; zurück zu Bank 0
-                    00022           
-0006 0805           00023           MOVF PORTA, w  ; Read port a into w
-0007 3010           00024           MOVLW RFLANKE  ; w nach 10h kopieren, damit im ersten durch
-0008 3098           00025           MOVLW 010011000b
-0009 008C           00026           MOVWF RCOUNT
-                    00027           ;CLRF RCOUNT   ; erste erlaubte (und freie) speicherstelle 
-000A 1185           00028           BCF PORTA, 3  ; carry auf null setzen
-000B 0186           00029           CLRF PORTB   ; clear file register port b 
-                    00030  READ      
-000C 1885           00031           BTFSC PORTA, 1  ; check if reset bit is active (ODER: BTFSC
-000D 282D           00032           GOTO RESET
-000E 1905           00033           BTFSC PORTA, 2  ; skip next instruction if bit was not set;
-000F 280C           00034           GOTO READ
-0010 2024           00035           CALL FLANKE   ; UP flankenerkennung
-0011 3901           00036           ANDLW 1    ; war das UP erfolgreich?
-0012 1903           00037           BTFSC STATUS, FZERO ; ZF 0 bedeuet AND war 1 bedeutet UP wa
-0013 280C           00038           GOTO READ
-                    00039             
-0014 080C           00040           MOVF RCOUNT, w  ; zähler nach w
-0015 3A99           00041           XORLW 099h   ; höchmöglicher wert (99)
-0016 1903           00042           BTFSC STATUS, FZERO ; falls z = 1
-0017 282D           00043           GOTO RESET   ; zurücksetzen
-                    00044             
-0018 300F           00045           MOVLW 0Fh   ; wert für and
-0019 050C           00046           ANDWF RCOUNT, w  ; RCOUNT & 00001111
-001A 3C09           00047           SUBLW 09h   ; subtract 9 from w
-001B 1903           00048           BTFSC STATUS, FZERO ; falls z = 1
-001C 2031           00049           CALL BCD_ADD ; 6 addieren
-                    00050             
-001D 0A8C           00051           INCF RCOUNT   ; zähler erhöhen
-001E 1005           00052           BCF PORTA, B_CARRY
-001F 1903           00053           BTFSC STATUS, FZERO ; ZERO flag ist 1, falls es einen über
-0020 1405           00054           BSF PORTA, B_CARRY ; carry setzen
-0021 080C           00055           MOVF RCOUNT, w
-0022 0086           00056           MOVWF PORTB   ; zähler in den ausgang schreiben
-0023 280C           00057           GOTO READ
-                    00058  FLANKE   
-0024 0805           00059           MOVF PORTA, w  ; port a ins w register kopieren
-0025 0610           00060           XORWF RFLANKE, w ; xor von w mit RFLANKE, das ergebnis steh
-0026 3901           00061           ANDLW 1    ; nur bit 0 ist relevant, ergebnis 1 falls flank
-0027 1903           00062           BTFSC STATUS, FZERO ; überspringen, wenn fzero 0 ist (flan
-0028 3400           00063           RETLW 0
-0029 0690           00064           XORWF RFLANKE, 1 ; alter wert wird auf neuen wert gesetzt
-002A 1C10           00065           BTFSS RFLANKE, 0 ; es gab einen flankenwechsel, aber sind w
-002B 3400           00066           RETLW 0   ; aktuell liegt keine 1 an
-002C 3401           00067           RETLW 1    ; richtige flanke gefunden
-                    00068  RESET    
-002D 0186           00069           CLRF PORTB   ; ausgang clearen
-002E 018C           00070           CLRF RCOUNT   ; zähler register clearen
-002F 1005           00071           BCF PORTA, B_CARRY ; carry zurücksetzen
-0030 280C           00072           GOTO READ   ; zurück zu read
-                    00073  BCD_ADD  
-0031 3006           00074           MOVLW 06h   ; 6 in w schreiben
-0032 078C           00075           ADDWF RCOUNT, 1  ; 6 auf den zähler addieren, danach wird 
-0033 3400           00076           RETLW 0    ; return, rückgabewert egal
-                    00077           END
+                    00009           PCOUNT EQU 2
+                    00010           
+                    00011           RCOUNT EQU 0Ch
+                    00012           RTEMP EQU 0Dh
+                    00013           RFLANKE EQU 010h
+                    00014           
+                    00015           
+                    00016           device 16F84
+                    00017  INIT     
+0000 1683           00018           BSF STATUS, B_RP0 ; zu Bank 1 wechseln
+0001 3004           00019           MOVLW 4h   ; Port a pin 3 ist output, rest ist input
+0002 0085           00020           MOVWF TRISA   ; Tris a setzen
+0003 3000           00021           MOVLW 00h   ; Port b ist komplett Output
+0004 0086           00022           MOVWF TRISB   ; Tris b setzen
+0005 1283           00023           BCF STATUS, B_RP0 ; zurück zu Bank 0
+0006 1605           00024           BSF PORTA, 4
+0007 1685           00025           BSF PORTA, 5  ; digits ausschalten
+                    00026           
+0008 0805           00027           MOVF PORTA, w  ; Read port a into w
+0009 3010           00028           MOVLW RFLANKE  ; w nach 10h kopieren, damit im ersten durch
+000A 3098           00029           MOVLW 010011000b
+000B 008C           00030           MOVWF RCOUNT
+                    00031           ;CLRF RCOUNT   ; erste erlaubte (und freie) speicherstelle 
+000C 1185           00032           BCF PORTA, 3  ; carry auf null setzen
+000D 0186           00033           CLRF PORTB   ; clear file register port b 
+                    00034  READ      
+000E 1885           00035           BTFSC PORTA, 1  ; check if reset bit is active (ODER: BTFSC
+000F 283E           00036           GOTO RESET
+0010 1905           00037           BTFSC PORTA, 2  ; skip next instruction if bit was not set;
+0011 280E           00038           GOTO READ
+0012 2035           00039           CALL FLANKE   ; UP flankenerkennung
+0013 3901           00040           ANDLW 1    ; war das UP erfolgreich?
+0014 1903           00041           BTFSC STATUS, FZERO ; ZF 0 bedeuet AND war 1 bedeutet UP wa
+0015 280E           00042           GOTO READ
+                    00043             
+0016 080C           00044           MOVF RCOUNT, w  ; rcount in w
+0017 008D           00045           MOVWF RTEMP   ; w in rtemp
+0018 300F           00046           MOVLW 0Fh   ; wert für and
+0019 058D           00047           ANDWF RTEMP, 0Fh ; RCOUNT & 00001111
+001A 2045           00048           CALL CONVERT   ; tabellenwert berechnen
+001B 1205           00049           BCF PORTA, 4  ; ZÄHLE NICHT IN DIGIT 1
+001C 0086           00050           MOVWF PORTB   ; niedere zahl in port b
+001D 1605           00051           BSF PORTA, 4
+                    00052             
+001E 080C           00053           MOVF RCOUNT, w  ; rcount in w
+001F 008D           00054           MOVWF RTEMP   ; w in rtemp
+0020 0E8D           00055           SWAP RTEMP, 1  ; tetraden tauschen
+0021 300F           00056           MOVLW 0Fh   ; wert für and
+0022 058D           00057           ANDWF RTEMP, 0Fh ; RCOUNT & 00001111
+0023 2045           00058           CALL CONVERT   ; tabellenwert berechnen
+0024 1285           00059           BCF PORTA, 5  ; ZÄHLE NICHT IN DIGIT 0
+0025 0086           00060           MOVWF PORTB   ; niedere zahl in port b
+0026 1685           00061           BSF PORTA, 5
+                    00062             
+0027 080C           00063           MOVF RCOUNT, w  ; zähler nach w
+0028 3A99           00064           XORLW 099h   ; höchmöglicher wert (99)
+0029 1903           00065           BTFSC STATUS, FZERO ; falls z = 1
+002A 283E           00066           GOTO RESET   ; zurücksetzen
+                    00067             
+002B 300F           00068           MOVLW 0Fh   ; wert für and
+002C 050C           00069           ANDWF RCOUNT, w  ; RCOUNT & 00001111
+002D 3C09           00070           SUBLW 09h   ; subtract 9 from w
+002E 1903           00071           BTFSC STATUS, FZERO ; falls z = 1
+002F 2042           00072           CALL BCD_ADD ; 6 addieren
+                    00073             
+0030 0A8C           00074           INCF RCOUNT   ; zähler erhöhen
+0031 1005           00075           BCF PORTA, B_CARRY
+0032 1903           00076           BTFSC STATUS, FZERO ; ZERO flag ist 1, falls es einen über
+0033 1405           00077           BSF PORTA, B_CARRY ; carry setzen
+                    00078             
+0034 280E           00079           GOTO READ
+                    00080  FLANKE   
+0035 0805           00081           MOVF PORTA, w  ; port a ins w register kopieren
+0036 0610           00082           XORWF RFLANKE, w ; xor von w mit RFLANKE, das ergebnis steh
+0037 3901           00083           ANDLW 1    ; nur bit 0 ist relevant, ergebnis 1 falls flank
+0038 1903           00084           BTFSC STATUS, FZERO ; überspringen, wenn fzero 0 ist (flan
+0039 3400           00085           RETLW 0
+003A 0690           00086           XORWF RFLANKE, 1 ; alter wert wird auf neuen wert gesetzt
+003B 1C10           00087           BTFSS RFLANKE, 0 ; es gab einen flankenwechsel, aber sind w
+003C 3400           00088           RETLW 0   ; aktuell liegt keine 1 an
+003D 3401           00089           RETLW 1    ; richtige flanke gefunden
+                    00090  RESET    
+003E 0186           00091           CLRF PORTB   ; ausgang clearen
+003F 018C           00092           CLRF RCOUNT   ; zähler register clearen
+0040 1005           00093           BCF PORTA, B_CARRY ; carry zurücksetzen
+0041 280E           00094           GOTO READ   ; zurück zu read
+                    00095  BCD_ADD  
+0042 3006           00096           MOVLW 06h   ; 6 in w schreiben
+0043 078C           00097           ADDWF RCOUNT, 1  ; 6 auf den zähler addieren, danach wird 
+0044 3400           00098           RETLW 0    ; return, rückgabewert egal
+                    00099  CONVERT  
+0045 080D           00100           MOVFW RTEMP   ; zahl laden
+0046 0782           00101           ADDWF PCOUNT  ; auf programm counter addieren
+0047 343F           00102           RETLW 00111111b
+0048 3406           00103           RETLW 00000110b
+0049 345B           00104           RETLW 01011011b
+004A 344F           00105           RETLW 01001111b
+004B 3466           00106           RETLW 01100110b
+004C 346D           00107           RETLW 01101101b 
+004D 347D           00108           RETLW 01111101b
+004E 3407           00109           RETLW 00000111b
+004F 347F           00110           RETLW 01111111b
+0050 346F           00111           RETLW 01101111b
+                    00112           END
