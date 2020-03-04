@@ -19,9 +19,9 @@ class InstructionBase
 		bool match(const uint16_t& opcode);
 
 		virtual void execute(const uint16_t& opcode) = 0;
+		const int& getCycles();
 	protected:
 		static InstructionData getInstructionData(const uint16_t& opcode);
-		const int& getCycles();
 		void setCycles(int count);
 
 		uint16_t mask;

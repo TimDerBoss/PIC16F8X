@@ -6,6 +6,8 @@
 
 
 using namespace System;
+using namespace System::IO;
+using namespace System::Text;
 using namespace System::Reflection;
 using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
@@ -31,20 +33,23 @@ using namespace System::Windows::Forms;
 int main(array<String^>^ args) {
 	CPU cpu;
 
-
-	Application::EnableVisualStyles();
-	Application::SetCompatibleTextRenderingDefault(false);
-	PIC16F8X_Simulator::MainForm form;
-
 	try {
 		cpu.initialize("BCDCounter.lst");
+		Application::EnableVisualStyles();
+		Application::SetCompatibleTextRenderingDefault(false);
+		PIC16F8X_Simulator::MainForm form;
 		form.setCpu(&cpu);
 		form.setProgram(cpu.parser.getFile());
-
 		Application::Run(% form);
 	}
 	catch (std::exception & e) {
-		MessageBoxA(GetActiveWindow(), fmt::format("%s failed: %s", __FUNCTION__, e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
+		MessageBoxA(GetActiveWindow(), fmt::format("%s", e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
+		exit(0);
 	}
+	catch(...)
+	{
+		exit(0);
+	}
+
 	return 0;
 }

@@ -71,27 +71,60 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::GroupBox^ gbIntcon;
 	private: System::Windows::Forms::Label^ lIntconValues;
 	private: System::Windows::Forms::Label^ label3;
-	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
-	private: System::Windows::Forms::Button^ btnRA7;
-	private: System::Windows::Forms::Button^ btnRA6;
-	private: System::Windows::Forms::Button^ btnRA0;
-
-	private: System::Windows::Forms::Button^ btnRA1;
-
-	private: System::Windows::Forms::Button^ btnRA2;
-
-	private: System::Windows::Forms::Button^ btnRA3;
 
 
-	private: System::Windows::Forms::Button^ btnRA4;
 
-	private: System::Windows::Forms::Button^ btnRA5;
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::Label^ label4;
-	private: System::Windows::Forms::Label^ label5;
+	private: System::Windows::Forms::Label^ lTrisA;
+
+	private: System::Windows::Forms::Label^ lPortA;
+
+
 	private: System::Windows::Forms::Button^ btnClose;
 	private: System::Windows::Forms::GroupBox^ groupBox3;
+	private: System::Windows::Forms::Label^ label6;
+	private: System::Windows::Forms::NumericUpDown^ nudSimSpeed;
+	private: System::Windows::Forms::Label^ lRuntime;
+	private: System::Windows::Forms::Label^ label7;
+	private: System::Windows::Forms::Label^ btnRA0;
+
+	private: System::Windows::Forms::Label^ btnRA1;
+
+	private: System::Windows::Forms::Label^ btnRA2;
+
+	private: System::Windows::Forms::Label^ btnRA3;
+
+	private: System::Windows::Forms::Label^ btnRA4;
+	private: System::Windows::Forms::Label^ btnRA5;
+	private: System::Windows::Forms::Label^ btnRA6;
+	private: System::Windows::Forms::Label^ btnRA7;
+	private: System::Windows::Forms::GroupBox^ groupBox4;
+	private: System::Windows::Forms::GroupBox^ groupBox5;
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::Label^ btnRB0;
+	private: System::Windows::Forms::Label^ label8;
+	private: System::Windows::Forms::Label^ btnRB1;
+	private: System::Windows::Forms::Label^ lTrisB;
+	private: System::Windows::Forms::Label^ btnRB2;
+	private: System::Windows::Forms::Label^ btnRB7;
+	private: System::Windows::Forms::Label^ btnRB73;
+	private: System::Windows::Forms::Label^ btnRB6;
+	private: System::Windows::Forms::Label^ btnRB74;
+	private: System::Windows::Forms::Label^ btnRB75;
+
 	private: System::ComponentModel::IContainer^ components;
 	private:
 		/// <summary>
@@ -135,28 +168,46 @@ namespace PIC16F8X_Simulator {
 			this->cpuRunTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
-			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
-			this->btnRA0 = (gcnew System::Windows::Forms::Button());
-			this->btnRA1 = (gcnew System::Windows::Forms::Button());
-			this->btnRA2 = (gcnew System::Windows::Forms::Button());
-			this->btnRA3 = (gcnew System::Windows::Forms::Button());
-			this->btnRA4 = (gcnew System::Windows::Forms::Button());
-			this->btnRA5 = (gcnew System::Windows::Forms::Button());
-			this->btnRA6 = (gcnew System::Windows::Forms::Button());
-			this->btnRA7 = (gcnew System::Windows::Forms::Button());
+			this->lRuntime = (gcnew System::Windows::Forms::Label());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->nudSimSpeed = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->lTrisA = (gcnew System::Windows::Forms::Label());
+			this->lPortA = (gcnew System::Windows::Forms::Label());
 			this->btnClose = (gcnew System::Windows::Forms::Button());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox4 = (gcnew System::Windows::Forms::GroupBox());
+			this->btnRA0 = (gcnew System::Windows::Forms::Label());
+			this->btnRA1 = (gcnew System::Windows::Forms::Label());
+			this->btnRA2 = (gcnew System::Windows::Forms::Label());
+			this->btnRA7 = (gcnew System::Windows::Forms::Label());
+			this->btnRA3 = (gcnew System::Windows::Forms::Label());
+			this->btnRA6 = (gcnew System::Windows::Forms::Label());
+			this->btnRA4 = (gcnew System::Windows::Forms::Label());
+			this->btnRA5 = (gcnew System::Windows::Forms::Label());
+			this->groupBox5 = (gcnew System::Windows::Forms::GroupBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->btnRB0 = (gcnew System::Windows::Forms::Label());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->btnRB1 = (gcnew System::Windows::Forms::Label());
+			this->lTrisB = (gcnew System::Windows::Forms::Label());
+			this->btnRB2 = (gcnew System::Windows::Forms::Label());
+			this->btnRB7 = (gcnew System::Windows::Forms::Label());
+			this->btnRB73 = (gcnew System::Windows::Forms::Label());
+			this->btnRB6 = (gcnew System::Windows::Forms::Label());
+			this->btnRB74 = (gcnew System::Windows::Forms::Label());
+			this->btnRB75 = (gcnew System::Windows::Forms::Label());
 			this->gbFSR->SuspendLayout();
 			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
 			this->gbStatus->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
-			this->tableLayoutPanel1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nudSimSpeed))->BeginInit();
 			this->groupBox3->SuspendLayout();
+			this->groupBox4->SuspendLayout();
+			this->groupBox5->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// gbFSR
@@ -199,9 +250,8 @@ namespace PIC16F8X_Simulator {
 			this->lIntconValues->AutoSize = true;
 			this->lIntconValues->Location = System::Drawing::Point(6, 29);
 			this->lIntconValues->Name = L"lIntconValues";
-			this->lIntconValues->Size = System::Drawing::Size(223, 13);
+			this->lIntconValues->Size = System::Drawing::Size(0, 13);
 			this->lIntconValues->TabIndex = 11;
-			this->lIntconValues->Text = L"-    -    -    -    -    -    -    -";
 			// 
 			// label3
 			// 
@@ -229,9 +279,8 @@ namespace PIC16F8X_Simulator {
 			this->lOptionValues->AutoSize = true;
 			this->lOptionValues->Location = System::Drawing::Point(6, 29);
 			this->lOptionValues->Name = L"lOptionValues";
-			this->lOptionValues->Size = System::Drawing::Size(223, 13);
+			this->lOptionValues->Size = System::Drawing::Size(0, 13);
 			this->lOptionValues->TabIndex = 11;
-			this->lOptionValues->Text = L"-    -    -    -    -    -    -    -";
 			// 
 			// label2
 			// 
@@ -270,9 +319,8 @@ namespace PIC16F8X_Simulator {
 			this->lStatusValues->AutoSize = true;
 			this->lStatusValues->Location = System::Drawing::Point(6, 30);
 			this->lStatusValues->Name = L"lStatusValues";
-			this->lStatusValues->Size = System::Drawing::Size(223, 13);
+			this->lStatusValues->Size = System::Drawing::Size(0, 13);
 			this->lStatusValues->TabIndex = 10;
-			this->lStatusValues->Text = L"-    -    -    -    -    -    -    -";
 			// 
 			// label17
 			// 
@@ -423,11 +471,11 @@ namespace PIC16F8X_Simulator {
 			this->rtbprogramOutput->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->rtbprogramOutput->Font = (gcnew System::Drawing::Font(L"Consolas", 8.5F));
 			this->rtbprogramOutput->ForeColor = System::Drawing::Color::White;
-			this->rtbprogramOutput->Location = System::Drawing::Point(6, 19);
+			this->rtbprogramOutput->Location = System::Drawing::Point(6, 14);
 			this->rtbprogramOutput->Name = L"rtbprogramOutput";
 			this->rtbprogramOutput->ReadOnly = true;
 			this->rtbprogramOutput->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
-			this->rtbprogramOutput->Size = System::Drawing::Size(582, 230);
+			this->rtbprogramOutput->Size = System::Drawing::Size(582, 233);
 			this->rtbprogramOutput->TabIndex = 7;
 			this->rtbprogramOutput->Text = L"";
 			// 
@@ -447,6 +495,7 @@ namespace PIC16F8X_Simulator {
 			// 
 			// cpuRunTimer
 			// 
+			this->cpuRunTimer->Interval = 10;
 			this->cpuRunTimer->Tick += gcnew System::EventHandler(this, &MainForm::cpuRunTimer_Tick);
 			// 
 			// groupBox1
@@ -462,6 +511,10 @@ namespace PIC16F8X_Simulator {
 			// 
 			// groupBox2
 			// 
+			this->groupBox2->Controls->Add(this->lRuntime);
+			this->groupBox2->Controls->Add(this->label7);
+			this->groupBox2->Controls->Add(this->label6);
+			this->groupBox2->Controls->Add(this->nudSimSpeed);
 			this->groupBox2->Controls->Add(this->btnStart);
 			this->groupBox2->Controls->Add(this->btnStep);
 			this->groupBox2->Controls->Add(this->btnIgnore);
@@ -475,217 +528,73 @@ namespace PIC16F8X_Simulator {
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Controls";
 			// 
-			// tableLayoutPanel1
+			// lRuntime
 			// 
-			this->tableLayoutPanel1->CellBorderStyle = System::Windows::Forms::TableLayoutPanelCellBorderStyle::Single;
-			this->tableLayoutPanel1->ColumnCount = 9;
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
-			this->tableLayoutPanel1->Controls->Add(this->btnRA0, 8, 2);
-			this->tableLayoutPanel1->Controls->Add(this->btnRA1, 7, 2);
-			this->tableLayoutPanel1->Controls->Add(this->btnRA3, 5, 2);
-			this->tableLayoutPanel1->Controls->Add(this->btnRA4, 4, 2);
-			this->tableLayoutPanel1->Controls->Add(this->btnRA5, 3, 2);
-			this->tableLayoutPanel1->Controls->Add(this->btnRA6, 2, 2);
-			this->tableLayoutPanel1->Controls->Add(this->btnRA7, 1, 2);
-			this->tableLayoutPanel1->Controls->Add(this->label1, 0, 2);
-			this->tableLayoutPanel1->Controls->Add(this->label4, 0, 1);
-			this->tableLayoutPanel1->Controls->Add(this->label5, 0, 0);
-			this->tableLayoutPanel1->Controls->Add(this->btnRA2, 6, 2);
-			this->tableLayoutPanel1->Location = System::Drawing::Point(15, 19);
-			this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
-			this->tableLayoutPanel1->RowCount = 3;
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
-			this->tableLayoutPanel1->Size = System::Drawing::Size(253, 80);
-			this->tableLayoutPanel1->TabIndex = 12;
+			this->lRuntime->AutoSize = true;
+			this->lRuntime->Location = System::Drawing::Point(6, 179);
+			this->lRuntime->Name = L"lRuntime";
+			this->lRuntime->Size = System::Drawing::Size(31, 13);
+			this->lRuntime->TabIndex = 18;
+			this->lRuntime->Text = L"0 us";
 			// 
-			// btnRA0
+			// label7
 			// 
-			this->btnRA0->CausesValidation = false;
-			this->btnRA0->FlatAppearance->BorderColor = System::Drawing::Color::Black;
-			this->btnRA0->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
-			this->btnRA0->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
-				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->btnRA0->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnRA0->ForeColor = System::Drawing::Color::White;
-			this->btnRA0->Location = System::Drawing::Point(229, 56);
-			this->btnRA0->Name = L"btnRA0";
-			this->btnRA0->Size = System::Drawing::Size(18, 18);
-			this->btnRA0->TabIndex = 15;
-			this->btnRA0->Text = L"0";
-			this->btnRA0->UseCompatibleTextRendering = true;
-			this->btnRA0->UseMnemonic = false;
-			this->btnRA0->UseVisualStyleBackColor = false;
-			this->btnRA0->Click += gcnew System::EventHandler(this, &MainForm::btnRA0_Click);
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(6, 166);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(55, 13);
+			this->label7->TabIndex = 17;
+			this->label7->Text = L"Runtime:";
 			// 
-			// btnRA1
+			// label6
 			// 
-			this->btnRA1->CausesValidation = false;
-			this->btnRA1->FlatAppearance->BorderColor = System::Drawing::Color::Black;
-			this->btnRA1->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
-			this->btnRA1->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
-				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->btnRA1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnRA1->ForeColor = System::Drawing::Color::White;
-			this->btnRA1->Location = System::Drawing::Point(204, 56);
-			this->btnRA1->Name = L"btnRA1";
-			this->btnRA1->Size = System::Drawing::Size(18, 18);
-			this->btnRA1->TabIndex = 17;
-			this->btnRA1->Text = L"0";
-			this->btnRA1->UseCompatibleTextRendering = true;
-			this->btnRA1->UseMnemonic = false;
-			this->btnRA1->UseVisualStyleBackColor = false;
-			this->btnRA1->Click += gcnew System::EventHandler(this, &MainForm::btnRA1_Click);
+			this->label6->AutoSize = true;
+			this->label6->Location = System::Drawing::Point(6, 208);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(67, 13);
+			this->label6->TabIndex = 16;
+			this->label6->Text = L"Speed (Hz)";
 			// 
-			// btnRA2
+			// nudSimSpeed
 			// 
-			this->btnRA2->CausesValidation = false;
-			this->btnRA2->FlatAppearance->BorderColor = System::Drawing::Color::Black;
-			this->btnRA2->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
-			this->btnRA2->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
-				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->btnRA2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnRA2->ForeColor = System::Drawing::Color::White;
-			this->btnRA2->Location = System::Drawing::Point(179, 56);
-			this->btnRA2->Name = L"btnRA2";
-			this->btnRA2->Size = System::Drawing::Size(18, 18);
-			this->btnRA2->TabIndex = 16;
-			this->btnRA2->Text = L"0";
-			this->btnRA2->UseCompatibleTextRendering = true;
-			this->btnRA2->UseMnemonic = false;
-			this->btnRA2->UseVisualStyleBackColor = false;
-			this->btnRA2->Click += gcnew System::EventHandler(this, &MainForm::btnRA2_Click);
-			// 
-			// btnRA3
-			// 
-			this->btnRA3->CausesValidation = false;
-			this->btnRA3->FlatAppearance->BorderColor = System::Drawing::Color::Black;
-			this->btnRA3->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
-			this->btnRA3->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
-				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->btnRA3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnRA3->ForeColor = System::Drawing::Color::White;
-			this->btnRA3->Location = System::Drawing::Point(154, 56);
-			this->btnRA3->Name = L"btnRA3";
-			this->btnRA3->Size = System::Drawing::Size(18, 18);
-			this->btnRA3->TabIndex = 19;
-			this->btnRA3->Text = L"0";
-			this->btnRA3->UseCompatibleTextRendering = true;
-			this->btnRA3->UseMnemonic = false;
-			this->btnRA3->UseVisualStyleBackColor = false;
-			this->btnRA3->Click += gcnew System::EventHandler(this, &MainForm::btnRA3_Click);
-			// 
-			// btnRA4
-			// 
-			this->btnRA4->CausesValidation = false;
-			this->btnRA4->FlatAppearance->BorderColor = System::Drawing::Color::Black;
-			this->btnRA4->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
-			this->btnRA4->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
-				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->btnRA4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnRA4->ForeColor = System::Drawing::Color::White;
-			this->btnRA4->Location = System::Drawing::Point(129, 56);
-			this->btnRA4->Name = L"btnRA4";
-			this->btnRA4->Size = System::Drawing::Size(18, 18);
-			this->btnRA4->TabIndex = 18;
-			this->btnRA4->Text = L"0";
-			this->btnRA4->UseCompatibleTextRendering = true;
-			this->btnRA4->UseMnemonic = false;
-			this->btnRA4->UseVisualStyleBackColor = false;
-			this->btnRA4->Click += gcnew System::EventHandler(this, &MainForm::btnRA4_Click);
-			// 
-			// btnRA5
-			// 
-			this->btnRA5->CausesValidation = false;
-			this->btnRA5->FlatAppearance->BorderColor = System::Drawing::Color::Black;
-			this->btnRA5->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
-			this->btnRA5->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
-				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->btnRA5->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnRA5->ForeColor = System::Drawing::Color::White;
-			this->btnRA5->Location = System::Drawing::Point(104, 56);
-			this->btnRA5->Name = L"btnRA5";
-			this->btnRA5->Size = System::Drawing::Size(18, 18);
-			this->btnRA5->TabIndex = 20;
-			this->btnRA5->Text = L"0";
-			this->btnRA5->UseCompatibleTextRendering = true;
-			this->btnRA5->UseMnemonic = false;
-			this->btnRA5->UseVisualStyleBackColor = false;
-			this->btnRA5->Click += gcnew System::EventHandler(this, &MainForm::btnRA5_Click);
-			// 
-			// btnRA6
-			// 
-			this->btnRA6->CausesValidation = false;
-			this->btnRA6->FlatAppearance->BorderColor = System::Drawing::Color::Black;
-			this->btnRA6->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
-			this->btnRA6->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
-				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->btnRA6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnRA6->ForeColor = System::Drawing::Color::White;
-			this->btnRA6->Location = System::Drawing::Point(79, 56);
-			this->btnRA6->Name = L"btnRA6";
-			this->btnRA6->Size = System::Drawing::Size(18, 18);
-			this->btnRA6->TabIndex = 14;
-			this->btnRA6->Text = L"0";
-			this->btnRA6->UseCompatibleTextRendering = true;
-			this->btnRA6->UseMnemonic = false;
-			this->btnRA6->UseVisualStyleBackColor = false;
-			this->btnRA6->Click += gcnew System::EventHandler(this, &MainForm::btnRA6_Click);
-			// 
-			// btnRA7
-			// 
-			this->btnRA7->CausesValidation = false;
-			this->btnRA7->FlatAppearance->BorderColor = System::Drawing::Color::Black;
-			this->btnRA7->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
-			this->btnRA7->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
-				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->btnRA7->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnRA7->ForeColor = System::Drawing::Color::White;
-			this->btnRA7->Location = System::Drawing::Point(54, 56);
-			this->btnRA7->Name = L"btnRA7";
-			this->btnRA7->Size = System::Drawing::Size(18, 18);
-			this->btnRA7->TabIndex = 13;
-			this->btnRA7->Text = L"0";
-			this->btnRA7->UseCompatibleTextRendering = true;
-			this->btnRA7->UseMnemonic = false;
-			this->btnRA7->UseVisualStyleBackColor = false;
-			this->btnRA7->Click += gcnew System::EventHandler(this, &MainForm::btnRA7_Click);
+			this->nudSimSpeed->BackColor = System::Drawing::Color::Black;
+			this->nudSimSpeed->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->nudSimSpeed->ForeColor = System::Drawing::Color::White;
+			this->nudSimSpeed->Location = System::Drawing::Point(6, 227);
+			this->nudSimSpeed->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
+			this->nudSimSpeed->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->nudSimSpeed->Name = L"nudSimSpeed";
+			this->nudSimSpeed->Size = System::Drawing::Size(75, 20);
+			this->nudSimSpeed->TabIndex = 15;
+			this->nudSimSpeed->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
+			this->nudSimSpeed->ValueChanged += gcnew System::EventHandler(this, &MainForm::nudSimSpeed_onValueChanged);
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(4, 53);
+			this->label1->Location = System::Drawing::Point(6, 36);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(25, 13);
+			this->label1->Size = System::Drawing::Size(55, 13);
 			this->label1->TabIndex = 21;
-			this->label1->Text = L"Bit";
+			this->label1->Text = L"Port A |";
 			// 
-			// label4
+			// lTrisA
 			// 
-			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(4, 27);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(43, 13);
-			this->label4->TabIndex = 22;
-			this->label4->Text = L"Tris A";
+			this->lTrisA->AutoSize = true;
+			this->lTrisA->Location = System::Drawing::Point(6, 23);
+			this->lTrisA->Name = L"lTrisA";
+			this->lTrisA->Size = System::Drawing::Size(55, 13);
+			this->lTrisA->TabIndex = 22;
+			this->lTrisA->Text = L"Tris A |";
 			// 
-			// label5
+			// lPortA
 			// 
-			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(4, 1);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(43, 13);
-			this->label5->TabIndex = 23;
-			this->label5->Text = L"Port A";
+			this->lPortA->AutoSize = true;
+			this->lPortA->Location = System::Drawing::Point(6, 10);
+			this->lPortA->Name = L"lPortA";
+			this->lPortA->Size = System::Drawing::Size(199, 13);
+			this->lPortA->TabIndex = 23;
+			this->lPortA->Text = L"Bits   |  7  6  5  4  3  2  1  0";
 			// 
 			// btnClose
 			// 
@@ -706,7 +615,8 @@ namespace PIC16F8X_Simulator {
 			// 
 			// groupBox3
 			// 
-			this->groupBox3->Controls->Add(this->tableLayoutPanel1);
+			this->groupBox3->Controls->Add(this->groupBox5);
+			this->groupBox3->Controls->Add(this->groupBox4);
 			this->groupBox3->ForeColor = System::Drawing::Color::White;
 			this->groupBox3->Location = System::Drawing::Point(15, 269);
 			this->groupBox3->Name = L"groupBox3";
@@ -714,6 +624,265 @@ namespace PIC16F8X_Simulator {
 			this->groupBox3->TabIndex = 14;
 			this->groupBox3->TabStop = false;
 			this->groupBox3->Text = L"Ports";
+			// 
+			// groupBox4
+			// 
+			this->groupBox4->Controls->Add(this->lPortA);
+			this->groupBox4->Controls->Add(this->btnRA0);
+			this->groupBox4->Controls->Add(this->label1);
+			this->groupBox4->Controls->Add(this->btnRA1);
+			this->groupBox4->Controls->Add(this->lTrisA);
+			this->groupBox4->Controls->Add(this->btnRA2);
+			this->groupBox4->Controls->Add(this->btnRA7);
+			this->groupBox4->Controls->Add(this->btnRA3);
+			this->groupBox4->Controls->Add(this->btnRA6);
+			this->groupBox4->Controls->Add(this->btnRA4);
+			this->groupBox4->Controls->Add(this->btnRA5);
+			this->groupBox4->Location = System::Drawing::Point(15, 11);
+			this->groupBox4->Name = L"groupBox4";
+			this->groupBox4->Size = System::Drawing::Size(214, 55);
+			this->groupBox4->TabIndex = 32;
+			this->groupBox4->TabStop = false;
+			// 
+			// btnRA0
+			// 
+			this->btnRA0->AutoSize = true;
+			this->btnRA0->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRA0->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA0->Location = System::Drawing::Point(192, 36);
+			this->btnRA0->Name = L"btnRA0";
+			this->btnRA0->Size = System::Drawing::Size(15, 15);
+			this->btnRA0->TabIndex = 31;
+			this->btnRA0->Text = L"0";
+			this->btnRA0->Click += gcnew System::EventHandler(this, &MainForm::btnRA0_Click);
+			// 
+			// btnRA1
+			// 
+			this->btnRA1->AutoSize = true;
+			this->btnRA1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRA1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA1->Location = System::Drawing::Point(174, 36);
+			this->btnRA1->Name = L"btnRA1";
+			this->btnRA1->Size = System::Drawing::Size(15, 15);
+			this->btnRA1->TabIndex = 30;
+			this->btnRA1->Text = L"0";
+			this->btnRA1->Click += gcnew System::EventHandler(this, &MainForm::btnRA1_Click);
+			// 
+			// btnRA2
+			// 
+			this->btnRA2->AutoSize = true;
+			this->btnRA2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRA2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA2->Location = System::Drawing::Point(156, 36);
+			this->btnRA2->Name = L"btnRA2";
+			this->btnRA2->Size = System::Drawing::Size(15, 15);
+			this->btnRA2->TabIndex = 29;
+			this->btnRA2->Text = L"0";
+			this->btnRA2->Click += gcnew System::EventHandler(this, &MainForm::btnRA2_Click);
+			// 
+			// btnRA7
+			// 
+			this->btnRA7->AutoSize = true;
+			this->btnRA7->BackColor = System::Drawing::Color::Black;
+			this->btnRA7->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRA7->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA7->Location = System::Drawing::Point(66, 36);
+			this->btnRA7->Name = L"btnRA7";
+			this->btnRA7->Size = System::Drawing::Size(15, 15);
+			this->btnRA7->TabIndex = 24;
+			this->btnRA7->Text = L"0";
+			this->btnRA7->Click += gcnew System::EventHandler(this, &MainForm::btnRA7_Click);
+			// 
+			// btnRA3
+			// 
+			this->btnRA3->AutoSize = true;
+			this->btnRA3->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRA3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA3->Location = System::Drawing::Point(138, 36);
+			this->btnRA3->Name = L"btnRA3";
+			this->btnRA3->Size = System::Drawing::Size(15, 15);
+			this->btnRA3->TabIndex = 28;
+			this->btnRA3->Text = L"0";
+			this->btnRA3->Click += gcnew System::EventHandler(this, &MainForm::btnRA3_Click);
+			// 
+			// btnRA6
+			// 
+			this->btnRA6->AutoSize = true;
+			this->btnRA6->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRA6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA6->Location = System::Drawing::Point(84, 36);
+			this->btnRA6->Name = L"btnRA6";
+			this->btnRA6->Size = System::Drawing::Size(15, 15);
+			this->btnRA6->TabIndex = 25;
+			this->btnRA6->Text = L"0";
+			this->btnRA6->Click += gcnew System::EventHandler(this, &MainForm::btnRA6_Click);
+			// 
+			// btnRA4
+			// 
+			this->btnRA4->AutoSize = true;
+			this->btnRA4->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRA4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA4->Location = System::Drawing::Point(120, 36);
+			this->btnRA4->Name = L"btnRA4";
+			this->btnRA4->Size = System::Drawing::Size(15, 15);
+			this->btnRA4->TabIndex = 27;
+			this->btnRA4->Text = L"0";
+			this->btnRA4->Click += gcnew System::EventHandler(this, &MainForm::btnRA4_Click);
+			// 
+			// btnRA5
+			// 
+			this->btnRA5->AutoSize = true;
+			this->btnRA5->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRA5->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA5->Location = System::Drawing::Point(102, 36);
+			this->btnRA5->Name = L"btnRA5";
+			this->btnRA5->Size = System::Drawing::Size(15, 15);
+			this->btnRA5->TabIndex = 26;
+			this->btnRA5->Text = L"0";
+			this->btnRA5->Click += gcnew System::EventHandler(this, &MainForm::btnRA5_Click);
+			// 
+			// groupBox5
+			// 
+			this->groupBox5->Controls->Add(this->label4);
+			this->groupBox5->Controls->Add(this->btnRB0);
+			this->groupBox5->Controls->Add(this->label8);
+			this->groupBox5->Controls->Add(this->btnRB1);
+			this->groupBox5->Controls->Add(this->lTrisB);
+			this->groupBox5->Controls->Add(this->btnRB2);
+			this->groupBox5->Controls->Add(this->btnRB7);
+			this->groupBox5->Controls->Add(this->btnRB73);
+			this->groupBox5->Controls->Add(this->btnRB6);
+			this->groupBox5->Controls->Add(this->btnRB74);
+			this->groupBox5->Controls->Add(this->btnRB75);
+			this->groupBox5->Location = System::Drawing::Point(15, 69);
+			this->groupBox5->Name = L"groupBox5";
+			this->groupBox5->Size = System::Drawing::Size(214, 55);
+			this->groupBox5->TabIndex = 33;
+			this->groupBox5->TabStop = false;
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(6, 10);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(199, 13);
+			this->label4->TabIndex = 23;
+			this->label4->Text = L"Bits   |  7  6  5  4  3  2  1  0";
+			// 
+			// btnRB0
+			// 
+			this->btnRB0->AutoSize = true;
+			this->btnRB0->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRB0->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRB0->Location = System::Drawing::Point(192, 36);
+			this->btnRB0->Name = L"btnRB0";
+			this->btnRB0->Size = System::Drawing::Size(15, 15);
+			this->btnRB0->TabIndex = 31;
+			this->btnRB0->Text = L"0";
+			this->btnRB0->Click += gcnew System::EventHandler(this, &MainForm::btnRB0_Click);
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(6, 36);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(55, 13);
+			this->label8->TabIndex = 21;
+			this->label8->Text = L"Port B |";
+			// 
+			// btnRB1
+			// 
+			this->btnRB1->AutoSize = true;
+			this->btnRB1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRB1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRB1->Location = System::Drawing::Point(174, 36);
+			this->btnRB1->Name = L"btnRB1";
+			this->btnRB1->Size = System::Drawing::Size(15, 15);
+			this->btnRB1->TabIndex = 30;
+			this->btnRB1->Text = L"0";
+			this->btnRB1->Click += gcnew System::EventHandler(this, &MainForm::btnRB1_Click);
+			// 
+			// lTrisB
+			// 
+			this->lTrisB->AutoSize = true;
+			this->lTrisB->Location = System::Drawing::Point(6, 23);
+			this->lTrisB->Name = L"lTrisB";
+			this->lTrisB->Size = System::Drawing::Size(55, 13);
+			this->lTrisB->TabIndex = 22;
+			this->lTrisB->Text = L"Tris B |";
+			// 
+			// btnRB2
+			// 
+			this->btnRB2->AutoSize = true;
+			this->btnRB2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRB2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRB2->Location = System::Drawing::Point(156, 36);
+			this->btnRB2->Name = L"btnRB2";
+			this->btnRB2->Size = System::Drawing::Size(15, 15);
+			this->btnRB2->TabIndex = 29;
+			this->btnRB2->Text = L"0";
+			this->btnRB2->Click += gcnew System::EventHandler(this, &MainForm::btnRB2_Click);
+			// 
+			// btnRB7
+			// 
+			this->btnRB7->AutoSize = true;
+			this->btnRB7->BackColor = System::Drawing::Color::Black;
+			this->btnRB7->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRB7->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRB7->Location = System::Drawing::Point(66, 36);
+			this->btnRB7->Name = L"btnRB7";
+			this->btnRB7->Size = System::Drawing::Size(15, 15);
+			this->btnRB7->TabIndex = 24;
+			this->btnRB7->Text = L"0";
+			this->btnRB7->Click += gcnew System::EventHandler(this, &MainForm::btnRB7_Click);
+			// 
+			// btnRB73
+			// 
+			this->btnRB73->AutoSize = true;
+			this->btnRB73->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRB73->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRB73->Location = System::Drawing::Point(138, 36);
+			this->btnRB73->Name = L"btnRB73";
+			this->btnRB73->Size = System::Drawing::Size(15, 15);
+			this->btnRB73->TabIndex = 28;
+			this->btnRB73->Text = L"0";
+			this->btnRB73->Click += gcnew System::EventHandler(this, &MainForm::btnRB73_Click);
+			// 
+			// btnRB6
+			// 
+			this->btnRB6->AutoSize = true;
+			this->btnRB6->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRB6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRB6->Location = System::Drawing::Point(84, 36);
+			this->btnRB6->Name = L"btnRB6";
+			this->btnRB6->Size = System::Drawing::Size(15, 15);
+			this->btnRB6->TabIndex = 25;
+			this->btnRB6->Text = L"0";
+			this->btnRB6->Click += gcnew System::EventHandler(this, &MainForm::btnRB6_Click);
+			// 
+			// btnRB74
+			// 
+			this->btnRB74->AutoSize = true;
+			this->btnRB74->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRB74->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRB74->Location = System::Drawing::Point(120, 36);
+			this->btnRB74->Name = L"btnRB74";
+			this->btnRB74->Size = System::Drawing::Size(15, 15);
+			this->btnRB74->TabIndex = 27;
+			this->btnRB74->Text = L"0";
+			this->btnRB74->Click += gcnew System::EventHandler(this, &MainForm::btnRB74_Click);
+			// 
+			// btnRB75
+			// 
+			this->btnRB75->AutoSize = true;
+			this->btnRB75->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->btnRB75->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRB75->Location = System::Drawing::Point(102, 36);
+			this->btnRB75->Name = L"btnRB75";
+			this->btnRB75->Size = System::Drawing::Size(15, 15);
+			this->btnRB75->TabIndex = 26;
+			this->btnRB75->Text = L"0";
+			this->btnRB75->Click += gcnew System::EventHandler(this, &MainForm::btnRB75_Click);
 			// 
 			// MainForm
 			// 
@@ -746,9 +915,13 @@ namespace PIC16F8X_Simulator {
 			this->gbStatus->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox2->ResumeLayout(false);
-			this->tableLayoutPanel1->ResumeLayout(false);
-			this->tableLayoutPanel1->PerformLayout();
+			this->groupBox2->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nudSimSpeed))->EndInit();
 			this->groupBox3->ResumeLayout(false);
+			this->groupBox4->ResumeLayout(false);
+			this->groupBox4->PerformLayout();
+			this->groupBox5->ResumeLayout(false);
+			this->groupBox5->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -767,6 +940,12 @@ namespace PIC16F8X_Simulator {
 			for (auto& line : program) {
 				rtbprogramOutput->Text += gcnew String(line.c_str()) + "\r\n";
 			}
+		}
+
+		std::string asIO(bool value) {
+			if (value)
+				return "I";
+			return "O";
 		}
 
 		void highlightConsoleLine(int index)
@@ -792,6 +971,27 @@ namespace PIC16F8X_Simulator {
 			lpclValue->Text = gcnew String(fmt::format("%02X", cpuRef->registerData.getPC() & 0xFF).c_str());
 			lpclathValue->Text = gcnew String(fmt::format("%02X", cpuRef->registerData.getPC() >> 8 & 0xFF).c_str());
 			lwRegValue->Text = gcnew String(fmt::format("%02X", cpuRef->cpuRegisters.w).c_str());
+			lRuntime->Text = gcnew String(fmt::format("%d us", cpuRef->timeActive).c_str());
+
+			lTrisA->Text = gcnew String(fmt::format("Tris A |  %s  %s  %s  %s  %s  %s  %s  %s"
+				, asIO(cpuRef->registerData.getRawBit(0x85, 7))
+				, asIO(cpuRef->registerData.getRawBit(0x85, 6))
+				, asIO(cpuRef->registerData.getRawBit(0x85, 5))
+				, asIO(cpuRef->registerData.getRawBit(0x85, 4))
+				, asIO(cpuRef->registerData.getRawBit(0x85, 3))
+				, asIO(cpuRef->registerData.getRawBit(0x85, 2))
+				, asIO(cpuRef->registerData.getRawBit(0x85, 1))
+				, asIO(cpuRef->registerData.getRawBit(0x85, 0))).c_str());
+
+			lTrisB->Text = gcnew String(fmt::format("Tris B |  %s  %s  %s  %s  %s  %s  %s  %s"
+				, asIO(cpuRef->registerData.getRawBit(0x86, 7))
+				, asIO(cpuRef->registerData.getRawBit(0x86, 6))
+				, asIO(cpuRef->registerData.getRawBit(0x86, 5))
+				, asIO(cpuRef->registerData.getRawBit(0x86, 4))
+				, asIO(cpuRef->registerData.getRawBit(0x86, 3))
+				, asIO(cpuRef->registerData.getRawBit(0x86, 2))
+				, asIO(cpuRef->registerData.getRawBit(0x86, 1))
+				, asIO(cpuRef->registerData.getRawBit(0x86, 0))).c_str());
 
 			lStatusValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
 				, cpuRef->registerData.getRawBit(0x3, 7)
@@ -873,7 +1073,6 @@ namespace PIC16F8X_Simulator {
 		btnStop->Enabled = false;
 		btnStep->Enabled = true;
 		btnIgnore->Enabled = true;
-
 	}
 
 	private: System::Void btnStart_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -898,8 +1097,15 @@ namespace PIC16F8X_Simulator {
 
 	private: System::Void btnStep_Click(System::Object^ sender, System::EventArgs^ e) {
 		assert(cpuRef != nullptr);
-		cpuRef->singleStep();
-		highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
+		assert(cpuRef != nullptr);
+		try {
+			cpuRef->singleStep();
+			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
+		}
+		catch (std::exception & e) {
+			cpuRunTimer->Stop();
+			MessageBoxA(GetActiveWindow(), fmt::format("Simulation Error!\n\n%s", e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
+		}
 
 	}
 	private: System::Void btnReset_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -911,8 +1117,14 @@ namespace PIC16F8X_Simulator {
 	}
 	private: System::Void btnIgnore_Click(System::Object^ sender, System::EventArgs^ e) {
 		assert(cpuRef != nullptr);
-		cpuRef->registerData.increasePCBy(1);
-		highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
+		try {
+			cpuRef->registerData.increasePCBy(1);
+			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
+		}
+		catch (std::exception & e) {
+			cpuRunTimer->Stop();
+			MessageBoxA(GetActiveWindow(), fmt::format("Simulation Error!\n\n%s", e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
+		}
 
 	}
 	private: System::Void cpuRunTimer_Tick(System::Object^ sender, System::EventArgs^ e) {
@@ -952,6 +1164,33 @@ namespace PIC16F8X_Simulator {
 	}
 	private: System::Void btnRA0_Click(System::Object^ sender, System::EventArgs^ e) {
 		cpuRef->registerData.setRawBit(0x5, 0, btnRA0->Text == "0");
+	}
+	private: System::Void btnRB7_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x6, 7, btnRA0->Text == "0");
+	}
+	private: System::Void btnRB6_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x6, 6, btnRA0->Text == "0");
+	}
+	private: System::Void btnRB75_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x6, 5, btnRA0->Text == "0");
+	}
+	private: System::Void btnRB74_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x6, 4, btnRA0->Text == "0");
+	}
+	private: System::Void btnRB73_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x6, 3, btnRA0->Text == "0");
+	}
+	private: System::Void btnRB2_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x6, 2, btnRA0->Text == "0");
+	}
+	private: System::Void btnRB1_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x6, 1, btnRA0->Text == "0");
+	}
+	private: System::Void btnRB0_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x6, 0, btnRA0->Text == "0");
+	}
+	private: System::Void nudSimSpeed_onValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		cpuRunTimer->Interval = 1000 / Convert::ToInt32(Math::Round(nudSimSpeed->Value, 0));
 	}
 	};
 }

@@ -12,16 +12,17 @@ LSTParser::LSTParser()
 
 void LSTParser::readFile(const std::string& fileName)
 {
-	std::ifstream file(fileName);
-	if (file.is_open()) {
-		std::string line;
-		while (getline(file, line)) {
-			lstFile.push_back(line);
+		std::ifstream file(fileName);
+		if (file.is_open()) {
+			std::string line;
+			while (getline(file, line)) {
+				lstFile.push_back(line);
+			}
+			file.close();
 		}
-		file.close();
-	} else {
-		throw std::runtime_error(fmt::format("%s: File not found: %s\n", __FUNCTION__, fileName));
-	}
+		else {
+			throw std::runtime_error(fmt::format("%s: File not found: %s\n", __FUNCTION__, fileName));
+		}
 }
 
 void LSTParser::parseLstFile()

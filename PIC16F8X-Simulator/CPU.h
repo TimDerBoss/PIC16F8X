@@ -24,6 +24,8 @@ public:
 	void initialize(const std::string& fileName);
 	void singleStep();
 
+	int timeActive{ 0 };
+
 	LSTParser parser;
 	CPURegisters cpuRegisters;
 	RegisterData registerData;

@@ -13,4 +13,5 @@ void CPU::singleStep()
 		auto& opcode = parser.getLstOpcodeInfo()[registerData.getPC()].opcode;
 		auto& instruction = instructionHandler.decode(opcode);
 		instruction->execute(opcode);
+		timeActive += instruction->getCycles();
 }
