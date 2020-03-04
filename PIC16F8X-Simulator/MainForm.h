@@ -4,6 +4,7 @@
 #include <FormatString.h>
 #include <assert.h>
 #include <Windows.h>
+#include <functional>
 
 namespace PIC16F8X_Simulator {
 
@@ -51,93 +52,44 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::Button^ btnStop;
 	private: System::Windows::Forms::Button^ btnStep;
 	private: System::Windows::Forms::Button^ btnReset;
-
-
 	private: System::Windows::Forms::Timer^ updateTimer;
 	private: System::Windows::Forms::Label^ lwRegValue;
 	private: System::Windows::Forms::Label^ lwReg;
 	private: System::Windows::Forms::RichTextBox^ rtbprogramOutput;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::GroupBox^ gbOption;
-
 	private: System::Windows::Forms::GroupBox^ gbStatus;
 	private: System::Windows::Forms::Button^ btnIgnore;
 	private: System::Windows::Forms::Timer^ cpuRunTimer;
 	private: System::Windows::Forms::Label^ label17;
 	private: System::Windows::Forms::Label^ lStatusValues;
-
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ lOptionValues;
-private: System::Windows::Forms::GroupBox^ groupBox1;
-private: System::Windows::Forms::GroupBox^ groupBox2;
-private: System::Windows::Forms::GroupBox^ gbIntcon;
-private: System::Windows::Forms::Label^ label1;
-private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::GroupBox^ groupBox1;
+	private: System::Windows::Forms::GroupBox^ groupBox2;
+	private: System::Windows::Forms::GroupBox^ gbIntcon;
+	private: System::Windows::Forms::Label^ lIntconValues;
+	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
+	private: System::Windows::Forms::Button^ btnRA7;
+	private: System::Windows::Forms::Button^ btnRA6;
+	private: System::Windows::Forms::Button^ btnRA0;
+
+	private: System::Windows::Forms::Button^ btnRA1;
+
+	private: System::Windows::Forms::Button^ btnRA2;
+
+	private: System::Windows::Forms::Button^ btnRA3;
 
 
+	private: System::Windows::Forms::Button^ btnRA4;
 
+	private: System::Windows::Forms::Button^ btnRA5;
 
+	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::Label^ label5;
+	private: System::Windows::Forms::Button^ btnClose;
 	private: System::ComponentModel::IContainer^ components;
-
 	private:
 		/// <summary>
 		/// Erforderliche Designervariable.
@@ -153,20 +105,23 @@ private: System::Windows::Forms::Label^ label3;
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			this->gbFSR = (gcnew System::Windows::Forms::GroupBox());
+			this->gbIntcon = (gcnew System::Windows::Forms::GroupBox());
+			this->lIntconValues = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->gbOption = (gcnew System::Windows::Forms::GroupBox());
 			this->lOptionValues = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->lpc = (gcnew System::Windows::Forms::Label());
-			this->lpcl = (gcnew System::Windows::Forms::Label());
 			this->gbStatus = (gcnew System::Windows::Forms::GroupBox());
 			this->lStatusValues = (gcnew System::Windows::Forms::Label());
 			this->label17 = (gcnew System::Windows::Forms::Label());
+			this->lpcl = (gcnew System::Windows::Forms::Label());
+			this->lpcValue = (gcnew System::Windows::Forms::Label());
+			this->lpclathValue = (gcnew System::Windows::Forms::Label());
 			this->lpclath = (gcnew System::Windows::Forms::Label());
+			this->lpclValue = (gcnew System::Windows::Forms::Label());
 			this->lwRegValue = (gcnew System::Windows::Forms::Label());
 			this->lwReg = (gcnew System::Windows::Forms::Label());
-			this->lpclValue = (gcnew System::Windows::Forms::Label());
-			this->lpclathValue = (gcnew System::Windows::Forms::Label());
-			this->lpcValue = (gcnew System::Windows::Forms::Label());
 			this->btnStart = (gcnew System::Windows::Forms::Button());
 			this->btnStop = (gcnew System::Windows::Forms::Button());
 			this->btnStep = (gcnew System::Windows::Forms::Button());
@@ -177,15 +132,26 @@ private: System::Windows::Forms::Label^ label3;
 			this->cpuRunTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
-			this->gbIntcon = (gcnew System::Windows::Forms::GroupBox());
+			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
+			this->btnRA0 = (gcnew System::Windows::Forms::Button());
+			this->btnRA1 = (gcnew System::Windows::Forms::Button());
+			this->btnRA2 = (gcnew System::Windows::Forms::Button());
+			this->btnRA3 = (gcnew System::Windows::Forms::Button());
+			this->btnRA4 = (gcnew System::Windows::Forms::Button());
+			this->btnRA5 = (gcnew System::Windows::Forms::Button());
+			this->btnRA6 = (gcnew System::Windows::Forms::Button());
+			this->btnRA7 = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->btnClose = (gcnew System::Windows::Forms::Button());
 			this->gbFSR->SuspendLayout();
+			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
 			this->gbStatus->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
-			this->gbIntcon->SuspendLayout();
+			this->tableLayoutPanel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// gbFSR
@@ -203,7 +169,7 @@ private: System::Windows::Forms::Label^ label3;
 			this->gbFSR->Controls->Add(this->lwReg);
 			this->gbFSR->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->gbFSR->ForeColor = System::Drawing::SystemColors::Control;
+			this->gbFSR->ForeColor = System::Drawing::Color::White;
 			this->gbFSR->Location = System::Drawing::Point(15, 12);
 			this->gbFSR->Name = L"gbFSR";
 			this->gbFSR->Size = System::Drawing::Size(283, 251);
@@ -211,11 +177,41 @@ private: System::Windows::Forms::Label^ label3;
 			this->gbFSR->TabStop = false;
 			this->gbFSR->Text = L"Special Function Registers";
 			// 
+			// gbIntcon
+			// 
+			this->gbIntcon->Controls->Add(this->lIntconValues);
+			this->gbIntcon->Controls->Add(this->label3);
+			this->gbIntcon->ForeColor = System::Drawing::Color::White;
+			this->gbIntcon->Location = System::Drawing::Point(15, 189);
+			this->gbIntcon->Name = L"gbIntcon";
+			this->gbIntcon->Size = System::Drawing::Size(253, 53);
+			this->gbIntcon->TabIndex = 12;
+			this->gbIntcon->TabStop = false;
+			this->gbIntcon->Text = L"INTCON Register";
+			// 
+			// lIntconValues
+			// 
+			this->lIntconValues->AutoSize = true;
+			this->lIntconValues->Location = System::Drawing::Point(6, 29);
+			this->lIntconValues->Name = L"lIntconValues";
+			this->lIntconValues->Size = System::Drawing::Size(223, 13);
+			this->lIntconValues->TabIndex = 11;
+			this->lIntconValues->Text = L"-    -    -    -    -    -    -    -";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(6, 16);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(241, 13);
+			this->label3->TabIndex = 11;
+			this->label3->Text = L"GIE  PIE  T0IE INTE RBIE T0IF INTF RBIF";
+			// 
 			// gbOption
 			// 
 			this->gbOption->Controls->Add(this->lOptionValues);
 			this->gbOption->Controls->Add(this->label2);
-			this->gbOption->ForeColor = System::Drawing::SystemColors::Control;
+			this->gbOption->ForeColor = System::Drawing::Color::White;
 			this->gbOption->Location = System::Drawing::Point(15, 130);
 			this->gbOption->Name = L"gbOption";
 			this->gbOption->Size = System::Drawing::Size(253, 53);
@@ -244,27 +240,19 @@ private: System::Windows::Forms::Label^ label3;
 			// lpc
 			// 
 			this->lpc->AutoSize = true;
+			this->lpc->ForeColor = System::Drawing::Color::White;
 			this->lpc->Location = System::Drawing::Point(12, 16);
 			this->lpc->Name = L"lpc";
 			this->lpc->Size = System::Drawing::Size(19, 13);
 			this->lpc->TabIndex = 0;
 			this->lpc->Text = L"PC";
 			// 
-			// lpcl
-			// 
-			this->lpcl->AutoSize = true;
-			this->lpcl->Location = System::Drawing::Point(12, 29);
-			this->lpcl->Name = L"lpcl";
-			this->lpcl->Size = System::Drawing::Size(25, 13);
-			this->lpcl->TabIndex = 1;
-			this->lpcl->Text = L"PCL";
-			// 
 			// gbStatus
 			// 
 			this->gbStatus->Controls->Add(this->lStatusValues);
 			this->gbStatus->Controls->Add(this->label17);
 			this->gbStatus->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
-			this->gbStatus->ForeColor = System::Drawing::SystemColors::Control;
+			this->gbStatus->ForeColor = System::Drawing::Color::White;
 			this->gbStatus->Location = System::Drawing::Point(15, 71);
 			this->gbStatus->Name = L"gbStatus";
 			this->gbStatus->Size = System::Drawing::Size(253, 53);
@@ -292,18 +280,60 @@ private: System::Windows::Forms::Label^ label3;
 			this->label17->TabIndex = 9;
 			this->label17->Text = L"IRP  RP1  RP0  TO   PD   Z    DC   C\r\n";
 			// 
+			// lpcl
+			// 
+			this->lpcl->AutoSize = true;
+			this->lpcl->ForeColor = System::Drawing::Color::White;
+			this->lpcl->Location = System::Drawing::Point(12, 29);
+			this->lpcl->Name = L"lpcl";
+			this->lpcl->Size = System::Drawing::Size(25, 13);
+			this->lpcl->TabIndex = 1;
+			this->lpcl->Text = L"PCL";
+			// 
+			// lpcValue
+			// 
+			this->lpcValue->AutoSize = true;
+			this->lpcValue->ForeColor = System::Drawing::Color::White;
+			this->lpcValue->Location = System::Drawing::Point(90, 16);
+			this->lpcValue->Name = L"lpcValue";
+			this->lpcValue->Size = System::Drawing::Size(13, 13);
+			this->lpcValue->TabIndex = 3;
+			this->lpcValue->Text = L"-";
+			// 
+			// lpclathValue
+			// 
+			this->lpclathValue->AutoSize = true;
+			this->lpclathValue->ForeColor = System::Drawing::Color::White;
+			this->lpclathValue->Location = System::Drawing::Point(90, 42);
+			this->lpclathValue->Name = L"lpclathValue";
+			this->lpclathValue->Size = System::Drawing::Size(13, 13);
+			this->lpclathValue->TabIndex = 5;
+			this->lpclathValue->Text = L"-";
+			// 
 			// lpclath
 			// 
 			this->lpclath->AutoSize = true;
+			this->lpclath->ForeColor = System::Drawing::Color::White;
 			this->lpclath->Location = System::Drawing::Point(12, 42);
 			this->lpclath->Name = L"lpclath";
 			this->lpclath->Size = System::Drawing::Size(43, 13);
 			this->lpclath->TabIndex = 2;
 			this->lpclath->Text = L"PCLATH";
 			// 
+			// lpclValue
+			// 
+			this->lpclValue->AutoSize = true;
+			this->lpclValue->ForeColor = System::Drawing::Color::White;
+			this->lpclValue->Location = System::Drawing::Point(90, 29);
+			this->lpclValue->Name = L"lpclValue";
+			this->lpclValue->Size = System::Drawing::Size(13, 13);
+			this->lpclValue->TabIndex = 4;
+			this->lpclValue->Text = L"-";
+			// 
 			// lwRegValue
 			// 
 			this->lwRegValue->AutoSize = true;
+			this->lwRegValue->ForeColor = System::Drawing::Color::White;
 			this->lwRegValue->Location = System::Drawing::Point(90, 55);
 			this->lwRegValue->Name = L"lwRegValue";
 			this->lwRegValue->Size = System::Drawing::Size(13, 13);
@@ -313,45 +343,19 @@ private: System::Windows::Forms::Label^ label3;
 			// lwReg
 			// 
 			this->lwReg->AutoSize = true;
+			this->lwReg->ForeColor = System::Drawing::Color::White;
 			this->lwReg->Location = System::Drawing::Point(12, 55);
 			this->lwReg->Name = L"lwReg";
 			this->lwReg->Size = System::Drawing::Size(13, 13);
 			this->lwReg->TabIndex = 6;
 			this->lwReg->Text = L"w";
 			// 
-			// lpclValue
-			// 
-			this->lpclValue->AutoSize = true;
-			this->lpclValue->Location = System::Drawing::Point(90, 29);
-			this->lpclValue->Name = L"lpclValue";
-			this->lpclValue->Size = System::Drawing::Size(13, 13);
-			this->lpclValue->TabIndex = 4;
-			this->lpclValue->Text = L"-";
-			// 
-			// lpclathValue
-			// 
-			this->lpclathValue->AutoSize = true;
-			this->lpclathValue->Location = System::Drawing::Point(90, 42);
-			this->lpclathValue->Name = L"lpclathValue";
-			this->lpclathValue->Size = System::Drawing::Size(13, 13);
-			this->lpclathValue->TabIndex = 5;
-			this->lpclathValue->Text = L"-";
-			// 
-			// lpcValue
-			// 
-			this->lpcValue->AutoSize = true;
-			this->lpcValue->Location = System::Drawing::Point(90, 16);
-			this->lpcValue->Name = L"lpcValue";
-			this->lpcValue->Size = System::Drawing::Size(13, 13);
-			this->lpcValue->TabIndex = 3;
-			this->lpcValue->Text = L"-";
-			// 
 			// btnStart
 			// 
 			this->btnStart->BackColor = System::Drawing::Color::Black;
 			this->btnStart->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnStart->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
-			this->btnStart->ForeColor = System::Drawing::SystemColors::Control;
+			this->btnStart->ForeColor = System::Drawing::Color::White;
 			this->btnStart->Location = System::Drawing::Point(6, 14);
 			this->btnStart->Name = L"btnStart";
 			this->btnStart->Size = System::Drawing::Size(75, 23);
@@ -365,7 +369,7 @@ private: System::Windows::Forms::Label^ label3;
 			this->btnStop->BackColor = System::Drawing::Color::Black;
 			this->btnStop->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnStop->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
-			this->btnStop->ForeColor = System::Drawing::SystemColors::Control;
+			this->btnStop->ForeColor = System::Drawing::Color::White;
 			this->btnStop->Location = System::Drawing::Point(6, 43);
 			this->btnStop->Name = L"btnStop";
 			this->btnStop->Size = System::Drawing::Size(75, 23);
@@ -379,7 +383,7 @@ private: System::Windows::Forms::Label^ label3;
 			this->btnStep->BackColor = System::Drawing::Color::Black;
 			this->btnStep->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnStep->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
-			this->btnStep->ForeColor = System::Drawing::SystemColors::Control;
+			this->btnStep->ForeColor = System::Drawing::Color::White;
 			this->btnStep->Location = System::Drawing::Point(6, 72);
 			this->btnStep->Name = L"btnStep";
 			this->btnStep->Size = System::Drawing::Size(75, 23);
@@ -393,7 +397,7 @@ private: System::Windows::Forms::Label^ label3;
 			this->btnReset->BackColor = System::Drawing::Color::Black;
 			this->btnReset->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnReset->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
-			this->btnReset->ForeColor = System::Drawing::SystemColors::Control;
+			this->btnReset->ForeColor = System::Drawing::Color::White;
 			this->btnReset->Location = System::Drawing::Point(6, 130);
 			this->btnReset->Name = L"btnReset";
 			this->btnReset->Size = System::Drawing::Size(75, 23);
@@ -405,6 +409,7 @@ private: System::Windows::Forms::Label^ label3;
 			// updateTimer
 			// 
 			this->updateTimer->Enabled = true;
+			this->updateTimer->Interval = 10;
 			this->updateTimer->Tick += gcnew System::EventHandler(this, &MainForm::updateTimer_Tick);
 			// 
 			// rtbprogramOutput
@@ -426,7 +431,7 @@ private: System::Windows::Forms::Label^ label3;
 			this->btnIgnore->BackColor = System::Drawing::Color::Black;
 			this->btnIgnore->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnIgnore->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
-			this->btnIgnore->ForeColor = System::Drawing::SystemColors::Control;
+			this->btnIgnore->ForeColor = System::Drawing::Color::White;
 			this->btnIgnore->Location = System::Drawing::Point(6, 101);
 			this->btnIgnore->Name = L"btnIgnore";
 			this->btnIgnore->Size = System::Drawing::Size(75, 23);
@@ -442,8 +447,8 @@ private: System::Windows::Forms::Label^ label3;
 			// groupBox1
 			// 
 			this->groupBox1->Controls->Add(this->rtbprogramOutput);
-			this->groupBox1->ForeColor = System::Drawing::SystemColors::Control;
-			this->groupBox1->Location = System::Drawing::Point(109, 269);
+			this->groupBox1->ForeColor = System::Drawing::Color::White;
+			this->groupBox1->Location = System::Drawing::Point(15, 269);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(594, 255);
 			this->groupBox1->TabIndex = 9;
@@ -457,68 +462,268 @@ private: System::Windows::Forms::Label^ label3;
 			this->groupBox2->Controls->Add(this->btnIgnore);
 			this->groupBox2->Controls->Add(this->btnStop);
 			this->groupBox2->Controls->Add(this->btnReset);
-			this->groupBox2->ForeColor = System::Drawing::SystemColors::Control;
-			this->groupBox2->Location = System::Drawing::Point(15, 269);
+			this->groupBox2->ForeColor = System::Drawing::Color::White;
+			this->groupBox2->Location = System::Drawing::Point(615, 269);
 			this->groupBox2->Name = L"groupBox2";
 			this->groupBox2->Size = System::Drawing::Size(88, 255);
 			this->groupBox2->TabIndex = 10;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Controls";
 			// 
-			// gbIntcon
+			// tableLayoutPanel1
 			// 
-			this->gbIntcon->Controls->Add(this->label1);
-			this->gbIntcon->Controls->Add(this->label3);
-			this->gbIntcon->ForeColor = System::Drawing::SystemColors::Control;
-			this->gbIntcon->Location = System::Drawing::Point(15, 189);
-			this->gbIntcon->Name = L"gbIntcon";
-			this->gbIntcon->Size = System::Drawing::Size(253, 53);
-			this->gbIntcon->TabIndex = 12;
-			this->gbIntcon->TabStop = false;
-			this->gbIntcon->Text = L"Interrupt Register";
+			this->tableLayoutPanel1->CellBorderStyle = System::Windows::Forms::TableLayoutPanelCellBorderStyle::Single;
+			this->tableLayoutPanel1->ColumnCount = 9;
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
+			this->tableLayoutPanel1->Controls->Add(this->btnRA0, 8, 2);
+			this->tableLayoutPanel1->Controls->Add(this->btnRA1, 7, 2);
+			this->tableLayoutPanel1->Controls->Add(this->btnRA2, 6, 2);
+			this->tableLayoutPanel1->Controls->Add(this->btnRA3, 5, 2);
+			this->tableLayoutPanel1->Controls->Add(this->btnRA4, 4, 2);
+			this->tableLayoutPanel1->Controls->Add(this->btnRA5, 3, 2);
+			this->tableLayoutPanel1->Controls->Add(this->btnRA6, 2, 2);
+			this->tableLayoutPanel1->Controls->Add(this->btnRA7, 1, 2);
+			this->tableLayoutPanel1->Controls->Add(this->label1, 0, 2);
+			this->tableLayoutPanel1->Controls->Add(this->label4, 0, 1);
+			this->tableLayoutPanel1->Controls->Add(this->label5, 0, 0);
+			this->tableLayoutPanel1->Location = System::Drawing::Point(366, 28);
+			this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
+			this->tableLayoutPanel1->RowCount = 3;
+			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 30)));
+			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 30)));
+			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle()));
+			this->tableLayoutPanel1->Size = System::Drawing::Size(292, 98);
+			this->tableLayoutPanel1->TabIndex = 12;
+			// 
+			// btnRA0
+			// 
+			this->btnRA0->CausesValidation = false;
+			this->btnRA0->FlatAppearance->BorderColor = System::Drawing::Color::Black;
+			this->btnRA0->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
+			this->btnRA0->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->btnRA0->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA0->ForeColor = System::Drawing::Color::White;
+			this->btnRA0->Location = System::Drawing::Point(243, 66);
+			this->btnRA0->Name = L"btnRA0";
+			this->btnRA0->Size = System::Drawing::Size(20, 20);
+			this->btnRA0->TabIndex = 15;
+			this->btnRA0->Text = L"0";
+			this->btnRA0->UseCompatibleTextRendering = true;
+			this->btnRA0->UseMnemonic = false;
+			this->btnRA0->UseVisualStyleBackColor = false;
+			// 
+			// btnRA1
+			// 
+			this->btnRA1->CausesValidation = false;
+			this->btnRA1->FlatAppearance->BorderColor = System::Drawing::Color::Black;
+			this->btnRA1->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
+			this->btnRA1->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->btnRA1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA1->ForeColor = System::Drawing::Color::White;
+			this->btnRA1->Location = System::Drawing::Point(216, 66);
+			this->btnRA1->Name = L"btnRA1";
+			this->btnRA1->Size = System::Drawing::Size(20, 20);
+			this->btnRA1->TabIndex = 17;
+			this->btnRA1->Text = L"0";
+			this->btnRA1->UseCompatibleTextRendering = true;
+			this->btnRA1->UseMnemonic = false;
+			this->btnRA1->UseVisualStyleBackColor = false;
+			// 
+			// btnRA2
+			// 
+			this->btnRA2->CausesValidation = false;
+			this->btnRA2->FlatAppearance->BorderColor = System::Drawing::Color::Black;
+			this->btnRA2->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
+			this->btnRA2->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->btnRA2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA2->ForeColor = System::Drawing::Color::White;
+			this->btnRA2->Location = System::Drawing::Point(189, 66);
+			this->btnRA2->Name = L"btnRA2";
+			this->btnRA2->Size = System::Drawing::Size(20, 20);
+			this->btnRA2->TabIndex = 16;
+			this->btnRA2->Text = L"0";
+			this->btnRA2->UseCompatibleTextRendering = true;
+			this->btnRA2->UseMnemonic = false;
+			this->btnRA2->UseVisualStyleBackColor = false;
+			// 
+			// btnRA3
+			// 
+			this->btnRA3->CausesValidation = false;
+			this->btnRA3->FlatAppearance->BorderColor = System::Drawing::Color::Black;
+			this->btnRA3->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
+			this->btnRA3->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->btnRA3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA3->ForeColor = System::Drawing::Color::White;
+			this->btnRA3->Location = System::Drawing::Point(162, 66);
+			this->btnRA3->Name = L"btnRA3";
+			this->btnRA3->Size = System::Drawing::Size(20, 20);
+			this->btnRA3->TabIndex = 19;
+			this->btnRA3->Text = L"0";
+			this->btnRA3->UseCompatibleTextRendering = true;
+			this->btnRA3->UseMnemonic = false;
+			this->btnRA3->UseVisualStyleBackColor = false;
+			// 
+			// btnRA4
+			// 
+			this->btnRA4->CausesValidation = false;
+			this->btnRA4->FlatAppearance->BorderColor = System::Drawing::Color::Black;
+			this->btnRA4->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
+			this->btnRA4->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->btnRA4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA4->ForeColor = System::Drawing::Color::White;
+			this->btnRA4->Location = System::Drawing::Point(135, 66);
+			this->btnRA4->Name = L"btnRA4";
+			this->btnRA4->Size = System::Drawing::Size(20, 20);
+			this->btnRA4->TabIndex = 18;
+			this->btnRA4->Text = L"0";
+			this->btnRA4->UseCompatibleTextRendering = true;
+			this->btnRA4->UseMnemonic = false;
+			this->btnRA4->UseVisualStyleBackColor = false;
+			// 
+			// btnRA5
+			// 
+			this->btnRA5->CausesValidation = false;
+			this->btnRA5->FlatAppearance->BorderColor = System::Drawing::Color::Black;
+			this->btnRA5->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
+			this->btnRA5->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->btnRA5->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA5->ForeColor = System::Drawing::Color::White;
+			this->btnRA5->Location = System::Drawing::Point(108, 66);
+			this->btnRA5->Name = L"btnRA5";
+			this->btnRA5->Size = System::Drawing::Size(20, 20);
+			this->btnRA5->TabIndex = 20;
+			this->btnRA5->Text = L"0";
+			this->btnRA5->UseCompatibleTextRendering = true;
+			this->btnRA5->UseMnemonic = false;
+			this->btnRA5->UseVisualStyleBackColor = false;
+			// 
+			// btnRA6
+			// 
+			this->btnRA6->CausesValidation = false;
+			this->btnRA6->FlatAppearance->BorderColor = System::Drawing::Color::Black;
+			this->btnRA6->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
+			this->btnRA6->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->btnRA6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA6->ForeColor = System::Drawing::Color::White;
+			this->btnRA6->Location = System::Drawing::Point(81, 66);
+			this->btnRA6->Name = L"btnRA6";
+			this->btnRA6->Size = System::Drawing::Size(20, 20);
+			this->btnRA6->TabIndex = 14;
+			this->btnRA6->Text = L"0";
+			this->btnRA6->UseCompatibleTextRendering = true;
+			this->btnRA6->UseMnemonic = false;
+			this->btnRA6->UseVisualStyleBackColor = false;
+			// 
+			// btnRA7
+			// 
+			this->btnRA7->CausesValidation = false;
+			this->btnRA7->FlatAppearance->BorderColor = System::Drawing::Color::Black;
+			this->btnRA7->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Gray;
+			this->btnRA7->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->btnRA7->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRA7->ForeColor = System::Drawing::Color::White;
+			this->btnRA7->Location = System::Drawing::Point(54, 66);
+			this->btnRA7->Name = L"btnRA7";
+			this->btnRA7->Size = System::Drawing::Size(20, 20);
+			this->btnRA7->TabIndex = 13;
+			this->btnRA7->Text = L"0";
+			this->btnRA7->UseCompatibleTextRendering = true;
+			this->btnRA7->UseMnemonic = false;
+			this->btnRA7->UseVisualStyleBackColor = false;
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(6, 29);
+			this->label1->Location = System::Drawing::Point(4, 63);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(223, 13);
-			this->label1->TabIndex = 11;
-			this->label1->Text = L"-    -    -    -    -    -    -    -";
+			this->label1->Size = System::Drawing::Size(25, 13);
+			this->label1->TabIndex = 21;
+			this->label1->Text = L"Bit";
 			// 
-			// label3
+			// label4
 			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(6, 16);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(235, 13);
-			this->label3->TabIndex = 11;
-			this->label3->Text = L"RBP  IEdg T0CS T0SE PS  PS2   PS1  PS0";
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(4, 32);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(43, 13);
+			this->label4->TabIndex = 22;
+			this->label4->Text = L"Tris A";
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(4, 1);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(43, 13);
+			this->label5->TabIndex = 23;
+			this->label5->Text = L"Port A";
+			// 
+			// btnClose
+			// 
+			this->btnClose->BackColor = System::Drawing::Color::Red;
+			this->btnClose->FlatAppearance->BorderColor = System::Drawing::Color::Red;
+			this->btnClose->FlatAppearance->MouseDownBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->btnClose->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->btnClose->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnClose->Location = System::Drawing::Point(859, -1);
+			this->btnClose->Name = L"btnClose";
+			this->btnClose->Size = System::Drawing::Size(34, 23);
+			this->btnClose->TabIndex = 13;
+			this->btnClose->Text = L"X";
+			this->btnClose->UseVisualStyleBackColor = false;
+			this->btnClose->Click += gcnew System::EventHandler(this, &MainForm::btnClose_Click);
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Black;
-			this->ClientSize = System::Drawing::Size(719, 534);
+			this->ClientSize = System::Drawing::Size(893, 534);
+			this->Controls->Add(this->btnClose);
+			this->Controls->Add(this->tableLayoutPanel1);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->gbFSR);
+			this->DoubleBuffered = true;
 			this->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
-			this->ForeColor = System::Drawing::SystemColors::Control;
+			this->ForeColor = System::Drawing::Color::White;
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Name = L"MainForm";
 			this->Text = L"PIC16F8X Simulator";
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
+			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseDown);
+			this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseMove);
+			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::MainForm_MouseUp);
 			this->gbFSR->ResumeLayout(false);
 			this->gbFSR->PerformLayout();
+			this->gbIntcon->ResumeLayout(false);
+			this->gbIntcon->PerformLayout();
 			this->gbOption->ResumeLayout(false);
 			this->gbOption->PerformLayout();
 			this->gbStatus->ResumeLayout(false);
 			this->gbStatus->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox2->ResumeLayout(false);
-			this->gbIntcon->ResumeLayout(false);
-			this->gbIntcon->PerformLayout();
+			this->tableLayoutPanel1->ResumeLayout(false);
+			this->tableLayoutPanel1->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -563,7 +768,6 @@ private: System::Windows::Forms::Label^ label3;
 			lpclathValue->Text = gcnew String(fmt::format("%02X", cpuRef->registerData.getPC() >> 8 & 0xFF).c_str());
 			lwRegValue->Text = gcnew String(fmt::format("%02X", cpuRef->cpuRegisters.w).c_str());
 
-			gbStatus->Text = gcnew String(fmt::format("Status Register - %02X", cpuRef->registerData.readData(0x3)).c_str());
 			lStatusValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
 				, cpuRef->registerData.getBit(0x3, 7)
 				, cpuRef->registerData.getBit(0x3, 6)
@@ -574,8 +778,17 @@ private: System::Windows::Forms::Label^ label3;
 				, cpuRef->registerData.getBit(0x3, 1)
 				, cpuRef->registerData.getBit(0x3, 0)).c_str());
 
-			gbOption->Text = gcnew String(fmt::format("Option Register - %02X", cpuRef->registerData.readData(0xB)).c_str());
 			lOptionValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
+				, cpuRef->registerData.getBit(0x81, 7)
+				, cpuRef->registerData.getBit(0x81, 6)
+				, cpuRef->registerData.getBit(0x81, 5)
+				, cpuRef->registerData.getBit(0x81, 4)
+				, cpuRef->registerData.getBit(0x81, 3)
+				, cpuRef->registerData.getBit(0x81, 2)
+				, cpuRef->registerData.getBit(0x81, 1)
+				, cpuRef->registerData.getBit(0x81, 0)).c_str());
+
+			lIntconValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
 				, cpuRef->registerData.getBit(0xB, 7)
 				, cpuRef->registerData.getBit(0xB, 6)
 				, cpuRef->registerData.getBit(0xB, 5)
@@ -588,6 +801,32 @@ private: System::Windows::Forms::Label^ label3;
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------
+
+	private: bool dragging = false;
+	private: Point dragCursorPoint;
+	private: Point dragFormPoint;
+
+	private: void MainForm_MouseDown(System::Object^ sender, MouseEventArgs^ e)
+	{
+		dragging = true;
+		dragCursorPoint = Cursor->Position;
+		dragFormPoint = this->Location;
+	}
+
+	private: void MainForm_MouseMove(System::Object^ sender, MouseEventArgs^ e)
+	{
+		if (dragging)
+		{
+			Point dif = Point::Subtract(Cursor->Position, System::Drawing::Size(dragCursorPoint));
+			this->Location = Point::Add(dragFormPoint, System::Drawing::Size(dif));
+		}
+	}
+
+	private: void MainForm_MouseUp(System::Object^ sender, MouseEventArgs^ e)
+	{
+		dragging = false;
+	}
+
 	private: System::Void updateTimer_Tick(System::Object^ sender, System::EventArgs^ e) {
 		assert(cpuRef != nullptr);
 		updateUI();
@@ -599,6 +838,7 @@ private: System::Windows::Forms::Label^ label3;
 		btnStop->Enabled = false;
 		btnStep->Enabled = true;
 		btnIgnore->Enabled = true;
+
 	}
 
 	private: System::Void btnStart_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -647,5 +887,8 @@ private: System::Windows::Forms::Label^ label3;
 			MessageBoxA(GetActiveWindow(), fmt::format("Simulation Error!\n\n%s", e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
 		}
 	}
-	};
+	private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {
+		Application::Exit();
+	}
+};
 }

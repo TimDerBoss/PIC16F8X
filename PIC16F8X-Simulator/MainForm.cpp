@@ -25,7 +25,6 @@ using namespace System::Security::Permissions;
 [assembly:CLSCompliantAttribute(true)] ;
 
 
-
 using namespace System::Windows::Forms;
 
 [STAThreadAttribute]
@@ -44,7 +43,7 @@ int main(array<String^>^ args) {
 
 		Application::Run(% form);
 	}
-	catch (std::exception& e) {
+	catch (std::exception & e) {
 		MessageBoxA(GetActiveWindow(), fmt::format("%s failed: %s", __FUNCTION__, e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
 	}
 	return 0;

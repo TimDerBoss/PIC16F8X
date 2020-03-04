@@ -70,7 +70,4 @@
       <Filter>Ressourcendateien</Filter>
     </Image>
   </ItemGroup>
-  <ItemGroup>
-    <Font Include="RobotoMono.ttf" />
-  </ItemGroup>
 </Project>

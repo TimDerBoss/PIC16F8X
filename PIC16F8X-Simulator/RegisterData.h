@@ -4,6 +4,7 @@
 #include <map>
 #include <cstring>
 #include <stack>
+#include <functional>
 
 class RegisterData
 {
@@ -17,6 +18,8 @@ class RegisterData
 		void increasePCBy(uint16_t amount);
 		uint16_t getPC();
 		void setPC(const uint16_t& value);
+
+		std::function<void(const uint8_t& address)> onMemoryUpdate;
 
 		struct CPURegisters& cpuRegisters;
 		std::stack<uint16_t> stack;

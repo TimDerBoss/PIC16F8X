@@ -55,19 +55,25 @@ void RegisterData::increasePCBy(uint16_t amount)
 	writeData(0xA, programCounter >> 8 & 0x1F);
 }
 
+
 uint16_t RegisterData::getPhysicalAddress(uint8_t address)
 {
 	if (address > 0x7F) {
-		throw std::runtime_error(fmt::format("Tried to access memory address at 0x%X. Max allowed: 0x7F", address));
-	}
-	// if bank 1
-	if ((memoryMap[0x03] >> 5) & 1) {
-		if (address == 0x01 || address == 0x05 || address == 0x06 || address == 0x08 || address == 0x09) {
-			address += 0x80;
+		if (address != 0x81 && address != 0x85 && address != 0x86 && address != 0x88 && address != 0x89) {
+			address -= 0x80;
 		}
 	}
-	// printf("Accessing Address 0x%X at Bank %d\n", address, (memoryMap[0x03] >> 5) & 1);
+	// if bank 1
+	else if((memoryMap[0x03] >> 5) & 1) {
+			if (address == 0x01 || address == 0x05 || address == 0x06 || address == 0x08 || address == 0x09) {
+				address += 0x80;
+			}
+	}
+	if (onMemoryUpdate)
+		onMemoryUpdate(address);
 	return address;
+	// printf("Accessing Address 0x%X at Bank %d\n", address, (memoryMap[0x03] >> 5) & 1);
+
 }
 
 uint16_t RegisterData::getPC()
