@@ -903,7 +903,11 @@ namespace PIC16F8X_Simulator {
 
 	}
 	private: System::Void btnReset_Click(System::Object^ sender, System::EventArgs^ e) {
-
+		assert(cpuRef != nullptr);
+		cpuRef->registerData.setPC(0);
+		cpuRef->registerData.resetPowerOn();
+		cpuRef->cpuRegisters.w = 0;
+		highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
 	}
 	private: System::Void btnIgnore_Click(System::Object^ sender, System::EventArgs^ e) {
 		assert(cpuRef != nullptr);

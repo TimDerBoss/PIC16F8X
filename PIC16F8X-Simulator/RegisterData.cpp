@@ -24,15 +24,14 @@ void RegisterData::setBit(uint8_t address, uint8_t index, bool value)
 
 void RegisterData::resetPowerOn()
 {
+	cpuRegisters.w = 0;
 	// CLear all registers
 	memset(memoryMap, 0, 0xFF);
 	// Set default startup values
-	writeData(0x03, 0x18); // Status
-	setBit(0x03, 5, true); // Bank 1
-	writeData(0x1, 0xFF);
-	writeData(0x5, 0xFF);
-	writeData(0x6, 0xFF);
-	setBit(0x03, 5, false); // Bank 0
+	writeRawData(0x03, 0x18); // Status
+	writeRawData(0x81, 0xFF);
+	writeRawData(0x85, 0xFF);
+	writeRawData(0x86, 0xFF);
 }
 
 void RegisterData::writeData(const uint8_t& address, unsigned char value)
@@ -58,6 +57,9 @@ void RegisterData::increasePCBy(uint16_t amount)
 
 uint16_t RegisterData::getPhysicalAddress(uint8_t address)
 {
+	if (address > 0x7F) {
+		throw std::runtime_error(fmt::format("%s: Tried to access register at address %2X. Max allowed address if 0x7F.\nDid you forget to switch register banks?", address));
+	}
 	// if bank 1
 	if((memoryMap[0x03] >> 5) & 1) {
 			if (address == 0x01 || address == 0x05 || address == 0x06 || address == 0x08 || address == 0x09) {
