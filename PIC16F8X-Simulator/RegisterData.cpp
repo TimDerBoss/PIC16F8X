@@ -58,19 +58,12 @@ void RegisterData::increasePCBy(uint16_t amount)
 
 uint16_t RegisterData::getPhysicalAddress(uint8_t address)
 {
-	if (address > 0x7F) {
-		if (address != 0x81 && address != 0x85 && address != 0x86 && address != 0x88 && address != 0x89) {
-			address -= 0x80;
-		}
-	}
 	// if bank 1
-	else if((memoryMap[0x03] >> 5) & 1) {
+	if((memoryMap[0x03] >> 5) & 1) {
 			if (address == 0x01 || address == 0x05 || address == 0x06 || address == 0x08 || address == 0x09) {
 				address += 0x80;
 			}
 	}
-	if (onMemoryUpdate)
-		onMemoryUpdate(address);
 	return address;
 	// printf("Accessing Address 0x%X at Bank %d\n", address, (memoryMap[0x03] >> 5) & 1);
 
@@ -82,6 +75,27 @@ uint16_t RegisterData::getPC()
 	programCounter |= (readData(0x2) & 0xFF);
 	programCounter |= ((readData(0xA) & 0x1F) << 8);
 	return programCounter;
+}
+
+uint8_t RegisterData::getRawBit(uint8_t address, uint8_t index)
+{
+	return memoryMap[address] >> index & 1;
+}
+
+void RegisterData::setRawBit(uint8_t address, uint8_t index, bool value)
+{
+	memoryMap[address] &= ~(1 << index);
+	memoryMap[address] |= value << index;
+}
+
+void RegisterData::writeRawData(const uint8_t& address, unsigned char value)
+{
+	memoryMap[address] = value;
+}
+
+const uint8_t& RegisterData::readRawData(const uint8_t& address)
+{
+	return memoryMap[address];
 }
 
 void RegisterData::setPC(const uint16_t& value)

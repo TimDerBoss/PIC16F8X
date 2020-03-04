@@ -19,7 +19,10 @@ class RegisterData
 		uint16_t getPC();
 		void setPC(const uint16_t& value);
 
-		std::function<void(const uint8_t& address)> onMemoryUpdate;
+		uint8_t getRawBit(uint8_t address, uint8_t index);
+		void setRawBit(uint8_t address, uint8_t index, bool value);
+		void writeRawData(const uint8_t& address, unsigned char value);
+		const uint8_t& readRawData(const uint8_t& address);
 
 		struct CPURegisters& cpuRegisters;
 		std::stack<uint16_t> stack;

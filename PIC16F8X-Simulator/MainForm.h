@@ -6,6 +6,8 @@
 #include <Windows.h>
 #include <functional>
 
+#include <msclr\marshal_cppstd.h>
+
 namespace PIC16F8X_Simulator {
 
 	using namespace System;
@@ -89,6 +91,7 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::Label^ label4;
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::Button^ btnClose;
+	private: System::Windows::Forms::GroupBox^ groupBox3;
 	private: System::ComponentModel::IContainer^ components;
 	private:
 		/// <summary>
@@ -145,6 +148,7 @@ namespace PIC16F8X_Simulator {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->btnClose = (gcnew System::Windows::Forms::Button());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
 			this->gbFSR->SuspendLayout();
 			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
@@ -152,6 +156,7 @@ namespace PIC16F8X_Simulator {
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->tableLayoutPanel1->SuspendLayout();
+			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// gbFSR
@@ -448,9 +453,9 @@ namespace PIC16F8X_Simulator {
 			// 
 			this->groupBox1->Controls->Add(this->rtbprogramOutput);
 			this->groupBox1->ForeColor = System::Drawing::Color::White;
-			this->groupBox1->Location = System::Drawing::Point(15, 269);
+			this->groupBox1->Location = System::Drawing::Point(304, 269);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(594, 255);
+			this->groupBox1->Size = System::Drawing::Size(594, 253);
 			this->groupBox1->TabIndex = 9;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Program";
@@ -463,9 +468,9 @@ namespace PIC16F8X_Simulator {
 			this->groupBox2->Controls->Add(this->btnStop);
 			this->groupBox2->Controls->Add(this->btnReset);
 			this->groupBox2->ForeColor = System::Drawing::Color::White;
-			this->groupBox2->Location = System::Drawing::Point(615, 269);
+			this->groupBox2->Location = System::Drawing::Point(904, 269);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(88, 255);
+			this->groupBox2->Size = System::Drawing::Size(88, 253);
 			this->groupBox2->TabIndex = 10;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Controls";
@@ -485,7 +490,6 @@ namespace PIC16F8X_Simulator {
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle()));
 			this->tableLayoutPanel1->Controls->Add(this->btnRA0, 8, 2);
 			this->tableLayoutPanel1->Controls->Add(this->btnRA1, 7, 2);
-			this->tableLayoutPanel1->Controls->Add(this->btnRA2, 6, 2);
 			this->tableLayoutPanel1->Controls->Add(this->btnRA3, 5, 2);
 			this->tableLayoutPanel1->Controls->Add(this->btnRA4, 4, 2);
 			this->tableLayoutPanel1->Controls->Add(this->btnRA5, 3, 2);
@@ -494,13 +498,14 @@ namespace PIC16F8X_Simulator {
 			this->tableLayoutPanel1->Controls->Add(this->label1, 0, 2);
 			this->tableLayoutPanel1->Controls->Add(this->label4, 0, 1);
 			this->tableLayoutPanel1->Controls->Add(this->label5, 0, 0);
-			this->tableLayoutPanel1->Location = System::Drawing::Point(366, 28);
+			this->tableLayoutPanel1->Controls->Add(this->btnRA2, 6, 2);
+			this->tableLayoutPanel1->Location = System::Drawing::Point(15, 19);
 			this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
 			this->tableLayoutPanel1->RowCount = 3;
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 30)));
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 30)));
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle()));
-			this->tableLayoutPanel1->Size = System::Drawing::Size(292, 98);
+			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
+			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
+			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
+			this->tableLayoutPanel1->Size = System::Drawing::Size(253, 80);
 			this->tableLayoutPanel1->TabIndex = 12;
 			// 
 			// btnRA0
@@ -512,14 +517,15 @@ namespace PIC16F8X_Simulator {
 				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->btnRA0->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnRA0->ForeColor = System::Drawing::Color::White;
-			this->btnRA0->Location = System::Drawing::Point(243, 66);
+			this->btnRA0->Location = System::Drawing::Point(229, 56);
 			this->btnRA0->Name = L"btnRA0";
-			this->btnRA0->Size = System::Drawing::Size(20, 20);
+			this->btnRA0->Size = System::Drawing::Size(18, 18);
 			this->btnRA0->TabIndex = 15;
 			this->btnRA0->Text = L"0";
 			this->btnRA0->UseCompatibleTextRendering = true;
 			this->btnRA0->UseMnemonic = false;
 			this->btnRA0->UseVisualStyleBackColor = false;
+			this->btnRA0->Click += gcnew System::EventHandler(this, &MainForm::btnRA0_Click);
 			// 
 			// btnRA1
 			// 
@@ -530,14 +536,15 @@ namespace PIC16F8X_Simulator {
 				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->btnRA1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnRA1->ForeColor = System::Drawing::Color::White;
-			this->btnRA1->Location = System::Drawing::Point(216, 66);
+			this->btnRA1->Location = System::Drawing::Point(204, 56);
 			this->btnRA1->Name = L"btnRA1";
-			this->btnRA1->Size = System::Drawing::Size(20, 20);
+			this->btnRA1->Size = System::Drawing::Size(18, 18);
 			this->btnRA1->TabIndex = 17;
 			this->btnRA1->Text = L"0";
 			this->btnRA1->UseCompatibleTextRendering = true;
 			this->btnRA1->UseMnemonic = false;
 			this->btnRA1->UseVisualStyleBackColor = false;
+			this->btnRA1->Click += gcnew System::EventHandler(this, &MainForm::btnRA1_Click);
 			// 
 			// btnRA2
 			// 
@@ -548,14 +555,15 @@ namespace PIC16F8X_Simulator {
 				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->btnRA2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnRA2->ForeColor = System::Drawing::Color::White;
-			this->btnRA2->Location = System::Drawing::Point(189, 66);
+			this->btnRA2->Location = System::Drawing::Point(179, 56);
 			this->btnRA2->Name = L"btnRA2";
-			this->btnRA2->Size = System::Drawing::Size(20, 20);
+			this->btnRA2->Size = System::Drawing::Size(18, 18);
 			this->btnRA2->TabIndex = 16;
 			this->btnRA2->Text = L"0";
 			this->btnRA2->UseCompatibleTextRendering = true;
 			this->btnRA2->UseMnemonic = false;
 			this->btnRA2->UseVisualStyleBackColor = false;
+			this->btnRA2->Click += gcnew System::EventHandler(this, &MainForm::btnRA2_Click);
 			// 
 			// btnRA3
 			// 
@@ -566,14 +574,15 @@ namespace PIC16F8X_Simulator {
 				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->btnRA3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnRA3->ForeColor = System::Drawing::Color::White;
-			this->btnRA3->Location = System::Drawing::Point(162, 66);
+			this->btnRA3->Location = System::Drawing::Point(154, 56);
 			this->btnRA3->Name = L"btnRA3";
-			this->btnRA3->Size = System::Drawing::Size(20, 20);
+			this->btnRA3->Size = System::Drawing::Size(18, 18);
 			this->btnRA3->TabIndex = 19;
 			this->btnRA3->Text = L"0";
 			this->btnRA3->UseCompatibleTextRendering = true;
 			this->btnRA3->UseMnemonic = false;
 			this->btnRA3->UseVisualStyleBackColor = false;
+			this->btnRA3->Click += gcnew System::EventHandler(this, &MainForm::btnRA3_Click);
 			// 
 			// btnRA4
 			// 
@@ -584,14 +593,15 @@ namespace PIC16F8X_Simulator {
 				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->btnRA4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnRA4->ForeColor = System::Drawing::Color::White;
-			this->btnRA4->Location = System::Drawing::Point(135, 66);
+			this->btnRA4->Location = System::Drawing::Point(129, 56);
 			this->btnRA4->Name = L"btnRA4";
-			this->btnRA4->Size = System::Drawing::Size(20, 20);
+			this->btnRA4->Size = System::Drawing::Size(18, 18);
 			this->btnRA4->TabIndex = 18;
 			this->btnRA4->Text = L"0";
 			this->btnRA4->UseCompatibleTextRendering = true;
 			this->btnRA4->UseMnemonic = false;
 			this->btnRA4->UseVisualStyleBackColor = false;
+			this->btnRA4->Click += gcnew System::EventHandler(this, &MainForm::btnRA4_Click);
 			// 
 			// btnRA5
 			// 
@@ -602,14 +612,15 @@ namespace PIC16F8X_Simulator {
 				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->btnRA5->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnRA5->ForeColor = System::Drawing::Color::White;
-			this->btnRA5->Location = System::Drawing::Point(108, 66);
+			this->btnRA5->Location = System::Drawing::Point(104, 56);
 			this->btnRA5->Name = L"btnRA5";
-			this->btnRA5->Size = System::Drawing::Size(20, 20);
+			this->btnRA5->Size = System::Drawing::Size(18, 18);
 			this->btnRA5->TabIndex = 20;
 			this->btnRA5->Text = L"0";
 			this->btnRA5->UseCompatibleTextRendering = true;
 			this->btnRA5->UseMnemonic = false;
 			this->btnRA5->UseVisualStyleBackColor = false;
+			this->btnRA5->Click += gcnew System::EventHandler(this, &MainForm::btnRA5_Click);
 			// 
 			// btnRA6
 			// 
@@ -620,14 +631,15 @@ namespace PIC16F8X_Simulator {
 				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->btnRA6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnRA6->ForeColor = System::Drawing::Color::White;
-			this->btnRA6->Location = System::Drawing::Point(81, 66);
+			this->btnRA6->Location = System::Drawing::Point(79, 56);
 			this->btnRA6->Name = L"btnRA6";
-			this->btnRA6->Size = System::Drawing::Size(20, 20);
+			this->btnRA6->Size = System::Drawing::Size(18, 18);
 			this->btnRA6->TabIndex = 14;
 			this->btnRA6->Text = L"0";
 			this->btnRA6->UseCompatibleTextRendering = true;
 			this->btnRA6->UseMnemonic = false;
 			this->btnRA6->UseVisualStyleBackColor = false;
+			this->btnRA6->Click += gcnew System::EventHandler(this, &MainForm::btnRA6_Click);
 			// 
 			// btnRA7
 			// 
@@ -638,19 +650,20 @@ namespace PIC16F8X_Simulator {
 				static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->btnRA7->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnRA7->ForeColor = System::Drawing::Color::White;
-			this->btnRA7->Location = System::Drawing::Point(54, 66);
+			this->btnRA7->Location = System::Drawing::Point(54, 56);
 			this->btnRA7->Name = L"btnRA7";
-			this->btnRA7->Size = System::Drawing::Size(20, 20);
+			this->btnRA7->Size = System::Drawing::Size(18, 18);
 			this->btnRA7->TabIndex = 13;
 			this->btnRA7->Text = L"0";
 			this->btnRA7->UseCompatibleTextRendering = true;
 			this->btnRA7->UseMnemonic = false;
 			this->btnRA7->UseVisualStyleBackColor = false;
+			this->btnRA7->Click += gcnew System::EventHandler(this, &MainForm::btnRA7_Click);
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(4, 63);
+			this->label1->Location = System::Drawing::Point(4, 53);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(25, 13);
 			this->label1->TabIndex = 21;
@@ -659,7 +672,7 @@ namespace PIC16F8X_Simulator {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(4, 32);
+			this->label4->Location = System::Drawing::Point(4, 27);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(43, 13);
 			this->label4->TabIndex = 22;
@@ -683,22 +696,33 @@ namespace PIC16F8X_Simulator {
 			this->btnClose->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)),
 				static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
 			this->btnClose->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnClose->Location = System::Drawing::Point(859, -1);
+			this->btnClose->Location = System::Drawing::Point(958, 0);
 			this->btnClose->Name = L"btnClose";
-			this->btnClose->Size = System::Drawing::Size(34, 23);
+			this->btnClose->Size = System::Drawing::Size(47, 23);
 			this->btnClose->TabIndex = 13;
 			this->btnClose->Text = L"X";
 			this->btnClose->UseVisualStyleBackColor = false;
 			this->btnClose->Click += gcnew System::EventHandler(this, &MainForm::btnClose_Click);
+			// 
+			// groupBox3
+			// 
+			this->groupBox3->Controls->Add(this->tableLayoutPanel1);
+			this->groupBox3->ForeColor = System::Drawing::Color::White;
+			this->groupBox3->Location = System::Drawing::Point(15, 269);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(283, 253);
+			this->groupBox3->TabIndex = 14;
+			this->groupBox3->TabStop = false;
+			this->groupBox3->Text = L"Ports";
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Black;
-			this->ClientSize = System::Drawing::Size(893, 534);
+			this->ClientSize = System::Drawing::Size(1003, 534);
+			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->btnClose);
-			this->Controls->Add(this->tableLayoutPanel1);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->gbFSR);
@@ -724,6 +748,7 @@ namespace PIC16F8X_Simulator {
 			this->groupBox2->ResumeLayout(false);
 			this->tableLayoutPanel1->ResumeLayout(false);
 			this->tableLayoutPanel1->PerformLayout();
+			this->groupBox3->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -769,34 +794,44 @@ namespace PIC16F8X_Simulator {
 			lwRegValue->Text = gcnew String(fmt::format("%02X", cpuRef->cpuRegisters.w).c_str());
 
 			lStatusValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
-				, cpuRef->registerData.getBit(0x3, 7)
-				, cpuRef->registerData.getBit(0x3, 6)
-				, cpuRef->registerData.getBit(0x3, 5)
-				, cpuRef->registerData.getBit(0x3, 4)
-				, cpuRef->registerData.getBit(0x3, 3)
-				, cpuRef->registerData.getBit(0x3, 2)
-				, cpuRef->registerData.getBit(0x3, 1)
-				, cpuRef->registerData.getBit(0x3, 0)).c_str());
+				, cpuRef->registerData.getRawBit(0x3, 7)
+				, cpuRef->registerData.getRawBit(0x3, 6)
+				, cpuRef->registerData.getRawBit(0x3, 5)
+				, cpuRef->registerData.getRawBit(0x3, 4)
+				, cpuRef->registerData.getRawBit(0x3, 3)
+				, cpuRef->registerData.getRawBit(0x3, 2)
+				, cpuRef->registerData.getRawBit(0x3, 1)
+				, cpuRef->registerData.getRawBit(0x3, 0)).c_str());
 
 			lOptionValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
-				, cpuRef->registerData.getBit(0x81, 7)
-				, cpuRef->registerData.getBit(0x81, 6)
-				, cpuRef->registerData.getBit(0x81, 5)
-				, cpuRef->registerData.getBit(0x81, 4)
-				, cpuRef->registerData.getBit(0x81, 3)
-				, cpuRef->registerData.getBit(0x81, 2)
-				, cpuRef->registerData.getBit(0x81, 1)
-				, cpuRef->registerData.getBit(0x81, 0)).c_str());
+				, cpuRef->registerData.getRawBit(0x81, 7)
+				, cpuRef->registerData.getRawBit(0x81, 6)
+				, cpuRef->registerData.getRawBit(0x81, 5)
+				, cpuRef->registerData.getRawBit(0x81, 4)
+				, cpuRef->registerData.getRawBit(0x81, 3)
+				, cpuRef->registerData.getRawBit(0x81, 2)
+				, cpuRef->registerData.getRawBit(0x81, 1)
+				, cpuRef->registerData.getRawBit(0x81, 0)).c_str());
 
 			lIntconValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
-				, cpuRef->registerData.getBit(0xB, 7)
-				, cpuRef->registerData.getBit(0xB, 6)
-				, cpuRef->registerData.getBit(0xB, 5)
-				, cpuRef->registerData.getBit(0xB, 4)
-				, cpuRef->registerData.getBit(0xB, 3)
-				, cpuRef->registerData.getBit(0xB, 2)
-				, cpuRef->registerData.getBit(0xB, 1)
-				, cpuRef->registerData.getBit(0xB, 0)).c_str());
+				, cpuRef->registerData.getRawBit(0xB, 7)
+				, cpuRef->registerData.getRawBit(0xB, 6)
+				, cpuRef->registerData.getRawBit(0xB, 5)
+				, cpuRef->registerData.getRawBit(0xB, 4)
+				, cpuRef->registerData.getRawBit(0xB, 3)
+				, cpuRef->registerData.getRawBit(0xB, 2)
+				, cpuRef->registerData.getRawBit(0xB, 1)
+				, cpuRef->registerData.getRawBit(0xB, 0)).c_str());
+
+
+			btnRA7->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 7)).c_str());
+			btnRA6->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 6)).c_str());
+			btnRA5->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 5)).c_str());
+			btnRA4->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 4)).c_str());
+			btnRA3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 3)).c_str());
+			btnRA2->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 2)).c_str());
+			btnRA1->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 1)).c_str());
+			btnRA0->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 0)).c_str());
 
 		}
 
@@ -890,5 +925,29 @@ namespace PIC16F8X_Simulator {
 	private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {
 		Application::Exit();
 	}
-};
+	private: System::Void btnRA7_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x5, 7, btnRA7->Text == "0");
+	}
+	private: System::Void btnRA6_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x5, 6, btnRA6->Text == "0");
+	}
+	private: System::Void btnRA5_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x5, 5, btnRA5->Text == "0");
+	}
+	private: System::Void btnRA4_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x5, 4, btnRA4->Text == "0");
+	}
+	private: System::Void btnRA3_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x5, 3, btnRA3->Text == "0");
+	}
+	private: System::Void btnRA2_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x5, 2, btnRA2->Text == "0");
+	}
+	private: System::Void btnRA1_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x5, 1, btnRA1->Text == "0");
+	}
+	private: System::Void btnRA0_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->registerData.setRawBit(0x5, 0, btnRA0->Text == "0");
+	}
+	};
 }
