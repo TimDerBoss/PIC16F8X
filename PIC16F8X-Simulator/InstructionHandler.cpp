@@ -54,16 +54,43 @@ InstructionHandler::InstructionHandler(RegisterData& rd)
 	instructions.emplace_back(ADD_INSTRUCTION(XORLW, 0xFF00, 0x3A00));
 }
 
+InstructionData InstructionHandler::getInstructionData(const uint16_t& opcode)
+{
+	InstructionData data{};
+	uint16_t commandType = opcode & 0xF000u;
+	switch (commandType) {
+	case 0x0000: // Byte oriented command
+		data.d = opcode >> 0x7u & 0x1u;
+		data.f = opcode & 0x007Fu;
+		break;
+	case 0x1000: // Bit oriented command
+		data.b = opcode >> 0x7u & 0x7u;
+		data.f = opcode & 0x007Fu;
+		break;
+	case 0x2000: // literal and control long address
+		data.k = opcode & 0x07FFu;
+		break;
+	case 0x3000: // literal and control uint16_t address
+		data.k = opcode & 0x00FFu;
+		break;
+	default:
+		throw std::runtime_error(fmt::format("%s: Unknown instruction data type: 0x%X", __FUNCTION__, commandType));
+	}
+	return data;
+}
+
 std::shared_ptr<InstructionBase>& InstructionHandler::decode(const uint16_t& opcode)
 {
 	auto instruction = instructionCache.find(opcode);
 	if (instruction != instructionCache.end()) {
+		instruction->second->cacheData(getInstructionData(opcode));
 		return instruction->second;
 	}
 	else {
 		for (auto& i : instructions) {
 			if (i->match(opcode)) {
 				instructionCache[opcode] = i;
+				i->cacheData(getInstructionData(opcode));
 				return i;
 			}
 		}

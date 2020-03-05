@@ -10,9 +10,9 @@ ADDWF::ADDWF(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void ADDWF::execute(const uint16_t& opcode)
+void ADDWF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	int result = static_cast<int>(w + registerData.readData(data.f));
 	uint8_t preResult = data.d ? registerData.readData(data.f) : w;
@@ -34,9 +34,9 @@ ANDWF::ANDWF(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void ANDWF::execute(const uint16_t& opcode)
+void ANDWF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = w & registerData.readData(data.f);
 	if (!data.d) {
@@ -54,9 +54,9 @@ CLRF::CLRF(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 {
 }
 
-void CLRF::execute(const uint16_t& opcode)
+void CLRF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	registerData.writeData(data.f, 0);
 	registerData.setBit(0x3, 0x2, true); // zero flag
 	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.d);
@@ -68,7 +68,7 @@ CLRW::CLRW(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 {
 }
 
-void CLRW::execute(const uint16_t& opcode)
+void CLRW::execute() 
 {
 	registerData.cpuRegisters.w = 0;
 	registerData.setBit(0x3, 0x2, true); // zero flag
@@ -81,9 +81,9 @@ COMF::COMF(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 {
 }
 
-void COMF::execute(const uint16_t& opcode)
+void COMF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = ~registerData.readData(data.f);
 	if (!data.d) {
@@ -101,9 +101,9 @@ DECF::DECF(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 {
 }
 
-void DECF::execute(const uint16_t& opcode)
+void DECF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = registerData.readData(data.f) - 1;
 	if (!data.d) {
@@ -121,9 +121,9 @@ DECFSZ::DECFSZ(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 {
 }
 
-void DECFSZ::execute(const uint16_t& opcode)
+void DECFSZ::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = registerData.readData(data.f) - 1;
 	if (!data.d) {
@@ -145,9 +145,9 @@ INCF::INCF(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 {
 }
 
-void INCF::execute(const uint16_t& opcode)
+void INCF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = registerData.readData(data.f) + 1;
 	if (!data.d) {
@@ -165,9 +165,9 @@ INCFSZ::INCFSZ(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 {
 }
 
-void INCFSZ::execute(const uint16_t& opcode)
+void INCFSZ::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = registerData.readData(data.f) + 1;
 	if (!data.d) {
@@ -189,9 +189,9 @@ IORWF::IORWF(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void IORWF::execute(const uint16_t& opcode)
+void IORWF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = registerData.readData(data.f) | w;
 	if (!data.d) {
@@ -209,9 +209,9 @@ MOVF::MOVF(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 {
 }
 
-void MOVF::execute(const uint16_t& opcode)
+void MOVF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	if (!data.d) {
 		w = registerData.readData(data.f);
@@ -226,9 +226,9 @@ MOVWF::MOVWF(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void MOVWF::execute(const uint16_t& opcode)
+void MOVWF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	registerData.writeData(data.f, w);
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
@@ -240,7 +240,7 @@ NOP::NOP(const std::string& identifier, uint16_t mask, uint16_t value, RegisterD
 {
 }
 
-void NOP::execute(const uint16_t& opcode)
+void NOP::execute() 
 {
 	printf("%s\n", identifier.c_str());
 	registerData.increasePCBy(getCycles());
@@ -251,9 +251,9 @@ RLF::RLF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterD
 {
 }
 
-void RLF::execute(const uint16_t& opcode)
+void RLF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	uint8_t tempCarry = registerData.getBit(0x3, 0x0);
 	uint8_t fBefore = registerData.readData(data.f);
 	auto& w = registerData.cpuRegisters.w;
@@ -276,9 +276,9 @@ RRF::RRF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterD
 {
 }
 
-void RRF::execute(const uint16_t& opcode)
+void RRF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	uint8_t fBefore = registerData.readData(data.f);
 	auto& w = registerData.cpuRegisters.w;
 
@@ -301,9 +301,9 @@ SUBWF::SUBWF(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void SUBWF::execute(const uint16_t& opcode)
+void SUBWF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	int result = registerData.readData(data.f) - w;
 	if (!data.d) {
@@ -325,9 +325,9 @@ SWAPF::SWAPF(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void SWAPF::execute(const uint16_t& opcode)
+void SWAPF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = registerData.readData(data.f);
 
@@ -349,9 +349,9 @@ XORWF::XORWF(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void XORWF::execute(const uint16_t& opcode)
+void XORWF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = registerData.readData(data.f) ^w;
 	if (!data.d) {
@@ -369,9 +369,9 @@ BCF::BCF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterD
 {
 }
 
-void BCF::execute(const uint16_t& opcode)
+void BCF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	registerData.setBit(data.f, data.b, false);
 	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.b);
 	registerData.increasePCBy(getCycles());
@@ -382,9 +382,9 @@ BSF::BSF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterD
 {
 }
 
-void BSF::execute(const uint16_t& opcode)
+void BSF::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	registerData.setBit(data.f, data.b, true);
 	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.b);
 	registerData.increasePCBy(getCycles());
@@ -395,9 +395,9 @@ BTFSC::BTFSC(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void BTFSC::execute(const uint16_t& opcode)
+void BTFSC::execute() 
 {
-	auto data = getInstructionData(opcode);
+
 	uint8_t bit = registerData.getBit(data.f, data.b);
 	if (bit) {
 		setCycles(1);
@@ -413,9 +413,8 @@ BTFSS::BTFSS(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void BTFSS::execute(const uint16_t& opcode)
+void BTFSS::execute() 
 {
-	auto data = getInstructionData(opcode);
 	uint8_t bit = registerData.getBit(data.f, data.b);
 	if (!bit) {
 		setCycles(1);
@@ -431,9 +430,8 @@ ADDLW::ADDLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void ADDLW::execute(const uint16_t& opcode)
+void ADDLW::execute() 
 {
-	auto data = getInstructionData(opcode);
 	auto& w = registerData.cpuRegisters.w;
 	int result = w + data.k;
 	auto preResult = w;
@@ -451,9 +449,8 @@ ANDLW::ANDLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void ANDLW::execute(const uint16_t& opcode)
+void ANDLW::execute() 
 {
-	auto data = getInstructionData(opcode);
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = w & data.k;
 	w = result;
@@ -467,9 +464,8 @@ CALL::CALL(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 {
 }
 
-void CALL::execute(const uint16_t& opcode)
+void CALL::execute() 
 {
-	auto data = getInstructionData(opcode);
 	registerData.stack.emplace(registerData.getPC() + 1);
 	registerData.setPC(data.k);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
@@ -480,7 +476,7 @@ CLRWDT::CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 {
 }
 
-void CLRWDT::execute(const uint16_t& opcode)
+void CLRWDT::execute() 
 {
 	throw std::runtime_error(fmt::format("Not implemented: %s", identifier));
 	registerData.increasePCBy(getCycles());
@@ -491,9 +487,8 @@ GOTO::GOTO(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 {
 }
 
-void GOTO::execute(const uint16_t& opcode)
+void GOTO::execute() 
 {
-	auto data = getInstructionData(opcode);
 	registerData.setPC(data.k);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
@@ -503,9 +498,8 @@ IORLW::IORLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void IORLW::execute(const uint16_t& opcode)
+void IORLW::execute() 
 {
-	auto data = getInstructionData(opcode);
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = w | data.k;
 	w = result;
@@ -519,9 +513,8 @@ MOVLW::MOVLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void MOVLW::execute(const uint16_t& opcode)
+void MOVLW::execute() 
 {
-	auto data = getInstructionData(opcode);
 	registerData.cpuRegisters.w = static_cast<uint8_t>(data.k);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 	registerData.increasePCBy(getCycles());
@@ -532,14 +525,14 @@ RETFIE::RETFIE(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 {
 }
 
-void RETFIE::execute(const uint16_t& opcode)
+void RETFIE::execute() 
 {
 	if(registerData.stack.empty())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
 	registerData.stack.pop();
 	registerData.setBit(0xB, 7, true); // GIE
-	printf("%s 0x%X\n", identifier.c_str());
+	printf("%s\n", identifier.c_str());
 }
 
 RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
@@ -547,11 +540,11 @@ RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void RETLW::execute(const uint16_t& opcode)
+void RETLW::execute() 
 {
 	if(registerData.getRawBit(0xB, 1))
 		throw std::runtime_error(fmt::format("%s: Use RETFIE to return from an interrupt!", __FUNCTION__));
-	auto data = getInstructionData(opcode);
+
 	if(registerData.stack.empty())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
@@ -565,11 +558,11 @@ RETURN::RETURN(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 {
 }
 
-void RETURN::execute(const uint16_t& opcode)
+void RETURN::execute() 
 {
 	if (registerData.getRawBit(0xB, 1))
 		throw std::runtime_error(fmt::format("%s: Use RETFIE to return from an interrupt!", __FUNCTION__));
-	auto data = getInstructionData(opcode);
+
 	if(registerData.stack.empty())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
@@ -582,7 +575,7 @@ SLEEP::SLEEP(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void SLEEP::execute(const uint16_t& opcode)
+void SLEEP::execute() 
 {
 	throw std::runtime_error(fmt::format("Not implemented: %s", identifier));
 	registerData.increasePCBy(getCycles());
@@ -593,9 +586,8 @@ SUBLW::SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void SUBLW::execute(const uint16_t& opcode)
+void SUBLW::execute() 
 {
-	auto data = getInstructionData(opcode);
 	auto& w = registerData.cpuRegisters.w;
 	int result = static_cast<int>(registerData.readData((uint8_t)data.k) - w);
 	w = static_cast<uint8_t>(result);
@@ -612,9 +604,8 @@ XORLW::XORLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 {
 }
 
-void XORLW::execute(const uint16_t& opcode)
+void XORLW::execute() 
 {
-	auto data = getInstructionData(opcode);
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = w ^ data.k;
 	w = result;

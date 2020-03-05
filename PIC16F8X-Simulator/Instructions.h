@@ -11,7 +11,7 @@ class ADDWF : public InstructionBase
 	public:
 		ADDWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class ANDWF : public InstructionBase
@@ -19,7 +19,7 @@ class ANDWF : public InstructionBase
 	public:
 		ANDWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class CLRF : public InstructionBase
@@ -27,7 +27,7 @@ class CLRF : public InstructionBase
 	public:
 		CLRF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class CLRW : public InstructionBase
@@ -35,7 +35,7 @@ class CLRW : public InstructionBase
 	public:
 		CLRW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class COMF : public InstructionBase
@@ -43,7 +43,7 @@ class COMF : public InstructionBase
 	public:
 		COMF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class DECF : public InstructionBase
@@ -51,7 +51,7 @@ class DECF : public InstructionBase
 	public:
 		DECF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class DECFSZ : public InstructionBase
@@ -59,7 +59,7 @@ class DECFSZ : public InstructionBase
 	public:
 		DECFSZ(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class INCF : public InstructionBase
@@ -67,7 +67,7 @@ class INCF : public InstructionBase
 	public:
 		INCF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class INCFSZ : public InstructionBase
@@ -75,7 +75,7 @@ class INCFSZ : public InstructionBase
 	public:
 		INCFSZ(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class IORWF : public InstructionBase
@@ -83,7 +83,7 @@ class IORWF : public InstructionBase
 	public:
 		IORWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class MOVF : public InstructionBase
@@ -91,7 +91,7 @@ class MOVF : public InstructionBase
 	public:
 		MOVF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class MOVWF : public InstructionBase
@@ -99,7 +99,7 @@ class MOVWF : public InstructionBase
 	public:
 		MOVWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class NOP : public InstructionBase
@@ -107,7 +107,7 @@ class NOP : public InstructionBase
 	public:
 		NOP(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class RLF : public InstructionBase
@@ -115,7 +115,7 @@ class RLF : public InstructionBase
 	public:
 		RLF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class RRF : public InstructionBase
@@ -123,7 +123,7 @@ class RRF : public InstructionBase
 	public:
 		RRF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class SUBWF : public InstructionBase
@@ -131,7 +131,7 @@ class SUBWF : public InstructionBase
 	public:
 		SUBWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class SWAPF : public InstructionBase
@@ -139,7 +139,7 @@ class SWAPF : public InstructionBase
 	public:
 		SWAPF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class XORWF : public InstructionBase
@@ -147,7 +147,7 @@ class XORWF : public InstructionBase
 	public:
 		XORWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class BCF : public InstructionBase
@@ -155,7 +155,7 @@ class BCF : public InstructionBase
 	public:
 		BCF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class BSF : public InstructionBase
@@ -163,7 +163,7 @@ class BSF : public InstructionBase
 	public:
 		BSF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class BTFSC : public InstructionBase
@@ -171,7 +171,7 @@ class BTFSC : public InstructionBase
 	public:
 		BTFSC(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class BTFSS : public InstructionBase
@@ -179,7 +179,7 @@ class BTFSS : public InstructionBase
 	public:
 		BTFSS(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class ADDLW : public InstructionBase
@@ -187,7 +187,7 @@ class ADDLW : public InstructionBase
 	public:
 		ADDLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class ANDLW : public InstructionBase
@@ -195,7 +195,7 @@ class ANDLW : public InstructionBase
 	public:
 		ANDLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class CALL : public InstructionBase
@@ -203,7 +203,7 @@ class CALL : public InstructionBase
 	public:
 		CALL(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class CLRWDT : public InstructionBase
@@ -211,7 +211,7 @@ class CLRWDT : public InstructionBase
 	public:
 		CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class GOTO : public InstructionBase
@@ -219,7 +219,7 @@ class GOTO : public InstructionBase
 	public:
 		GOTO(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class IORLW : public InstructionBase
@@ -227,7 +227,7 @@ class IORLW : public InstructionBase
 	public:
 		IORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class MOVLW : public InstructionBase
@@ -235,7 +235,7 @@ class MOVLW : public InstructionBase
 	public:
 		MOVLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class RETFIE : public InstructionBase
@@ -243,7 +243,7 @@ class RETFIE : public InstructionBase
 	public:
 		RETFIE(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class RETLW : public InstructionBase
@@ -251,7 +251,7 @@ class RETLW : public InstructionBase
 	public:
 		RETLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class RETURN : public InstructionBase
@@ -259,7 +259,7 @@ class RETURN : public InstructionBase
 	public:
 		RETURN(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class SLEEP : public InstructionBase
@@ -267,7 +267,7 @@ class SLEEP : public InstructionBase
 	public:
 		SLEEP(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class SUBLW : public InstructionBase
@@ -275,7 +275,7 @@ class SUBLW : public InstructionBase
 	public:
 		SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };
 
 class XORLW : public InstructionBase
@@ -283,5 +283,5 @@ class XORLW : public InstructionBase
 	public:
 		XORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
 
-		void execute(const uint16_t& opcode) override;
+		void execute() override;
 };

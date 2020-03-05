@@ -10,7 +10,6 @@ void CPU::initialize(const std::string& fileName)
 
 void CPU::singleStep()
 {
-	std::shared_ptr<InstructionBase> instruction;
 	uint16_t opcode;
 	if (processInterrupts()) {
 		opcode = 0b0010000000000100;
@@ -18,9 +17,10 @@ void CPU::singleStep()
 	else {
 		opcode = parser.getLstOpcodeInfo()[registerData.getPC()].opcode;
 	}
-	instruction = instructionHandler.decode(opcode);
-	instruction->execute(opcode);
+	auto& instruction = instructionHandler.decode(opcode);
+	instruction->execute();
 	timeActive += instruction->getCycles();
+
 	registerData.setPC(std::min(registerData.getPC(), static_cast<uint16_t>(parser.getLstOpcodeInfo().size() - 1)));
 }
 
@@ -32,7 +32,7 @@ bool CPU::processInterrupts()
 	{
 		// INTE set && Flanke && ((RB0 && IntEdg) || (!RB0 && !IntEdg))
 		if (registerData.getRawBit(0xB, 4)
-			&& lastRB0 != registerData.getRawBit(0x6, 0)
+			&& lastRB0 != static_cast<bool>(registerData.getRawBit(0x6, 0))
 			&& registerData.getRawBit(0x6, 0) == registerData.getRawBit(0x81, 6)
 			)
 		{
