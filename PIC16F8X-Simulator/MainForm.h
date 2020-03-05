@@ -126,6 +126,7 @@ namespace PIC16F8X_Simulator {
 private: System::Windows::Forms::Label^ btnRB4;
 
 private: System::Windows::Forms::Label^ btnRB5;
+private: System::Windows::Forms::ColorDialog^ colorDialog1;
 
 
 	private: System::ComponentModel::IContainer^ components;
@@ -201,6 +202,7 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->btnRA6 = (gcnew System::Windows::Forms::Label());
 			this->btnRA4 = (gcnew System::Windows::Forms::Label());
 			this->btnRA5 = (gcnew System::Windows::Forms::Label());
+			this->colorDialog1 = (gcnew System::Windows::Forms::ColorDialog());
 			this->gbFSR->SuspendLayout();
 			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
@@ -505,7 +507,7 @@ private: System::Windows::Forms::Label^ btnRB5;
 			// 
 			this->groupBox1->Controls->Add(this->rtbprogramOutput);
 			this->groupBox1->ForeColor = System::Drawing::Color::White;
-			this->groupBox1->Location = System::Drawing::Point(304, 269);
+			this->groupBox1->Location = System::Drawing::Point(15, 271);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(594, 253);
 			this->groupBox1->TabIndex = 9;
@@ -524,7 +526,7 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->groupBox2->Controls->Add(this->btnStop);
 			this->groupBox2->Controls->Add(this->btnReset);
 			this->groupBox2->ForeColor = System::Drawing::Color::White;
-			this->groupBox2->Location = System::Drawing::Point(904, 269);
+			this->groupBox2->Location = System::Drawing::Point(615, 271);
 			this->groupBox2->Name = L"groupBox2";
 			this->groupBox2->Size = System::Drawing::Size(88, 253);
 			this->groupBox2->TabIndex = 10;
@@ -608,7 +610,7 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->btnClose->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)),
 				static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
 			this->btnClose->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnClose->Location = System::Drawing::Point(958, 0);
+			this->btnClose->Location = System::Drawing::Point(674, -2);
 			this->btnClose->Name = L"btnClose";
 			this->btnClose->Size = System::Drawing::Size(47, 23);
 			this->btnClose->TabIndex = 13;
@@ -621,9 +623,9 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->groupBox3->Controls->Add(this->groupBox5);
 			this->groupBox3->Controls->Add(this->groupBox4);
 			this->groupBox3->ForeColor = System::Drawing::Color::White;
-			this->groupBox3->Location = System::Drawing::Point(15, 269);
+			this->groupBox3->Location = System::Drawing::Point(310, 12);
 			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(283, 253);
+			this->groupBox3->Size = System::Drawing::Size(245, 251);
 			this->groupBox3->TabIndex = 14;
 			this->groupBox3->TabStop = false;
 			this->groupBox3->Text = L"Ports";
@@ -892,7 +894,7 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Black;
-			this->ClientSize = System::Drawing::Size(1003, 534);
+			this->ClientSize = System::Drawing::Size(718, 534);
 			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->btnClose);
 			this->Controls->Add(this->groupBox2);
@@ -1044,7 +1046,6 @@ private: System::Windows::Forms::Label^ btnRB5;
 			btnRB2->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 2)).c_str());
 			btnRB1->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 1)).c_str());
 			btnRB0->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 0)).c_str());
-
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1085,6 +1086,7 @@ private: System::Windows::Forms::Label^ btnRB5;
 		btnStop->Enabled = false;
 		btnStep->Enabled = true;
 		btnIgnore->Enabled = true;
+		highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
 	}
 
 	private: System::Void btnStart_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1109,10 +1111,10 @@ private: System::Windows::Forms::Label^ btnRB5;
 
 	private: System::Void btnStep_Click(System::Object^ sender, System::EventArgs^ e) {
 		assert(cpuRef != nullptr);
-		assert(cpuRef != nullptr);
 		try {
 			cpuRef->singleStep();
-			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
+			auto pc = cpuRef->registerData.getPC();
+			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[pc].lineInFile);
 		}
 		catch (std::exception & e) {
 			cpuRunTimer->Stop();

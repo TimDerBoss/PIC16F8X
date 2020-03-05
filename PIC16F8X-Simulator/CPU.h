@@ -23,6 +23,7 @@ public:
 
 	void initialize(const std::string& fileName);
 	void singleStep();
+	bool processInterrupts();
 
 	int timeActive{ 0 };
 

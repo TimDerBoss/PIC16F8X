@@ -12,7 +12,7 @@ class InstructionHandler
 	public:
 		InstructionHandler(RegisterData& rd);
 
-		std::shared_ptr<InstructionBase> decode(const uint16_t& opcode);
+		std::shared_ptr<InstructionBase>& decode(const uint16_t& opcode);
 
 	private:
 		std::vector<std::shared_ptr<InstructionBase>> instructions;

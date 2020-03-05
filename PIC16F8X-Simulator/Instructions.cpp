@@ -534,13 +534,12 @@ RETFIE::RETFIE(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 
 void RETFIE::execute(const uint16_t& opcode)
 {
-	auto data = getInstructionData(opcode);
 	if(registerData.stack.empty())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
 	registerData.stack.pop();
 	registerData.setBit(0xB, 7, true); // GIE
-	printf("%s 0x%X\n", identifier.c_str(), data.k);
+	printf("%s 0x%X\n", identifier.c_str());
 }
 
 RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd)
@@ -550,6 +549,8 @@ RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 
 void RETLW::execute(const uint16_t& opcode)
 {
+	if(registerData.getRawBit(0xB, 1))
+		throw std::runtime_error(fmt::format("%s: Use RETFIE to return from an interrupt!", __FUNCTION__));
 	auto data = getInstructionData(opcode);
 	if(registerData.stack.empty())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
@@ -566,6 +567,8 @@ RETURN::RETURN(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 
 void RETURN::execute(const uint16_t& opcode)
 {
+	if (registerData.getRawBit(0xB, 1))
+		throw std::runtime_error(fmt::format("%s: Use RETFIE to return from an interrupt!", __FUNCTION__));
 	auto data = getInstructionData(opcode);
 	if(registerData.stack.empty())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));

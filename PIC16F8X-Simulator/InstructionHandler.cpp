@@ -54,12 +54,13 @@ InstructionHandler::InstructionHandler(RegisterData& rd)
 	instructions.emplace_back(ADD_INSTRUCTION(XORLW, 0xFF00, 0x3A00));
 }
 
-std::shared_ptr<InstructionBase> InstructionHandler::decode(const uint16_t& opcode)
+std::shared_ptr<InstructionBase>& InstructionHandler::decode(const uint16_t& opcode)
 {
 	auto instruction = instructionCache.find(opcode);
 	if (instruction != instructionCache.end()) {
 		return instruction->second;
-	} else {
+	}
+	else {
 		for (auto& i : instructions) {
 			if (i->match(opcode)) {
 				instructionCache[opcode] = i;
