@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CPU.h"
+#include "RegisterData.h"
 #include <FormatString.h>
 #include <assert.h>
 #include <Windows.h>
@@ -979,73 +980,73 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 			lRuntime->Text = gcnew String(fmt::format("%d us", cpuRef->timeActive).c_str());
 
 			lTrisA->Text = gcnew String(fmt::format("Tris A |  %s  %s  %s  %s  %s  %s  %s  %s"
-				, asIO(cpuRef->registerData.getRawBit(0x85, 7))
-				, asIO(cpuRef->registerData.getRawBit(0x85, 6))
-				, asIO(cpuRef->registerData.getRawBit(0x85, 5))
-				, asIO(cpuRef->registerData.getRawBit(0x85, 4))
-				, asIO(cpuRef->registerData.getRawBit(0x85, 3))
-				, asIO(cpuRef->registerData.getRawBit(0x85, 2))
-				, asIO(cpuRef->registerData.getRawBit(0x85, 1))
-				, asIO(cpuRef->registerData.getRawBit(0x85, 0))).c_str());
+				, asIO(cpuRef->registerData.readBitFromMemory(0x85, 7))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x85, 6))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x85, 5))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x85, 4))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x85, 3))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x85, 2))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x85, 1))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x85, 0))).c_str());
 
 			lTrisB->Text = gcnew String(fmt::format("Tris B |  %s  %s  %s  %s  %s  %s  %s  %s"
-				, asIO(cpuRef->registerData.getRawBit(0x86, 7))
-				, asIO(cpuRef->registerData.getRawBit(0x86, 6))
-				, asIO(cpuRef->registerData.getRawBit(0x86, 5))
-				, asIO(cpuRef->registerData.getRawBit(0x86, 4))
-				, asIO(cpuRef->registerData.getRawBit(0x86, 3))
-				, asIO(cpuRef->registerData.getRawBit(0x86, 2))
-				, asIO(cpuRef->registerData.getRawBit(0x86, 1))
-				, asIO(cpuRef->registerData.getRawBit(0x86, 0))).c_str());
+				, asIO(cpuRef->registerData.readBitFromMemory(0x86, 7))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x86, 6))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x86, 5))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x86, 4))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x86, 3))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x86, 2))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x86, 1))
+				, asIO(cpuRef->registerData.readBitFromMemory(0x86, 0))).c_str());
 
 			lStatusValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
-				, cpuRef->registerData.getRawBit(0x3, 7)
-				, cpuRef->registerData.getRawBit(0x3, 6)
-				, cpuRef->registerData.getRawBit(0x3, 5)
-				, cpuRef->registerData.getRawBit(0x3, 4)
-				, cpuRef->registerData.getRawBit(0x3, 3)
-				, cpuRef->registerData.getRawBit(0x3, 2)
-				, cpuRef->registerData.getRawBit(0x3, 1)
-				, cpuRef->registerData.getRawBit(0x3, 0)).c_str());
+				, cpuRef->registerData.readBitFromMemory(0x3, 7)
+				, cpuRef->registerData.readBitFromMemory(0x3, 6)
+				, cpuRef->registerData.readBitFromMemory(0x3, 5)
+				, cpuRef->registerData.readBitFromMemory(0x3, 4)
+				, cpuRef->registerData.readBitFromMemory(0x3, 3)
+				, cpuRef->registerData.readBitFromMemory(0x3, 2)
+				, cpuRef->registerData.readBitFromMemory(0x3, 1)
+				, cpuRef->registerData.readBitFromMemory(0x3, 0)).c_str());
 
 			lOptionValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
-				, cpuRef->registerData.getRawBit(0x81, 7)
-				, cpuRef->registerData.getRawBit(0x81, 6)
-				, cpuRef->registerData.getRawBit(0x81, 5)
-				, cpuRef->registerData.getRawBit(0x81, 4)
-				, cpuRef->registerData.getRawBit(0x81, 3)
-				, cpuRef->registerData.getRawBit(0x81, 2)
-				, cpuRef->registerData.getRawBit(0x81, 1)
-				, cpuRef->registerData.getRawBit(0x81, 0)).c_str());
+				, cpuRef->registerData.readBitFromMemory(0x81, 7)
+				, cpuRef->registerData.readBitFromMemory(0x81, 6)
+				, cpuRef->registerData.readBitFromMemory(0x81, 5)
+				, cpuRef->registerData.readBitFromMemory(0x81, 4)
+				, cpuRef->registerData.readBitFromMemory(0x81, 3)
+				, cpuRef->registerData.readBitFromMemory(0x81, 2)
+				, cpuRef->registerData.readBitFromMemory(0x81, 1)
+				, cpuRef->registerData.readBitFromMemory(0x81, 0)).c_str());
 
 			lIntconValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
-				, cpuRef->registerData.getRawBit(0xB, 7)
-				, cpuRef->registerData.getRawBit(0xB, 6)
-				, cpuRef->registerData.getRawBit(0xB, 5)
-				, cpuRef->registerData.getRawBit(0xB, 4)
-				, cpuRef->registerData.getRawBit(0xB, 3)
-				, cpuRef->registerData.getRawBit(0xB, 2)
-				, cpuRef->registerData.getRawBit(0xB, 1)
-				, cpuRef->registerData.getRawBit(0xB, 0)).c_str());
+				, cpuRef->registerData.readBitFromMemory(0xB, 7)
+				, cpuRef->registerData.readBitFromMemory(0xB, 6)
+				, cpuRef->registerData.readBitFromMemory(0xB, 5)
+				, cpuRef->registerData.readBitFromMemory(0xB, 4)
+				, cpuRef->registerData.readBitFromMemory(0xB, 3)
+				, cpuRef->registerData.readBitFromMemory(0xB, 2)
+				, cpuRef->registerData.readBitFromMemory(0xB, 1)
+				, cpuRef->registerData.readBitFromMemory(0xB, 0)).c_str());
 
 
-			btnRA7->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 7)).c_str());
-			btnRA6->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 6)).c_str());
-			btnRA5->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 5)).c_str());
-			btnRA4->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 4)).c_str());
-			btnRA3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 3)).c_str());
-			btnRA2->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 2)).c_str());
-			btnRA1->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 1)).c_str());
-			btnRA0->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x5, 0)).c_str());
+			btnRA7->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x5, 7)).c_str());
+			btnRA6->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x5, 6)).c_str());
+			btnRA5->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x5, 5)).c_str());
+			btnRA4->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x5, 4)).c_str());
+			btnRA3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x5, 3)).c_str());
+			btnRA2->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x5, 2)).c_str());
+			btnRA1->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x5, 1)).c_str());
+			btnRA0->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x5, 0)).c_str());
 
-			btnRB3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 7)).c_str());
-			btnRB6->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 6)).c_str());
-			btnRB5->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 5)).c_str());
-			btnRB4->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 4)).c_str());
-			btnRB3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 3)).c_str());
-			btnRB2->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 2)).c_str());
-			btnRB1->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 1)).c_str());
-			btnRB0->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.getRawBit(0x6, 0)).c_str());
+			btnRB3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x6, 7)).c_str());
+			btnRB6->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x6, 6)).c_str());
+			btnRB5->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x6, 5)).c_str());
+			btnRB4->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x6, 4)).c_str());
+			btnRB3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x6, 3)).c_str());
+			btnRB2->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x6, 2)).c_str());
+			btnRB1->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x6, 1)).c_str());
+			btnRB0->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBitFromMemory(0x6, 0)).c_str());
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1156,52 +1157,52 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 		Application::Exit();
 	}
 	private: System::Void btnRA7_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x5, 7, btnRA7->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x5, 7, btnRA7->Text == "0");
 	}
 	private: System::Void btnRA6_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x5, 6, btnRA6->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x5, 6, btnRA6->Text == "0");
 	}
 	private: System::Void btnRA5_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x5, 5, btnRA5->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x5, 5, btnRA5->Text == "0");
 	}
 	private: System::Void btnRA4_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x5, 4, btnRA4->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x5, 4, btnRA4->Text == "0");
 	}
 	private: System::Void btnRA3_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x5, 3, btnRA3->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x5, 3, btnRA3->Text == "0");
 	}
 	private: System::Void btnRA2_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x5, 2, btnRA2->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x5, 2, btnRA2->Text == "0");
 	}
 	private: System::Void btnRA1_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x5, 1, btnRA1->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x5, 1, btnRA1->Text == "0");
 	}
 	private: System::Void btnRA0_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x5, 0, btnRA0->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x5, 0, btnRA0->Text == "0");
 	}
 	private: System::Void btnRB7_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x6, 7, btnRB7->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x6, 7, btnRB7->Text == "0");
 	}
 	private: System::Void btnRB6_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x6, 6, btnRB6->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x6, 6, btnRB6->Text == "0");
 	}
 	private: System::Void btnRB5_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x6, 5, btnRB5->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x6, 5, btnRB5->Text == "0");
 	}
 	private: System::Void btnRB4_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x6, 4, btnRB4->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x6, 4, btnRB4->Text == "0");
 	}
 	private: System::Void btnRB3_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x6, 3, btnRB3->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x6, 3, btnRB3->Text == "0");
 	}
 	private: System::Void btnRB2_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x6, 2, btnRB2->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x6, 2, btnRB2->Text == "0");
 	}
 	private: System::Void btnRB1_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x6, 1, btnRB1->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x6, 1, btnRB1->Text == "0");
 	}
 	private: System::Void btnRB0_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.setRawBit(0x6, 0, btnRB0->Text == "0");
+		cpuRef->registerData.writeBitToMemory(0x6, 0, btnRB0->Text == "0");
 	}
 	private: System::Void nudSimSpeed_onValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		cpuRunTimer->Interval = 1000 / Convert::ToInt32(Math::Round(nudSimSpeed->Value, 0));

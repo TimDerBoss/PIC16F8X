@@ -14,16 +14,16 @@ void ADDWF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	int result = static_cast<int>(w + registerData.readData(data.f));
-	uint8_t preResult = data.d ? registerData.readData(data.f) : w;
+	int result = static_cast<int>(w + registerData.readDataSimulated(data.f));
+	uint8_t preResult = data.d ? registerData.readDataSimulated(data.f) : w;
 	if (!data.d) {
 		w = static_cast<uint8_t>(result);
 	} else {
-		registerData.writeData(data.f, static_cast<uint8_t>(result));
+		registerData.writeDataSimulated(data.f, static_cast<uint8_t>(result));
 	}
-	registerData.setBit(0x3, 0x0, result > 255); // carry bit
-	registerData.setBit(0x3, 0x1, preResult <= 0xF && static_cast<uint8_t>(result) > 0xF); // digit carry
-	registerData.setBit(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x0, result > 255); // carry bit
+	registerData.writeBitSimulated(0x3, 0x1, preResult <= 0xF && static_cast<uint8_t>(result) > 0xF); // digit carry
+	registerData.writeBitSimulated(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
@@ -38,13 +38,13 @@ void ANDWF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	uint8_t result = w & registerData.readData(data.f);
+	uint8_t result = w & registerData.readDataSimulated(data.f);
 	if (!data.d) {
 		w = result;
 	} else {
-		registerData.writeData(data.f, result);
+		registerData.writeDataSimulated(data.f, result);
 	}
-	registerData.setBit(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -57,8 +57,8 @@ CLRF::CLRF(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 void CLRF::execute() 
 {
 
-	registerData.writeData(data.f, 0);
-	registerData.setBit(0x3, 0x2, true); // zero flag
+	registerData.writeDataSimulated(data.f, 0);
+	registerData.writeBitSimulated(0x3, 0x2, true); // zero flag
 	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.d);
 	registerData.increasePCBy(getCycles());
 }
@@ -71,7 +71,7 @@ CLRW::CLRW(const std::string& identifier, uint16_t mask, uint16_t value, Registe
 void CLRW::execute() 
 {
 	registerData.cpuRegisters.w = 0;
-	registerData.setBit(0x3, 0x2, true); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, true); // zero flag
 	printf("%s\n", identifier.c_str());
 	registerData.increasePCBy(getCycles());
 }
@@ -85,13 +85,13 @@ void COMF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	uint8_t result = ~registerData.readData(data.f);
+	uint8_t result = ~registerData.readDataSimulated(data.f);
 	if (!data.d) {
 		w = result;
 	} else {
-		registerData.writeData(data.f, result);
+		registerData.writeDataSimulated(data.f, result);
 	}
-	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, result == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -105,13 +105,13 @@ void DECF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	uint8_t result = registerData.readData(data.f) - 1;
+	uint8_t result = registerData.readDataSimulated(data.f) - 1;
 	if (!data.d) {
 		w = result;
 	} else {
-		registerData.writeData(data.f, result);
+		registerData.writeDataSimulated(data.f, result);
 	}
-	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, result == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -125,11 +125,11 @@ void DECFSZ::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	uint8_t result = registerData.readData(data.f) - 1;
+	uint8_t result = registerData.readDataSimulated(data.f) - 1;
 	if (!data.d) {
 		w = result;
 	} else {
-		registerData.writeData(data.f, result);
+		registerData.writeDataSimulated(data.f, result);
 	}
 	if (result == 0) {
 		setCycles(2);
@@ -149,13 +149,13 @@ void INCF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	uint8_t result = registerData.readData(data.f) + 1;
+	uint8_t result = registerData.readDataSimulated(data.f) + 1;
 	if (!data.d) {
 		w = result;
 	} else {
-		registerData.writeData(data.f, result);
+		registerData.writeDataSimulated(data.f, result);
 	}
-	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, result == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -169,11 +169,11 @@ void INCFSZ::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	uint8_t result = registerData.readData(data.f) + 1;
+	uint8_t result = registerData.readDataSimulated(data.f) + 1;
 	if (!data.d) {
 		w = result;
 	} else {
-		registerData.writeData(data.f, result);
+		registerData.writeDataSimulated(data.f, result);
 	}
 	if (result == 0) {
 		setCycles(2);
@@ -193,13 +193,13 @@ void IORWF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	uint8_t result = registerData.readData(data.f) | w;
+	uint8_t result = registerData.readDataSimulated(data.f) | w;
 	if (!data.d) {
 		w = result;
 	} else {
-		registerData.writeData(data.f, result);
+		registerData.writeDataSimulated(data.f, result);
 	}
-	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, result == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -214,9 +214,9 @@ void MOVF::execute()
 
 	auto& w = registerData.cpuRegisters.w;
 	if (!data.d) {
-		w = registerData.readData(data.f);
+		w = registerData.readDataSimulated(data.f);
 	}
-	registerData.setBit(0x3, 0x2, registerData.readData(data.f) == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, registerData.readDataSimulated(data.f) == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -230,7 +230,7 @@ void MOVWF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	registerData.writeData(data.f, w);
+	registerData.writeDataSimulated(data.f, w);
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -254,18 +254,18 @@ RLF::RLF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterD
 void RLF::execute() 
 {
 
-	uint8_t tempCarry = registerData.getBit(0x3, 0x0);
-	uint8_t fBefore = registerData.readData(data.f);
+	uint8_t tempCarry = registerData.readBitSimulated(0x3, 0x0);
+	uint8_t fBefore = registerData.readDataSimulated(data.f);
 	auto& w = registerData.cpuRegisters.w;
 
-	registerData.setBit(0x3, 0x0, (fBefore >> 7) & 1);
+	registerData.writeBitSimulated(0x3, 0x0, (fBefore >> 7) & 1);
 	fBefore <<= 1;
 	fBefore |= tempCarry;
 
 	if (!data.d) {
 		w = fBefore;
 	} else {
-		registerData.writeData(data.f, fBefore);
+		registerData.writeDataSimulated(data.f, fBefore);
 	}
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
@@ -279,18 +279,18 @@ RRF::RRF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterD
 void RRF::execute() 
 {
 
-	uint8_t fBefore = registerData.readData(data.f);
+	uint8_t fBefore = registerData.readDataSimulated(data.f);
 	auto& w = registerData.cpuRegisters.w;
 
 	bool tmpOverflow = fBefore & 1;
 	fBefore >>= 1;
-	fBefore |= (registerData.getBit(0x3, 0) << 7);
-	registerData.setBit(0x3, 0, tmpOverflow);
+	fBefore |= (registerData.readBitSimulated(0x3, 0) << 7);
+	registerData.writeBitSimulated(0x3, 0, tmpOverflow);
 
 	if (!data.d) {
 		w = fBefore;
 	} else {
-		registerData.writeData(data.f, fBefore);
+		registerData.writeDataSimulated(data.f, fBefore);
 	}
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
@@ -305,16 +305,16 @@ void SUBWF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	int result = registerData.readData(data.f) - w;
+	int result = registerData.readDataSimulated(data.f) - w;
 	if (!data.d) {
 		w = static_cast<uint8_t>(result);
 	} else {
-		registerData.writeData(data.f, static_cast<uint8_t>(result));
+		registerData.writeDataSimulated(data.f, static_cast<uint8_t>(result));
 	}
-	registerData.setBit(0x3, 0x0, result >= 0); // carry bit
+	registerData.writeBitSimulated(0x3, 0x0, result >= 0); // carry bit
 	// TODO: fix DC
-	registerData.setBit(0x3, 0x1, false); // digit carry
-	registerData.setBit(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x1, false); // digit carry
+	registerData.writeBitSimulated(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -329,7 +329,7 @@ void SWAPF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	uint8_t result = registerData.readData(data.f);
+	uint8_t result = registerData.readDataSimulated(data.f);
 
 	uint8_t temp = result & 0xF;
 	result >>= 4;
@@ -338,7 +338,7 @@ void SWAPF::execute()
 	if (!data.d) {
 		w = result;
 	} else {
-		registerData.writeData(data.f, result);
+		registerData.writeDataSimulated(data.f, result);
 	}
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
@@ -353,13 +353,13 @@ void XORWF::execute()
 {
 
 	auto& w = registerData.cpuRegisters.w;
-	uint8_t result = registerData.readData(data.f) ^w;
+	uint8_t result = registerData.readDataSimulated(data.f) ^w;
 	if (!data.d) {
 		w = result;
 	} else {
-		registerData.writeData(data.f, result);
+		registerData.writeDataSimulated(data.f, result);
 	}
-	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, result == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -372,7 +372,7 @@ BCF::BCF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterD
 void BCF::execute() 
 {
 
-	registerData.setBit(data.f, data.b, false);
+	registerData.writeBitSimulated(data.f, data.b, false);
 	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.b);
 	registerData.increasePCBy(getCycles());
 }
@@ -385,7 +385,7 @@ BSF::BSF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterD
 void BSF::execute() 
 {
 
-	registerData.setBit(data.f, data.b, true);
+	registerData.writeBitSimulated(data.f, data.b, true);
 	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.b);
 	registerData.increasePCBy(getCycles());
 }
@@ -398,7 +398,7 @@ BTFSC::BTFSC(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 void BTFSC::execute() 
 {
 
-	uint8_t bit = registerData.getBit(data.f, data.b);
+	uint8_t bit = registerData.readBitSimulated(data.f, data.b);
 	if (bit) {
 		setCycles(1);
 	} else {
@@ -415,7 +415,7 @@ BTFSS::BTFSS(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 
 void BTFSS::execute() 
 {
-	uint8_t bit = registerData.getBit(data.f, data.b);
+	uint8_t bit = registerData.readBitSimulated(data.f, data.b);
 	if (!bit) {
 		setCycles(1);
 	} else {
@@ -437,9 +437,9 @@ void ADDLW::execute()
 	auto preResult = w;
 	w = static_cast<uint8_t>(result);
 
-	registerData.setBit(0x3, 0x0, result > 255); // carry bit
-	registerData.setBit(0x3, 0x1, preResult <= 0xF && static_cast<uint8_t>(result) > 0xF); // digit carry
-	registerData.setBit(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x0, result > 255); // carry bit
+	registerData.writeBitSimulated(0x3, 0x1, preResult <= 0xF && static_cast<uint8_t>(result) > 0xF); // digit carry
+	registerData.writeBitSimulated(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 	registerData.increasePCBy(getCycles());
 }
@@ -454,7 +454,7 @@ void ANDLW::execute()
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = w & data.k;
 	w = result;
-	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, result == 0); // zero flag
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 	registerData.increasePCBy(getCycles());
 }
@@ -503,7 +503,7 @@ void IORLW::execute()
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = w | data.k;
 	w = result;
-	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, result == 0); // zero flag
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 	registerData.increasePCBy(getCycles());
 }
@@ -531,7 +531,7 @@ void RETFIE::execute()
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
 	registerData.stack.pop();
-	registerData.setBit(0xB, 7, true); // GIE
+	registerData.writeBitSimulated(0xB, 7, true); // GIE
 	printf("%s\n", identifier.c_str());
 }
 
@@ -542,9 +542,6 @@ RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 
 void RETLW::execute() 
 {
-	if(registerData.getRawBit(0xB, 1))
-		throw std::runtime_error(fmt::format("%s: Use RETFIE to return from an interrupt!", __FUNCTION__));
-
 	if(registerData.stack.empty())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
@@ -560,9 +557,6 @@ RETURN::RETURN(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 
 void RETURN::execute() 
 {
-	if (registerData.getRawBit(0xB, 1))
-		throw std::runtime_error(fmt::format("%s: Use RETFIE to return from an interrupt!", __FUNCTION__));
-
 	if(registerData.stack.empty())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	registerData.setPC(registerData.stack.top());
@@ -589,12 +583,12 @@ SUBLW::SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 void SUBLW::execute() 
 {
 	auto& w = registerData.cpuRegisters.w;
-	int result = static_cast<int>(registerData.readData((uint8_t)data.k) - w);
+	int result = static_cast<int>(registerData.readDataSimulated((uint8_t)data.k) - w);
 	w = static_cast<uint8_t>(result);
-	registerData.setBit(0x3, 0x0, result >= 0); // carry bit
+	registerData.writeBitSimulated(0x3, 0x0, result >= 0); // carry bit
 	// TODO: fix DC
-	registerData.setBit(0x3, 0x1, false); // digit carry
-	registerData.setBit(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x1, false); // digit carry
+	registerData.writeBitSimulated(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	registerData.increasePCBy(getCycles());
 }
@@ -609,7 +603,7 @@ void XORLW::execute()
 	auto& w = registerData.cpuRegisters.w;
 	uint8_t result = w ^ data.k;
 	w = result;
-	registerData.setBit(0x3, 0x2, result == 0); // zero flag
+	registerData.writeBitSimulated(0x3, 0x2, result == 0); // zero flag
 	registerData.increasePCBy(1);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 	registerData.increasePCBy(getCycles());
