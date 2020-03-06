@@ -23,6 +23,9 @@ void LSTParser::readFile(const std::string& fileName)
 	else {
 		throw std::runtime_error(fmt::format("%s: File not found: %s\n", __FUNCTION__, fileName));
 	}
+	if (lstFile.empty()) {
+		throw std::runtime_error(fmt::format("%s: Invalid file format", __FUNCTION__));
+	}
 }
 
 void LSTParser::parseLstFile()
