@@ -11,16 +11,17 @@ void CPU::initialize(const std::string& fileName)
 void CPU::singleStep()
 {
 	if (registerData.getPC() <= parser.getMaxPc()) {
-		uint16_t opcode;
 		if (processInterrupts()) {
-			opcode = 0b0010000000000100;
+			registerData.stack.push(registerData.getPC());
+			registerData.setPC(4);
+			timeActive += 4;
 		}
 		else {
-			opcode = parser.getOpcodeInfo(registerData.getPC()).opcode;
+			auto& opcode = parser.getOpcodeInfo(registerData.getPC()).opcode;
+			auto& instruction = instructionHandler.decode(opcode);
+			instruction->execute();
+			timeActive += instruction->getCycles();
 		}
-		auto& instruction = instructionHandler.decode(opcode);
-		instruction->execute();
-		timeActive += instruction->getCycles();
 	}
 }
 

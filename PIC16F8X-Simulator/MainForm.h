@@ -9,6 +9,8 @@
 
 #include <msclr\marshal_cppstd.h>
 
+#undef max
+
 namespace PIC16F8X_Simulator {
 
 	using namespace System;
@@ -99,7 +101,7 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::NumericUpDown^ nudSimSpeed;
 	private: System::Windows::Forms::Label^ lRuntime;
-	private: System::Windows::Forms::Label^ label7;
+
 	private: System::Windows::Forms::Label^ btnRA0;
 
 	private: System::Windows::Forms::Label^ btnRA1;
@@ -124,9 +126,12 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::Label^ btnRB3;
 
 	private: System::Windows::Forms::Label^ btnRB6;
-private: System::Windows::Forms::Label^ btnRB4;
+	private: System::Windows::Forms::Label^ btnRB4;
 
-private: System::Windows::Forms::Label^ btnRB5;
+	private: System::Windows::Forms::Label^ btnRB5;
+	private: System::Windows::Forms::Button^ btnRuntimeReset;
+private: System::Windows::Forms::GroupBox^ groupBox6;
+private: System::Windows::Forms::GroupBox^ groupBox7;
 
 
 
@@ -173,8 +178,8 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->cpuRunTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->btnRuntimeReset = (gcnew System::Windows::Forms::Button());
 			this->lRuntime = (gcnew System::Windows::Forms::Label());
-			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->nudSimSpeed = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label1 = (gcnew System::Windows::Forms::Label());
@@ -203,6 +208,8 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->btnRA6 = (gcnew System::Windows::Forms::Label());
 			this->btnRA4 = (gcnew System::Windows::Forms::Label());
 			this->btnRA5 = (gcnew System::Windows::Forms::Label());
+			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
 			this->gbFSR->SuspendLayout();
 			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
@@ -213,6 +220,8 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->groupBox3->SuspendLayout();
 			this->groupBox5->SuspendLayout();
 			this->groupBox4->SuspendLayout();
+			this->groupBox6->SuspendLayout();
+			this->groupBox7->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// gbFSR
@@ -446,7 +455,7 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->btnStep->Name = L"btnStep";
 			this->btnStep->Size = System::Drawing::Size(75, 23);
 			this->btnStep->TabIndex = 3;
-			this->btnStep->Text = L"Single Step";
+			this->btnStep->Text = L"Step";
 			this->btnStep->UseVisualStyleBackColor = false;
 			this->btnStep->Click += gcnew System::EventHandler(this, &MainForm::btnStep_Click);
 			// 
@@ -480,7 +489,7 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->rtbprogramOutput->Name = L"rtbprogramOutput";
 			this->rtbprogramOutput->ReadOnly = true;
 			this->rtbprogramOutput->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
-			this->rtbprogramOutput->Size = System::Drawing::Size(582, 233);
+			this->rtbprogramOutput->Size = System::Drawing::Size(582, 285);
 			this->rtbprogramOutput->TabIndex = 7;
 			this->rtbprogramOutput->Text = L"";
 			// 
@@ -509,17 +518,13 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->groupBox1->ForeColor = System::Drawing::Color::White;
 			this->groupBox1->Location = System::Drawing::Point(15, 271);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(594, 253);
+			this->groupBox1->Size = System::Drawing::Size(594, 305);
 			this->groupBox1->TabIndex = 9;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Program";
 			// 
 			// groupBox2
 			// 
-			this->groupBox2->Controls->Add(this->lRuntime);
-			this->groupBox2->Controls->Add(this->label7);
-			this->groupBox2->Controls->Add(this->label6);
-			this->groupBox2->Controls->Add(this->nudSimSpeed);
 			this->groupBox2->Controls->Add(this->btnStart);
 			this->groupBox2->Controls->Add(this->btnStep);
 			this->groupBox2->Controls->Add(this->btnIgnore);
@@ -528,33 +533,38 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->groupBox2->ForeColor = System::Drawing::Color::White;
 			this->groupBox2->Location = System::Drawing::Point(615, 271);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(88, 253);
+			this->groupBox2->Size = System::Drawing::Size(88, 161);
 			this->groupBox2->TabIndex = 10;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Controls";
 			// 
+			// btnRuntimeReset
+			// 
+			this->btnRuntimeReset->BackColor = System::Drawing::Color::Black;
+			this->btnRuntimeReset->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnRuntimeReset->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
+			this->btnRuntimeReset->ForeColor = System::Drawing::Color::White;
+			this->btnRuntimeReset->Location = System::Drawing::Point(6, 32);
+			this->btnRuntimeReset->Name = L"btnRuntimeReset";
+			this->btnRuntimeReset->Size = System::Drawing::Size(75, 23);
+			this->btnRuntimeReset->TabIndex = 19;
+			this->btnRuntimeReset->Text = L"Reset";
+			this->btnRuntimeReset->UseVisualStyleBackColor = false;
+			this->btnRuntimeReset->Click += gcnew System::EventHandler(this, &MainForm::btnRuntimeReset_Click);
+			// 
 			// lRuntime
 			// 
 			this->lRuntime->AutoSize = true;
-			this->lRuntime->Location = System::Drawing::Point(6, 179);
+			this->lRuntime->Location = System::Drawing::Point(3, 16);
 			this->lRuntime->Name = L"lRuntime";
 			this->lRuntime->Size = System::Drawing::Size(31, 13);
 			this->lRuntime->TabIndex = 18;
 			this->lRuntime->Text = L"0 us";
 			// 
-			// label7
-			// 
-			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(6, 166);
-			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(55, 13);
-			this->label7->TabIndex = 17;
-			this->label7->Text = L"Runtime:";
-			// 
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(6, 208);
+			this->label6->Location = System::Drawing::Point(3, 16);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(67, 13);
 			this->label6->TabIndex = 16;
@@ -565,7 +575,7 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->nudSimSpeed->BackColor = System::Drawing::Color::Black;
 			this->nudSimSpeed->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->nudSimSpeed->ForeColor = System::Drawing::Color::White;
-			this->nudSimSpeed->Location = System::Drawing::Point(6, 227);
+			this->nudSimSpeed->Location = System::Drawing::Point(6, 32);
 			this->nudSimSpeed->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
 			this->nudSimSpeed->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->nudSimSpeed->Name = L"nudSimSpeed";
@@ -889,12 +899,38 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->btnRA5->Text = L"0";
 			this->btnRA5->Click += gcnew System::EventHandler(this, &MainForm::btnRA5_Click);
 			// 
+			// groupBox6
+			// 
+			this->groupBox6->Controls->Add(this->btnRuntimeReset);
+			this->groupBox6->Controls->Add(this->lRuntime);
+			this->groupBox6->ForeColor = System::Drawing::Color::White;
+			this->groupBox6->Location = System::Drawing::Point(615, 438);
+			this->groupBox6->Name = L"groupBox6";
+			this->groupBox6->Size = System::Drawing::Size(88, 66);
+			this->groupBox6->TabIndex = 15;
+			this->groupBox6->TabStop = false;
+			this->groupBox6->Text = L"Runtime";
+			// 
+			// groupBox7
+			// 
+			this->groupBox7->Controls->Add(this->label6);
+			this->groupBox7->Controls->Add(this->nudSimSpeed);
+			this->groupBox7->ForeColor = System::Drawing::Color::White;
+			this->groupBox7->Location = System::Drawing::Point(615, 510);
+			this->groupBox7->Name = L"groupBox7";
+			this->groupBox7->Size = System::Drawing::Size(88, 66);
+			this->groupBox7->TabIndex = 17;
+			this->groupBox7->TabStop = false;
+			this->groupBox7->Text = L"Simulation";
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Black;
-			this->ClientSize = System::Drawing::Size(718, 534);
+			this->ClientSize = System::Drawing::Size(720, 586);
+			this->Controls->Add(this->groupBox7);
+			this->Controls->Add(this->groupBox6);
 			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->btnClose);
 			this->Controls->Add(this->groupBox2);
@@ -920,13 +956,16 @@ private: System::Windows::Forms::Label^ btnRB5;
 			this->gbStatus->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox2->ResumeLayout(false);
-			this->groupBox2->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nudSimSpeed))->EndInit();
 			this->groupBox3->ResumeLayout(false);
 			this->groupBox5->ResumeLayout(false);
 			this->groupBox5->PerformLayout();
 			this->groupBox4->ResumeLayout(false);
 			this->groupBox4->PerformLayout();
+			this->groupBox6->ResumeLayout(false);
+			this->groupBox6->PerformLayout();
+			this->groupBox7->ResumeLayout(false);
+			this->groupBox7->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -1207,6 +1246,9 @@ private: System::Windows::Forms::Label^ btnRB5;
 	}
 	private: System::Void nudSimSpeed_onValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		cpuRunTimer->Interval = 1000 / Convert::ToInt32(Math::Round(nudSimSpeed->Value, 0));
+	}
+	private: System::Void btnRuntimeReset_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuRef->timeActive = 0;
 	}
 	};
 }

@@ -17,25 +17,26 @@
                     00017           DEVICE 16F84
                     00018           
                     00019  INIT     
-0000 160B           00020           BSF INTCON_REG, INTE
-0001 108B           00021           BCF INTCON_REG, INTF
-0002 2809           00022           GOTO MAIN
-                    00023           
-                    00024  ISR_T0   ; 0004
-0003 1C8B           00025           BTFSS INTCON_REG, INTF         ; INTF
-0004 2806           00026           GOTO ISR_END
-0005 0A85           00027           INCF COUNTER
-                    00028  ISR_END  
-0006 160B           00029           BSF INTCON_REG, INTE
-0007 108B           00030           BCF INTCON_REG, INTF
-0008 0009           00031           RETFIE                  ; return from interrupt enable
-                    00032           
-                    00033  MAIN     
-0009 178B           00034           BSF INTCON_REG, GIE
-000A 1683           00035           BSF STATUS, RP0         ; bank 1
-000B 1701           00036           BSF OPTION_REG, INTEDG
-000C 1283           00037           BCF STATUS, RP0         ; bank 0
-                    00038           
-                    00039  LOOP     
-000D 280D           00040           GOTO LOOP
-                    00041           END
+0000 018C           00020           CLRF 0Ch
+0001 160B           00021           BSF INTCON_REG, INTE
+0002 108B           00022           BCF INTCON_REG, INTF
+0003 280A           00023           GOTO MAIN
+                    00024           
+                    00025  ISR_T0   ; 0004
+0004 1C8B           00026           BTFSS INTCON_REG, INTF         ; INTF
+0005 2807           00027           GOTO ISR_END
+0006 0A85           00028           INCF COUNTER
+                    00029  ISR_END  
+0007 160B           00030           BSF INTCON_REG, INTE
+0008 108B           00031           BCF INTCON_REG, INTF
+0009 0009           00032           RETFIE                  ; return from interrupt enable
+                    00033           
+                    00034  MAIN     
+000A 178B           00035           BSF INTCON_REG, GIE
+000B 1683           00036           BSF STATUS, RP0         ; bank 1
+000C 1701           00037           BSF OPTION_REG, INTEDG
+000D 1283           00038           BCF STATUS, RP0         ; bank 0
+                    00039           
+                    00040  LOOP     
+000E 280E           00041           GOTO LOOP
+                    00042           END
