@@ -10,18 +10,18 @@ void CPU::initialize(const std::string& fileName)
 
 void CPU::singleStep()
 {
-	uint16_t opcode;
-	if (processInterrupts()) {
-		opcode = 0b0010000000000100;
+	if (registerData.getPC() <= parser.getMaxPc()) {
+		uint16_t opcode;
+		if (processInterrupts()) {
+			opcode = 0b0010000000000100;
+		}
+		else {
+			opcode = parser.getOpcodeInfo(registerData.getPC()).opcode;
+		}
+		auto& instruction = instructionHandler.decode(opcode);
+		instruction->execute();
+		timeActive += instruction->getCycles();
 	}
-	else {
-		opcode = parser.getLstOpcodeInfo()[registerData.getPC()].opcode;
-	}
-	auto& instruction = instructionHandler.decode(opcode);
-	instruction->execute();
-	timeActive += instruction->getCycles();
-
-	registerData.setPC(std::min(registerData.getPC(), static_cast<uint16_t>(parser.getLstOpcodeInfo().size() - 1)));
 }
 
 bool CPU::processInterrupts()

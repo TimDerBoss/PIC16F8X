@@ -127,7 +127,7 @@ namespace PIC16F8X_Simulator {
 private: System::Windows::Forms::Label^ btnRB4;
 
 private: System::Windows::Forms::Label^ btnRB5;
-private: System::Windows::Forms::ColorDialog^ colorDialog1;
+
 
 
 	private: System::ComponentModel::IContainer^ components;
@@ -203,7 +203,6 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 			this->btnRA6 = (gcnew System::Windows::Forms::Label());
 			this->btnRA4 = (gcnew System::Windows::Forms::Label());
 			this->btnRA5 = (gcnew System::Windows::Forms::Label());
-			this->colorDialog1 = (gcnew System::Windows::Forms::ColorDialog());
 			this->gbFSR->SuspendLayout();
 			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
@@ -468,7 +467,7 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 			// updateTimer
 			// 
 			this->updateTimer->Enabled = true;
-			this->updateTimer->Interval = 10;
+			this->updateTimer->Interval = 20;
 			this->updateTimer->Tick += gcnew System::EventHandler(this, &MainForm::updateTimer_Tick);
 			// 
 			// rtbprogramOutput
@@ -946,6 +945,7 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 			for (auto& line : program) {
 				rtbprogramOutput->Text += gcnew String(line.c_str()) + "\r\n";
 			}
+			rtbprogramOutput->Text += "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n";
 		}
 
 		std::string asIO(bool value) {
@@ -956,19 +956,21 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 
 		void highlightConsoleLine(int index)
 		{
-			rtbprogramOutput->SelectAll();
-			rtbprogramOutput->SelectionBackColor = rtbprogramOutput->BackColor;
-			rtbprogramOutput->SelectionColor = rtbprogramOutput->ForeColor;
-			if (index > rtbprogramOutput->Lines->Length)
-				index = rtbprogramOutput->Lines->Length;
-			auto start = rtbprogramOutput->GetFirstCharIndexFromLine(index);  // Get the 1st char index of the appended text
-			auto length = rtbprogramOutput->Lines[index]->Length;
-			rtbprogramOutput->Select(start, length);                 // Select from there to the end
-			rtbprogramOutput->SelectionBackColor = Color::White;
-			rtbprogramOutput->SelectionColor = Color::Black;
-			start = rtbprogramOutput->GetFirstCharIndexFromLine((index - 10) ? index - 10 : 0);  // Get the 1st char index of the appended text
-			rtbprogramOutput->Select(start, 0);
-			rtbprogramOutput->ScrollToCaret();
+			static int lastIndex;
+			if (lastIndex != index && index < rtbprogramOutput->Lines->Length) {
+				rtbprogramOutput->SelectAll();
+				rtbprogramOutput->SelectionBackColor = rtbprogramOutput->BackColor;
+				rtbprogramOutput->SelectionColor = rtbprogramOutput->ForeColor;
+				auto start = rtbprogramOutput->GetFirstCharIndexFromLine(index);  // Get the 1st char index of the appended text
+				auto length = rtbprogramOutput->Lines[index]->Length;
+				rtbprogramOutput->Select(start, length);                 // Select from there to the end
+				rtbprogramOutput->SelectionBackColor = Color::White;
+				rtbprogramOutput->SelectionColor = Color::Black;
+				start = rtbprogramOutput->GetFirstCharIndexFromLine(std::max(index - 9, 0));  // Get the 1st char index of the appended text
+				rtbprogramOutput->Select(start, 0);
+				rtbprogramOutput->ScrollToCaret();
+			}
+			lastIndex = index;
 		}
 
 		void updateUI()
@@ -1087,7 +1089,7 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 		btnStop->Enabled = false;
 		btnStep->Enabled = true;
 		btnIgnore->Enabled = true;
-		highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
+		highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
 	}
 
 	private: System::Void btnStart_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1114,8 +1116,7 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 		assert(cpuRef != nullptr);
 		try {
 			cpuRef->singleStep();
-			auto pc = cpuRef->registerData.getPC();
-			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[pc].lineInFile);
+			highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
 		}
 		catch (std::exception & e) {
 			cpuRunTimer->Stop();
@@ -1128,13 +1129,13 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 		cpuRef->registerData.setPC(0);
 		cpuRef->registerData.resetPowerOn();
 		cpuRef->cpuRegisters.w = 0;
-		highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
+		highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
 	}
 	private: System::Void btnIgnore_Click(System::Object^ sender, System::EventArgs^ e) {
 		assert(cpuRef != nullptr);
 		try {
 			cpuRef->registerData.increasePCBy(1);
-			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
+			highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
 		}
 		catch (std::exception & e) {
 			cpuRunTimer->Stop();
@@ -1146,7 +1147,7 @@ private: System::Windows::Forms::ColorDialog^ colorDialog1;
 		assert(cpuRef != nullptr);
 		try {
 			cpuRef->singleStep();
-			highlightConsoleLine(cpuRef->parser.getLstOpcodeInfo()[cpuRef->registerData.getPC()].lineInFile);
+			highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
 		}
 		catch (std::exception & e) {
 			cpuRunTimer->Stop();

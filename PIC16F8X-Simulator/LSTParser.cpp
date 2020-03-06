@@ -12,17 +12,17 @@ LSTParser::LSTParser()
 
 void LSTParser::readFile(const std::string& fileName)
 {
-		std::ifstream file(fileName);
-		if (file.is_open()) {
-			std::string line;
-			while (getline(file, line)) {
-				lstFile.push_back(line);
-			}
-			file.close();
+	std::ifstream file(fileName);
+	if (file.is_open()) {
+		std::string line;
+		while (getline(file, line)) {
+			lstFile.push_back(line);
 		}
-		else {
-			throw std::runtime_error(fmt::format("%s: File not found: %s\n", __FUNCTION__, fileName));
-		}
+		file.close();
+	}
+	else {
+		throw std::runtime_error(fmt::format("%s: File not found: %s\n", __FUNCTION__, fileName));
+	}
 }
 
 void LSTParser::parseLstFile()
@@ -42,12 +42,26 @@ void LSTParser::parseLstFile()
 	}
 }
 
-const std::vector<LSTOpcodeInfo>& LSTParser::getLstOpcodeInfo()
+uint16_t LSTParser::getMaxPc() const
 {
-	return lstOpcodeInfo;
+	return static_cast<uint16_t>(lstOpcodeInfo.size()) - 1;
 }
 
-const std::vector<std::string>& LSTParser::getFile()
+const LSTOpcodeInfo& LSTParser::getOpcodeInfo(const uint16_t& pc) const
+{
+	if (pc >= lstOpcodeInfo.size())
+		throw std::runtime_error(fmt::format("%s: Program counter is out of range. PC = %d, Max = %d", __FUNCTION__,  static_cast<int>(pc), static_cast<int>(lstOpcodeInfo.size())));
+	else return lstOpcodeInfo.at(pc);
+}
+
+const uint16_t& LSTParser::getLineInFile(const uint16_t& pc) const
+{
+	if (pc >= lstOpcodeInfo.size())
+		return 0;
+	else return lstOpcodeInfo.at(pc).lineInFile;
+}
+
+const std::vector<std::string>& LSTParser::getFile() const
 {
 	return lstFile;
 }
