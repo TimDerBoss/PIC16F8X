@@ -130,8 +130,8 @@ namespace PIC16F8X_Simulator {
 
 	private: System::Windows::Forms::Label^ btnRB5;
 	private: System::Windows::Forms::Button^ btnRuntimeReset;
-private: System::Windows::Forms::GroupBox^ groupBox6;
-private: System::Windows::Forms::GroupBox^ groupBox7;
+	private: System::Windows::Forms::GroupBox^ groupBox6;
+	private: System::Windows::Forms::GroupBox^ groupBox7;
 
 
 
@@ -483,6 +483,7 @@ private: System::Windows::Forms::GroupBox^ groupBox7;
 			// 
 			this->rtbprogramOutput->BackColor = System::Drawing::Color::Black;
 			this->rtbprogramOutput->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->rtbprogramOutput->DetectUrls = false;
 			this->rtbprogramOutput->Font = (gcnew System::Drawing::Font(L"Consolas", 8.5F));
 			this->rtbprogramOutput->ForeColor = System::Drawing::Color::White;
 			this->rtbprogramOutput->Location = System::Drawing::Point(6, 14);
@@ -491,7 +492,9 @@ private: System::Windows::Forms::GroupBox^ groupBox7;
 			this->rtbprogramOutput->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
 			this->rtbprogramOutput->Size = System::Drawing::Size(582, 285);
 			this->rtbprogramOutput->TabIndex = 7;
+			this->rtbprogramOutput->TabStop = false;
 			this->rtbprogramOutput->Text = L"";
+			this->rtbprogramOutput->WordWrap = false;
 			// 
 			// btnIgnore
 			// 
@@ -982,7 +985,10 @@ private: System::Windows::Forms::GroupBox^ groupBox7;
 		{
 			rtbprogramOutput->Text = "";
 			for (auto& line : program) {
-				rtbprogramOutput->Text += gcnew String(line.c_str()) + "\r\n";
+				rtbprogramOutput->Text += gcnew String(line.c_str());
+				for (int i = line.length(); i < 100; i++)
+					rtbprogramOutput->Text += " ";
+				rtbprogramOutput->Text += "\r\n";
 			}
 			rtbprogramOutput->Text += "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n";
 		}

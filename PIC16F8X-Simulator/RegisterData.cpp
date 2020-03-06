@@ -1,5 +1,6 @@
 #include "RegisterData.h"
 #include "CPU.h"
+#include "Exception.h"
 
 #include <FormatString.h>
 
@@ -58,7 +59,7 @@ void RegisterData::increasePCBy(uint16_t amount)
 uint16_t RegisterData::translateAddress(uint8_t address)
 {
 	if (address > 0x7F) {
-		throw std::runtime_error(fmt::format("%s: Tried to access register at address %2X. Max allowed address if 0x7F.\nDid you forget to switch register banks?", address));
+		throw exception("Tried to access register at address %2X. Max allowed address if 0x7F.\nDid you forget to switch register banks?", address);
 	}
 	// if bank 1
 	if((memoryMap[0x03] >> 5) & 1) {

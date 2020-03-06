@@ -41,6 +41,9 @@
     <ClInclude Include="MainForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Exception.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InstructionBase.cpp">

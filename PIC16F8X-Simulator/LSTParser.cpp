@@ -1,9 +1,11 @@
 #include "LSTParser.h"
+#include "Exception.h"
 
 #include <FormatString.h>
 
 #include <fstream>
 #include <sstream>
+
 
 LSTParser::LSTParser()
 	: lstRegex(R"(^([\d|\w]{4})\s([\d|\w]{4})\s+(\d+).*$)")
@@ -21,10 +23,10 @@ void LSTParser::readFile(const std::string& fileName)
 		file.close();
 	}
 	else {
-		throw std::runtime_error(fmt::format("%s: File not found: %s\n", __FUNCTION__, fileName));
+		throw exception("File not found: %s", fileName);
 	}
 	if (lstFile.empty()) {
-		throw std::runtime_error(fmt::format("%s: Invalid file format", __FUNCTION__));
+		throw exception("Invalid file format");
 	}
 }
 
@@ -53,7 +55,7 @@ uint16_t LSTParser::getMaxPc() const
 const LSTOpcodeInfo& LSTParser::getOpcodeInfo(const uint16_t& pc) const
 {
 	if (pc >= lstOpcodeInfo.size())
-		throw std::runtime_error(fmt::format("%s: Program counter is out of range. PC = %d, Max = %d", __FUNCTION__,  static_cast<int>(pc), static_cast<int>(lstOpcodeInfo.size())));
+		throw exception("Program counter is out of range. PC = %d, Max = %d", static_cast<int>(pc), static_cast<int>(lstOpcodeInfo.size()));
 	else return lstOpcodeInfo.at(pc);
 }
 

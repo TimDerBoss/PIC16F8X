@@ -1,6 +1,7 @@
 #include "Instructions.h"
 #include "RegisterData.h"
 #include "CPU.h"
+#include "Exception.h"
 
 #include <iostream>
 #include <FormatString.h>
@@ -478,7 +479,7 @@ CLRWDT::CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 
 void CLRWDT::execute() 
 {
-	throw std::runtime_error(fmt::format("Not implemented: %s", identifier));
+	throw exception("Not implemented: %s", identifier);
 	registerData.increasePCBy(getCycles());
 }
 
@@ -528,7 +529,7 @@ RETFIE::RETFIE(const std::string& identifier, uint16_t mask, uint16_t value, Reg
 void RETFIE::execute() 
 {
 	if(registerData.stack.empty())
-		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
+		throw exception("Stack is empty!");
 	registerData.setPC(registerData.stack.top());
 	registerData.stack.pop();
 	registerData.writeBitSimulated(0xB, 7, true); // GIE
@@ -543,7 +544,7 @@ RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 void RETLW::execute() 
 {
 	if(registerData.stack.empty())
-		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
+		throw exception("Stack is empty!");
 	registerData.setPC(registerData.stack.top());
 	registerData.stack.pop();
 	registerData.cpuRegisters.w = static_cast<uint8_t>(data.k);

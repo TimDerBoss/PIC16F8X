@@ -4,6 +4,7 @@
 #include "Instructions.h"
 #include "InstructionHandler.h"
 #include "RegisterData.h"
+#include "Exception.h"
 
 #include <FormatString.h>
 
@@ -94,6 +95,6 @@ std::shared_ptr<InstructionBase>& InstructionHandler::decode(const uint16_t& opc
 				return i;
 			}
 		}
-		throw std::runtime_error(fmt::format("%s: Requested instruction is not implemented: 0x%X", __FUNCTION__, opcode));
+		throw exception("Requested instruction is not implemented: 0x%X", opcode);
 	}
 }
