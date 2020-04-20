@@ -8,15 +8,20 @@ void CPU::initialize(const std::string& fileName)
 	parser.parseLstFile();
 }
 
+// run just the next instruction
 void CPU::singleStep()
 {
+	// only while we haven't reached the end of the program
 	if (registerData.getPC() <= parser.getMaxPc()) {
+		// check if an interrupt has happened meanwhile
 		if (processInterrupts()) {
+			// jump to interrupt
 			registerData.stack.push(registerData.getPC());
 			registerData.setPC(4);
 			timeActive += 4;
 		}
 		else {
+			// else execute the normal code
 			auto& opcode = parser.getOpcodeInfo(registerData.getPC()).opcode;
 			auto& instruction = instructionHandler.decode(opcode);
 			instruction->execute();

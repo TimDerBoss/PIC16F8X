@@ -7,17 +7,25 @@
 #include <sstream>
 
 
-LSTParser::LSTParser()
-	: lstRegex(R"(^([\d|\w]{4})\s([\d|\w]{4})\s+(\d+).*$)")
+
+// Regex for reading in LST files and splitting the file nito the different sections of the file
+LstParser::LstParser()
+	: lineRegex(R"(^([\d|\w]{4})\s([\d|\w]{4})\s+(\d+).*$)")
+	, fileRegex(R"(^(\s{20}\d{5}.*)$|^([\d|\w]{4})\s([\d|\w]{4})\s{11}\d{5}\s.*$)")
 {
 }
 
-void LSTParser::readFile(const std::string& fileName)
+// Check if file matched regex, if yes read the file into a buffer
+void LstParser::readFile(const std::string& fileName)
 {
 	std::ifstream file(fileName);
 	if (file.is_open()) {
 		std::string line;
 		while (getline(file, line)) {
+			std::smatch matches;
+			if (!std::regex_match(line, matches, fileRegex)) {
+				throw exception("Invalid file format");
+			}
 			lstFile.push_back(line);
 		}
 		file.close();
@@ -25,19 +33,20 @@ void LSTParser::readFile(const std::string& fileName)
 	else {
 		throw exception("File not found: %s", fileName);
 	}
-	if (lstFile.empty()) {
-		throw exception("Invalid file format");
-	}
 }
 
-void LSTParser::parseLstFile()
+/* Split he lst file into different sections
+* opcode: what to execute
+* lineInFile: where is the opcode located in the lst file?
+*/
+void LstParser::parseLstFile()
 {
 	for (std::string line : lstFile) {
 		line = line.substr(0, line.length() - 2);
 		std::smatch matches;
-		if (std::regex_match(line, matches, lstRegex)) {
+		if (std::regex_match(line, matches, lineRegex)) {
 			// Index of the object in the vector is the instruction number
-			LSTOpcodeInfo loi{};
+			LstOpcodeInfo loi{};
 			loi.lineInFile = stoi(matches[3]) - 1;
 			std::stringstream ss;
 			ss << std::hex << matches[2];
@@ -47,26 +56,31 @@ void LSTParser::parseLstFile()
 	}
 }
 
-uint16_t LSTParser::getMaxPc() const
+// get the maximum value the program counter can reach in order not to crash the UI
+// e.g. showinga line with a program counter value that doesn't exist
+uint16_t LstParser::getMaxPc() const
 {
 	return static_cast<uint16_t>(lstOpcodeInfo.size()) - 1;
 }
 
-const LSTOpcodeInfo& LSTParser::getOpcodeInfo(const uint16_t& pc) const
+// get the opcode as well as the line in file the opcode is located at
+const LstOpcodeInfo& LstParser::getOpcodeInfo(const uint16_t& pc) const
 {
 	if (pc >= lstOpcodeInfo.size())
 		throw exception("Program counter is out of range. PC = %d, Max = %d", static_cast<int>(pc), static_cast<int>(lstOpcodeInfo.size()));
 	else return lstOpcodeInfo.at(pc);
 }
 
-const uint16_t& LSTParser::getLineInFile(const uint16_t& pc) const
+// get the line in the lst file wherre the opcode is located at
+uint16_t LstParser::getLineInFile(const uint16_t& pc) const
 {
 	if (pc >= lstOpcodeInfo.size())
 		return 0;
 	else return lstOpcodeInfo.at(pc).lineInFile;
 }
 
-const std::vector<std::string>& LSTParser::getFile() const
+// get the raw lst file data
+const std::vector<std::string>& LstParser::getFile() const
 {
 	return lstFile;
 }

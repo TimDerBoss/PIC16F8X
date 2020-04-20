@@ -17,16 +17,19 @@ InstructionBase::InstructionBase(const std::string& identifier, uint16_t mask, u
 
 bool InstructionBase::match(const uint16_t& opcode)
 {
+	// and the opcode with the mask and return the result
 	return (opcode & mask) == value;
 }
 
 const int& InstructionBase::getCycles()
 {
+	// get the number of machine cycles the instruction takes
 	return cycles;
 }
 
 void InstructionBase::cacheData(InstructionData data)
 {
+	// cache some data to use later
 	this->data = data;
 }
 

@@ -132,6 +132,7 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::Button^ btnRuntimeReset;
 	private: System::Windows::Forms::GroupBox^ groupBox6;
 	private: System::Windows::Forms::GroupBox^ groupBox7;
+private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 
 
 
@@ -210,6 +211,7 @@ namespace PIC16F8X_Simulator {
 			this->btnRA5 = (gcnew System::Windows::Forms::Label());
 			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->gbFSR->SuspendLayout();
 			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
@@ -240,7 +242,7 @@ namespace PIC16F8X_Simulator {
 			this->gbFSR->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->gbFSR->ForeColor = System::Drawing::Color::White;
-			this->gbFSR->Location = System::Drawing::Point(15, 12);
+			this->gbFSR->Location = System::Drawing::Point(12, 12);
 			this->gbFSR->Name = L"gbFSR";
 			this->gbFSR->Size = System::Drawing::Size(283, 251);
 			this->gbFSR->TabIndex = 0;
@@ -519,7 +521,7 @@ namespace PIC16F8X_Simulator {
 			// 
 			this->groupBox1->Controls->Add(this->rtbprogramOutput);
 			this->groupBox1->ForeColor = System::Drawing::Color::White;
-			this->groupBox1->Location = System::Drawing::Point(15, 271);
+			this->groupBox1->Location = System::Drawing::Point(12, 271);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(594, 305);
 			this->groupBox1->TabIndex = 9;
@@ -534,7 +536,7 @@ namespace PIC16F8X_Simulator {
 			this->groupBox2->Controls->Add(this->btnStop);
 			this->groupBox2->Controls->Add(this->btnReset);
 			this->groupBox2->ForeColor = System::Drawing::Color::White;
-			this->groupBox2->Location = System::Drawing::Point(615, 271);
+			this->groupBox2->Location = System::Drawing::Point(612, 271);
 			this->groupBox2->Name = L"groupBox2";
 			this->groupBox2->Size = System::Drawing::Size(88, 161);
 			this->groupBox2->TabIndex = 10;
@@ -623,7 +625,7 @@ namespace PIC16F8X_Simulator {
 			this->btnClose->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)),
 				static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
 			this->btnClose->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnClose->Location = System::Drawing::Point(674, -2);
+			this->btnClose->Location = System::Drawing::Point(667, -1);
 			this->btnClose->Name = L"btnClose";
 			this->btnClose->Size = System::Drawing::Size(47, 23);
 			this->btnClose->TabIndex = 13;
@@ -636,7 +638,7 @@ namespace PIC16F8X_Simulator {
 			this->groupBox3->Controls->Add(this->groupBox5);
 			this->groupBox3->Controls->Add(this->groupBox4);
 			this->groupBox3->ForeColor = System::Drawing::Color::White;
-			this->groupBox3->Location = System::Drawing::Point(310, 12);
+			this->groupBox3->Location = System::Drawing::Point(307, 12);
 			this->groupBox3->Name = L"groupBox3";
 			this->groupBox3->Size = System::Drawing::Size(245, 251);
 			this->groupBox3->TabIndex = 14;
@@ -907,7 +909,7 @@ namespace PIC16F8X_Simulator {
 			this->groupBox6->Controls->Add(this->btnRuntimeReset);
 			this->groupBox6->Controls->Add(this->lRuntime);
 			this->groupBox6->ForeColor = System::Drawing::Color::White;
-			this->groupBox6->Location = System::Drawing::Point(615, 438);
+			this->groupBox6->Location = System::Drawing::Point(612, 438);
 			this->groupBox6->Name = L"groupBox6";
 			this->groupBox6->Size = System::Drawing::Size(88, 66);
 			this->groupBox6->TabIndex = 15;
@@ -919,19 +921,23 @@ namespace PIC16F8X_Simulator {
 			this->groupBox7->Controls->Add(this->label6);
 			this->groupBox7->Controls->Add(this->nudSimSpeed);
 			this->groupBox7->ForeColor = System::Drawing::Color::White;
-			this->groupBox7->Location = System::Drawing::Point(615, 510);
+			this->groupBox7->Location = System::Drawing::Point(612, 510);
 			this->groupBox7->Name = L"groupBox7";
 			this->groupBox7->Size = System::Drawing::Size(88, 66);
 			this->groupBox7->TabIndex = 17;
 			this->groupBox7->TabStop = false;
 			this->groupBox7->Text = L"Simulation";
 			// 
+			// openFileDialog1
+			// 
+			this->openFileDialog1->FileName = L"openFileDialog1";
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Black;
-			this->ClientSize = System::Drawing::Size(720, 586);
+			this->ClientSize = System::Drawing::Size(711, 588);
 			this->Controls->Add(this->groupBox7);
 			this->Controls->Add(this->groupBox6);
 			this->Controls->Add(this->groupBox3);
@@ -990,7 +996,7 @@ namespace PIC16F8X_Simulator {
 					rtbprogramOutput->Text += " ";
 				rtbprogramOutput->Text += "\r\n";
 			}
-			rtbprogramOutput->Text += "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n";
+			rtbprogramOutput->Text += "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n";
 		}
 
 		std::string asIO(bool value) {

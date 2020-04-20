@@ -11,8 +11,27 @@
 
 #define ADD_INSTRUCTION(i, mask, value) std::make_shared<i>(#i, mask, value, rd)
 
+
+/* HOW DOES THIS PROGRAM IDENTIFY INSTRUCTIONS?
+*
+* Each instruction has a unique bit pattern with a unique length.
+* All we have to do to read instructions is to execute a logical and operation on the bit pattern of 
+* the opcode with a mask that cuts off everything that isnt part of the opcode itself (e.g. arguments)
+*
+* EXAMPLE:
+* if the full bit pattern of the operation is kkk0 1001 the mask would equal 0001 1111 (to get the last 5 bits which are relevant in order to uniquely identify the opcode)
+* if the result of the logical and equals to 0000 1001 we know that this is the specific operation 
+* this way each operation can be clearly seperated
+*/
+
 InstructionHandler::InstructionHandler(RegisterData& rd)
 {
+	// Here the instructions are setup
+	// each opcode is checked on the first run (after that it will be cached)
+	// we specify the mask (so that we know which part of the opcode we have to check) as well as the result
+	// the opcode is masked (logical anded) and we can check if the resuklting number matches the unique result of an instruction
+	// this way we have to iterate through each instruction (the first time when its not already cached)
+
 	// Byte oriented operations
 	instructions.emplace_back(ADD_INSTRUCTION(ADDWF, 0xFF00, 0x0700));
 	instructions.emplace_back(ADD_INSTRUCTION(ANDWF, 0xFF00, 0x0500));
@@ -57,20 +76,30 @@ InstructionHandler::InstructionHandler(RegisterData& rd)
 
 InstructionData InstructionHandler::getInstructionData(const uint16_t& opcode)
 {
+	// Each type of instruction has a unique bit pattern from which we can determine which type the opcode has
+	// for the aske of convenience we can extract the needed bits for each operation
+	// (some have b-bits, others have k-bits... see the dicumentation for more information)
+	// we plit the instruction to conveniently use these bits in the instruction implementation
+
 	InstructionData data{};
+	// the most significant 4 bits tell us what type the instruction has
 	uint16_t commandType = opcode & 0xF000u;
 	switch (commandType) {
+		// if these bits equal to 0000 the instruction is byte oriented
 	case 0x0000: // Byte oriented command
 		data.d = opcode >> 0x7u & 0x1u;
 		data.f = opcode & 0x007Fu;
 		break;
+		// if these bits equal to 0001 the instruction is byte oriented
 	case 0x1000: // Bit oriented command
 		data.b = opcode >> 0x7u & 0x7u;
 		data.f = opcode & 0x007Fu;
 		break;
+		// if these bits equal to 0010 the instruction is byte oriented
 	case 0x2000: // literal and control long address
 		data.k = opcode & 0x07FFu;
 		break;
+		// if these bits equal to 0011 the instruction is byte oriented
 	case 0x3000: // literal and control uint16_t address
 		data.k = opcode & 0x00FFu;
 		break;
@@ -80,6 +109,9 @@ InstructionData InstructionHandler::getInstructionData(const uint16_t& opcode)
 	return data;
 }
 
+// this function decodes an instruction by using the code showed above
+// there is an instruction cache, that means that the logical and operation doesn't need to be executed every time a instruction is calles but just the first time.
+// after that it can be read from the cache (minimal performance improvement)
 std::shared_ptr<InstructionBase>& InstructionHandler::decode(const uint16_t& opcode)
 {
 	auto instruction = instructionCache.find(opcode);

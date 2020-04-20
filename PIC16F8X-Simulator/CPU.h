@@ -27,7 +27,7 @@ public:
 
 	int timeActive{ 0 };
 
-	LSTParser parser;
+	LstParser parser;
 	CPURegisters cpuRegisters;
 	RegisterData registerData;
 	InstructionHandler instructionHandler;
