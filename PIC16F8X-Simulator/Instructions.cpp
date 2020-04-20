@@ -22,7 +22,7 @@ void ADDWF::execute()
 	} else {
 		registerData.writeDataSimulated(data.f, static_cast<uint8_t>(result));
 	}
-	registerData.writeBitSimulated(0x3, 0x0, result > 255); // carry bit
+	registerData.writeBitSimulated(0x3, 0x0, result > 255 || result < 0); // carry bit
 	registerData.writeBitSimulated(0x3, 0x1, preResult <= 0xF && static_cast<uint8_t>(result) > 0xF); // digit carry
 	registerData.writeBitSimulated(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 
@@ -584,7 +584,7 @@ SUBLW::SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, Regis
 void SUBLW::execute() 
 {
 	auto& w = registerData.cpuRegisters.w;
-	int result = static_cast<int>(registerData.readDataSimulated((uint8_t)data.k) - w);
+	int result = static_cast<int>(data.k) - w;
 	w = static_cast<uint8_t>(result);
 	registerData.writeBitSimulated(0x3, 0x0, result >= 0); // carry bit
 	// TODO: fix DC
@@ -605,7 +605,6 @@ void XORLW::execute()
 	uint8_t result = w ^ data.k;
 	w = result;
 	registerData.writeBitSimulated(0x3, 0x2, result == 0); // zero flag
-	registerData.increasePCBy(1);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 	registerData.increasePCBy(getCycles());
 }
