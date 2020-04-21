@@ -1,7 +1,7 @@
 #include "RegisterData.h"
 #include "CPU.h"
 #include "Exception.h"
-
+#include <cassert>
 #include <FormatString.h>
 
 RegisterData::RegisterData(CPURegisters& cpuRegisters)
@@ -15,21 +15,54 @@ RegisterData::RegisterData(CPURegisters& cpuRegisters)
 	cpuRegisters.w = 0;
 }
 
-// Read a simulated bit
-// this function works like the real controller: bank 1 can only be acessed if rp0 ist set.
-// this function is used for the simulation
 uint8_t RegisterData::readBit(uint8_t address, uint8_t index)
 {
 	return *ram.at(address) >> index & 1;
 }
 
-// write a simulated bit
-// this function works like the real controller: bank 1 can only be acessed if rp0 ist set.
-// this function is used for the simulation
 void RegisterData::writeBit(uint8_t address, uint8_t index, bool value)
 {
 	*ram.at(address) &= ~(1 << index);
 	*ram.at(address) |= value << index;
+}
+
+void RegisterData::writeByte(const uint8_t& address, unsigned char value)
+{
+	*ram.at(address) = value;
+}
+
+const uint8_t& RegisterData::readByte(const uint8_t& address)
+{
+	return *ram.at(address);
+}
+
+uint8_t RegisterData::readBitS(uint8_t address, uint8_t index)
+{
+	assert(address <= 0x7F);
+	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
+	return readBit(adr, index);
+}
+
+void RegisterData::writeBitS(uint8_t address, uint8_t index, bool value)
+{
+	assert(address <= 0x7F);
+	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
+	writeByte(adr, readByte(adr) & ~(1 << index));
+	writeByte(adr, readByte(adr) | value << index);
+}
+
+void RegisterData::writeByteS(const uint8_t& address, unsigned char value)
+{
+	assert(address <= 0x7F);
+	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
+	writeByte(adr, value);;
+}
+
+const uint8_t& RegisterData::readByteS(const uint8_t& address)
+{
+	assert(address <= 0x7F);
+	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
+	return readByte(adr);
 }
 
 // reset all values to their power-on defaults
@@ -55,18 +88,6 @@ void RegisterData::initialize()
 			ram.push_back(std::make_shared<uint8_t>(0));
 		}
 	}
-}
-
-// same as witeBitSimulated but write a full byte
-void RegisterData::writeByte(const uint8_t& address, unsigned char value)
-{
-	*ram.at(address)= value;
-}
-
-// same as readBitSimulated but read a full byte
-const uint8_t& RegisterData::readByte(const uint8_t& address)
-{
-	return *ram.at(address);
 }
 
 // increase the program counter by a given amount
