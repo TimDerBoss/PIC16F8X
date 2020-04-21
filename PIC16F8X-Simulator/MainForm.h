@@ -1072,7 +1072,8 @@ private: System::Windows::Forms::Label^ lAddresses;
 
 		void highlightConsoleLine(int index)
 		{
-			if (index < rtbprogramOutput->Lines->Length) {
+			static int lastIndex;
+			if (index != lastIndex && index < rtbprogramOutput->Lines->Length) {
 				rtbprogramOutput->SelectAll();
 				rtbprogramOutput->SelectionBackColor = rtbprogramOutput->BackColor;
 				rtbprogramOutput->SelectionColor = rtbprogramOutput->ForeColor;
@@ -1085,6 +1086,7 @@ private: System::Windows::Forms::Label^ lAddresses;
 				rtbprogramOutput->Select(start, 0);
 				rtbprogramOutput->ScrollToCaret();
 			}
+			lastIndex = index;
 		}
 
 		void updateUI()
@@ -1163,6 +1165,15 @@ private: System::Windows::Forms::Label^ lAddresses;
 			btnRB2->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 2)).c_str());
 			btnRB1->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 1)).c_str());
 			btnRB0->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 0)).c_str());
+
+			for (int i = 0; i < 0xFF; i += 8) {
+				std::string str = fmt::format(" %2X  |", i);
+				for (int n = 0; n < 8; n++)
+				{
+					str += fmt::format(" %2X  |", cpuRef->registerData.readByte(i + n));
+				}
+				listBox1->Items[i / 8] = gcnew System::String(str.c_str());
+			}
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1206,7 +1217,7 @@ private: System::Windows::Forms::Label^ lAddresses;
 		highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
 
 
-		lAddresses->Text = "Addr.| +00 | +01 | +02 | +03 | +04 | +05 | +06 | +07 ";
+		lAddresses->Text = "Addr.| +00 | +01 | +02 | +03 | +04 | +05 | +06 | +07 |";
 		for (int i = 0; i < 0xFF; i += 8) {
 			std::string str = fmt::format(" %2X  |", i);
 			for (int n = 0; n < 8; n++)
@@ -1339,8 +1350,6 @@ private: System::Windows::Forms::Label^ lAddresses;
 	}
 	private: System::Void btnLoadFile_Click(System::Object^ sender, System::EventArgs^ e) {
 		IO::Stream^ myStream;
-
-		//openFileDialog1->InitialDirectory = "c:\\";
 		openFileDialog1->Filter = "LST files (*.lst)|*.lst";
 		openFileDialog1->FilterIndex = 2;
 		openFileDialog1->RestoreDirectory = true;
@@ -1351,11 +1360,10 @@ private: System::Windows::Forms::Label^ lAddresses;
 			{
 				msclr::interop::marshal_context ctx;
 				cpuRef->initialize(ctx.marshal_as<std::string>(openFileDialog1->FileName));
-				cpuRef->registerData.setPC(0);
 				cpuRef->registerData.resetPowerOn();
 				cpuRef->cpuRegisters.w = 0;
-				setProgram(cpuRef->parser.getFile());
 				cpuRef->timeActive = 0;
+				setProgram(cpuRef->parser.getFile());
 				updateUI();
 				myStream->Close();
 			}

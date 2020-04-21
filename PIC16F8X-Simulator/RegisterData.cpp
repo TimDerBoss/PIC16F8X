@@ -47,8 +47,8 @@ void RegisterData::writeBitS(uint8_t address, uint8_t index, bool value)
 {
 	assert(address <= 0x7F);
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
-	writeByte(adr, readByte(adr) & ~(1 << index));
-	writeByte(adr, readByte(adr) | value << index);
+	writeByte(adr, readByte(adr) & ~(1 << index)); // clear bit
+	writeByte(adr, readByte(adr) | value << index); // set bit to value
 }
 
 void RegisterData::writeByteS(const uint8_t& address, unsigned char value)
@@ -69,6 +69,7 @@ const uint8_t& RegisterData::readByteS(const uint8_t& address)
 void RegisterData::resetPowerOn()
 {
 	initialize();
+	setPC(0);
 	cpuRegisters.w = 0;
 	// Set default startup values
 	writeByte(0x03, 0x18); // Status

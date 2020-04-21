@@ -4,7 +4,7 @@
 
 void CPU::initialize(const std::string& fileName)
 {
-	parser.readFile("..\\Lehmann Testprogramme\\TPicSim1.LST");
+	parser.readFile(fileName);
 	parser.parseLstFile();
 }
 
