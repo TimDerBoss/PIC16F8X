@@ -133,6 +133,7 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::GroupBox^ groupBox6;
 	private: System::Windows::Forms::GroupBox^ groupBox7;
 private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
+private: System::Windows::Forms::Button^ btnLoadFile;
 
 
 
@@ -212,6 +213,7 @@ private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->btnLoadFile = (gcnew System::Windows::Forms::Button());
 			this->gbFSR->SuspendLayout();
 			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
@@ -491,7 +493,7 @@ private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 			this->rtbprogramOutput->Location = System::Drawing::Point(6, 14);
 			this->rtbprogramOutput->Name = L"rtbprogramOutput";
 			this->rtbprogramOutput->ReadOnly = true;
-			this->rtbprogramOutput->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
+			this->rtbprogramOutput->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
 			this->rtbprogramOutput->Size = System::Drawing::Size(755, 285);
 			this->rtbprogramOutput->TabIndex = 7;
 			this->rtbprogramOutput->TabStop = false;
@@ -625,7 +627,7 @@ private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 			this->btnClose->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)),
 				static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
 			this->btnClose->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnClose->Location = System::Drawing::Point(842, -3);
+			this->btnClose->Location = System::Drawing::Point(842, 0);
 			this->btnClose->Name = L"btnClose";
 			this->btnClose->Size = System::Drawing::Size(47, 23);
 			this->btnClose->TabIndex = 13;
@@ -932,12 +934,30 @@ private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 			// 
 			this->openFileDialog1->FileName = L"openFileDialog1";
 			// 
+			// btnLoadFile
+			// 
+			this->btnLoadFile->BackColor = System::Drawing::Color::Black;
+			this->btnLoadFile->Cursor = System::Windows::Forms::Cursors::Arrow;
+			this->btnLoadFile->FlatAppearance->BorderColor = System::Drawing::Color::White;
+			this->btnLoadFile->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DimGray;
+			this->btnLoadFile->FlatAppearance->MouseOverBackColor = System::Drawing::Color::DimGray;
+			this->btnLoadFile->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->btnLoadFile->ForeColor = System::Drawing::Color::WhiteSmoke;
+			this->btnLoadFile->Location = System::Drawing::Point(767, 0);
+			this->btnLoadFile->Name = L"btnLoadFile";
+			this->btnLoadFile->Size = System::Drawing::Size(75, 23);
+			this->btnLoadFile->TabIndex = 18;
+			this->btnLoadFile->Text = L"Load File";
+			this->btnLoadFile->UseVisualStyleBackColor = false;
+			this->btnLoadFile->Click += gcnew System::EventHandler(this, &MainForm::btnLoadFile_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Black;
 			this->ClientSize = System::Drawing::Size(885, 588);
+			this->Controls->Add(this->btnLoadFile);
 			this->Controls->Add(this->groupBox7);
 			this->Controls->Add(this->groupBox6);
 			this->Controls->Add(this->groupBox3);
@@ -992,11 +1012,12 @@ private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 			rtbprogramOutput->Text = "";
 			for (auto& line : program) {
 				rtbprogramOutput->Text += gcnew String(line.c_str());
-				for (int i = line.length(); i < 150; i++)
-					rtbprogramOutput->Text += " ";
+				//for (int i = line.length(); i < 150; i++)
+					//rtbprogramOutput->Text += " ";
 				rtbprogramOutput->Text += "\r\n";
 			}
 			rtbprogramOutput->Text += "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n";
+			highlightConsoleLine(cpuRef->parser.getOpcodeInfo(0).lineInFile);
 		}
 
 		std::string asIO(bool value) {
@@ -1007,8 +1028,7 @@ private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 
 		void highlightConsoleLine(int index)
 		{
-			static int lastIndex;
-			if (lastIndex != index && index < rtbprogramOutput->Lines->Length) {
+			if (index < rtbprogramOutput->Lines->Length) {
 				rtbprogramOutput->SelectAll();
 				rtbprogramOutput->SelectionBackColor = rtbprogramOutput->BackColor;
 				rtbprogramOutput->SelectionColor = rtbprogramOutput->ForeColor;
@@ -1021,7 +1041,6 @@ private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 				rtbprogramOutput->Select(start, 0);
 				rtbprogramOutput->ScrollToCaret();
 			}
-			lastIndex = index;
 		}
 
 		void updateUI()
@@ -1180,6 +1199,7 @@ private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 		cpuRef->registerData.setPC(0);
 		cpuRef->registerData.resetPowerOn();
 		cpuRef->cpuRegisters.w = 0;
+		cpuRef->timeActive = 0;
 		highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
 	}
 	private: System::Void btnIgnore_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1262,5 +1282,29 @@ private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 	private: System::Void btnRuntimeReset_Click(System::Object^ sender, System::EventArgs^ e) {
 		cpuRef->timeActive = 0;
 	}
-	};
+	private: System::Void btnLoadFile_Click(System::Object^ sender, System::EventArgs^ e) {
+		IO::Stream^ myStream;
+
+		//openFileDialog1->InitialDirectory = "c:\\";
+		openFileDialog1->Filter = "LST files (*.lst)|*.lst";
+		openFileDialog1->FilterIndex = 2;
+		openFileDialog1->RestoreDirectory = true;
+
+		if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+		{
+			if ((myStream = openFileDialog1->OpenFile()) != nullptr)
+			{
+				msclr::interop::marshal_context ctx;
+				cpuRef->initialize(ctx.marshal_as<std::string>(openFileDialog1->FileName));
+				cpuRef->registerData.setPC(0);
+				cpuRef->registerData.resetPowerOn();
+				cpuRef->cpuRegisters.w = 0;
+				setProgram(cpuRef->parser.getFile());
+				cpuRef->timeActive = 0;
+				updateUI();
+				myStream->Close();
+			}
+		}
+	}
+};
 }

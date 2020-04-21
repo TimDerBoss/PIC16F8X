@@ -18,6 +18,7 @@ LstParser::LstParser()
 // Check if file matched regex, if yes read the file into a buffer
 void LstParser::readFile(const std::string& fileName)
 {
+	lstFile.clear();
 	std::ifstream file(fileName);
 	if (file.is_open()) {
 		std::string line;
@@ -41,6 +42,7 @@ void LstParser::readFile(const std::string& fileName)
 */
 void LstParser::parseLstFile()
 {
+	lstOpcodeInfo.clear();
 	for (std::string line : lstFile) {
 		line = line.substr(0, line.length() - 2);
 		std::smatch matches;
