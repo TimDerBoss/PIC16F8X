@@ -21,6 +21,7 @@ class LstParser
 		const LstOpcodeInfo& getOpcodeInfo(const uint16_t& pc) const;
 		uint16_t getLineInFile(const uint16_t& pc) const;
 		const std::vector<std::string>& getFile() const;
+		uint16_t getOpcode(uint16_t currentIndex);
 
 	private:
 		std::vector<std::string> lstFile;

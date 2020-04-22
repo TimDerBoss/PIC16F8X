@@ -7,6 +7,8 @@
 #include <vector>
 #include <functional>
 
+#include <boost/signals2/signal.hpp>
+
 class RegisterData
 {
 public:
@@ -32,6 +34,10 @@ public:
 
 	struct CPURegisters& cpuRegisters;
 	std::stack<uint16_t> stack;
+
+
+	boost::signals2::signal<void(int address)> onRamRead;
+	boost::signals2::signal<void(int address)> onRamWrite;
 private:
 	std::vector<std::shared_ptr<uint8_t>> ram;
 };

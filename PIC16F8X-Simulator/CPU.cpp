@@ -2,35 +2,25 @@
 
 #include <FormatString.h>
 
-void CPU::initialize(const std::string& fileName)
-{
-	parser.readFile(fileName);
-	parser.parseLstFile();
-}
-
 // run just the next instruction
-void CPU::singleStep()
+void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 {
-	// only while we haven't reached the end of the program
-	if (registerData.getPC() <= parser.getMaxPc()) {
-		// check if an interrupt has happened meanwhile
-		if (processInterrupts()) {
-			// jump to interrupt
-			registerData.stack.push(registerData.getPC());
-			registerData.setPC(4);
-			timeActive += 4;
-		}
-		else {
-			// else execute the normal code
-			auto& opcode = parser.getOpcodeInfo(registerData.getPC()).opcode;
-			auto& instruction = instructionHandler.decode(opcode);
-			instruction->execute();
-			timeActive += instruction->getCycles();
-		}
+	// check if an interrupt has happened meanwhile
+	if (processInterrupts(registerData)) {
+		// jump to interrupt
+		registerData.stack.push(registerData.getPC());
+		registerData.setPC(4);
+		timeActive += 4;
+	}
+	else {
+		// else execute the normal code
+		auto& instruction = instructionHandler.decode(opcode);
+		instruction->execute(registerData);
+		timeActive += instruction->getCycles();
 	}
 }
 
-bool CPU::processInterrupts()
+bool CPU::processInterrupts(RegisterData& registerData)
 {
 	static bool lastRB0;
 	// GIE set

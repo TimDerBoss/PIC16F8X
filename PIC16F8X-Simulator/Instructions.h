@@ -9,279 +9,279 @@ class RegisterData;
 class ADDWF : public InstructionBase
 {
 	public:
-		ADDWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		ADDWF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class ANDWF : public InstructionBase
 {
 	public:
-		ANDWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		ANDWF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class CLRF : public InstructionBase
 {
 	public:
-		CLRF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		CLRF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class CLRW : public InstructionBase
 {
 	public:
-		CLRW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		CLRW(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class COMF : public InstructionBase
 {
 	public:
-		COMF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		COMF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class DECF : public InstructionBase
 {
 	public:
-		DECF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		DECF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class DECFSZ : public InstructionBase
 {
 	public:
-		DECFSZ(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		DECFSZ(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class INCF : public InstructionBase
 {
 	public:
-		INCF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		INCF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class INCFSZ : public InstructionBase
 {
 	public:
-		INCFSZ(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		INCFSZ(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class IORWF : public InstructionBase
 {
 	public:
-		IORWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		IORWF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class MOVF : public InstructionBase
 {
 	public:
-		MOVF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		MOVF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class MOVWF : public InstructionBase
 {
 	public:
-		MOVWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		MOVWF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class NOP : public InstructionBase
 {
 	public:
-		NOP(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		NOP(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class RLF : public InstructionBase
 {
 	public:
-		RLF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		RLF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class RRF : public InstructionBase
 {
 	public:
-		RRF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		RRF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class SUBWF : public InstructionBase
 {
 	public:
-		SUBWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		SUBWF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class SWAPF : public InstructionBase
 {
 	public:
-		SWAPF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		SWAPF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class XORWF : public InstructionBase
 {
 	public:
-		XORWF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		XORWF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class BCF : public InstructionBase
 {
 	public:
-		BCF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		BCF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class BSF : public InstructionBase
 {
 	public:
-		BSF(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		BSF(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class BTFSC : public InstructionBase
 {
 	public:
-		BTFSC(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		BTFSC(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class BTFSS : public InstructionBase
 {
 	public:
-		BTFSS(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		BTFSS(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class ADDLW : public InstructionBase
 {
 	public:
-		ADDLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		ADDLW(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class ANDLW : public InstructionBase
 {
 	public:
-		ANDLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		ANDLW(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class CALL : public InstructionBase
 {
 	public:
-		CALL(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		CALL(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class CLRWDT : public InstructionBase
 {
 	public:
-		CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class GOTO : public InstructionBase
 {
 	public:
-		GOTO(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		GOTO(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class IORLW : public InstructionBase
 {
 	public:
-		IORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		IORLW(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class MOVLW : public InstructionBase
 {
 	public:
-		MOVLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		MOVLW(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class RETFIE : public InstructionBase
 {
 	public:
-		RETFIE(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		RETFIE(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class RETLW : public InstructionBase
 {
 	public:
-		RETLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		RETLW(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class RETURN : public InstructionBase
 {
 	public:
-		RETURN(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		RETURN(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class SLEEP : public InstructionBase
 {
 	public:
-		SLEEP(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		SLEEP(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class SUBLW : public InstructionBase
 {
 	public:
-		SUBLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		SUBLW(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };
 
 class XORLW : public InstructionBase
 {
 	public:
-		XORLW(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd);
+		XORLW(const std::string& identifier, uint16_t mask, uint16_t value);
 
-		void execute() override;
+		void execute(RegisterData& rd) override;
 };

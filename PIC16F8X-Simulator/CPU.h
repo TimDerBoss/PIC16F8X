@@ -12,23 +12,11 @@ struct CPURegisters {
 };
 
 
-class CPU
+struct CPU
 {
-public:
-	CPU()
-		: registerData(cpuRegisters)
-		, instructionHandler(registerData)
-	{
-	}
-
-	void initialize(const std::string& fileName);
-	void singleStep();
-	bool processInterrupts();
-
+	void singleStep(RegisterData& registerData, uint16_t opcode);
+	bool processInterrupts(RegisterData& registerData);
 	int timeActive{ 0 };
-
-	LstParser parser;
 	CPURegisters cpuRegisters;
-	RegisterData registerData;
 	InstructionHandler instructionHandler;
 };

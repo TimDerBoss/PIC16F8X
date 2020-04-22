@@ -1,11 +1,10 @@
 #pragma once
 
-#include "CPU.h"
-#include "RegisterData.h"
+#include "CpuInterface.h"
 #include <FormatString.h>
 #include <assert.h>
 #include <Windows.h>
-#include <functional>
+#include <array>
 
 #include <msclr\marshal_cppstd.h>
 
@@ -63,8 +62,8 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::RichTextBox^ rtbprogramOutput;
 	private: System::Windows::Forms::GroupBox^ gbOption;
 	private: System::Windows::Forms::GroupBox^ gbStatus;
-	private: System::Windows::Forms::Button^ btnIgnore;
-	private: System::Windows::Forms::Timer^ cpuRunTimer;
+
+
 	private: System::Windows::Forms::Label^ label17;
 	private: System::Windows::Forms::Label^ lStatusValues;
 	private: System::Windows::Forms::Label^ label2;
@@ -135,8 +134,8 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 	private: System::Windows::Forms::Button^ btnLoadFile;
 	private: System::Windows::Forms::ListBox^ listBox1;
-private: System::Windows::Forms::GroupBox^ groupBox8;
-private: System::Windows::Forms::Label^ lAddresses;
+	private: System::Windows::Forms::GroupBox^ groupBox8;
+	private: System::Windows::Forms::Label^ lAddresses;
 
 
 
@@ -180,8 +179,6 @@ private: System::Windows::Forms::Label^ lAddresses;
 			this->btnReset = (gcnew System::Windows::Forms::Button());
 			this->updateTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->rtbprogramOutput = (gcnew System::Windows::Forms::RichTextBox());
-			this->btnIgnore = (gcnew System::Windows::Forms::Button());
-			this->cpuRunTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
 			this->btnRuntimeReset = (gcnew System::Windows::Forms::Button());
@@ -508,25 +505,6 @@ private: System::Windows::Forms::Label^ lAddresses;
 			this->rtbprogramOutput->Text = L"";
 			this->rtbprogramOutput->WordWrap = false;
 			// 
-			// btnIgnore
-			// 
-			this->btnIgnore->BackColor = System::Drawing::Color::Black;
-			this->btnIgnore->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnIgnore->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
-			this->btnIgnore->ForeColor = System::Drawing::Color::White;
-			this->btnIgnore->Location = System::Drawing::Point(6, 101);
-			this->btnIgnore->Name = L"btnIgnore";
-			this->btnIgnore->Size = System::Drawing::Size(75, 23);
-			this->btnIgnore->TabIndex = 8;
-			this->btnIgnore->Text = L"Ignore";
-			this->btnIgnore->UseVisualStyleBackColor = false;
-			this->btnIgnore->Click += gcnew System::EventHandler(this, &MainForm::btnIgnore_Click);
-			// 
-			// cpuRunTimer
-			// 
-			this->cpuRunTimer->Interval = 10;
-			this->cpuRunTimer->Tick += gcnew System::EventHandler(this, &MainForm::cpuRunTimer_Tick);
-			// 
 			// groupBox1
 			// 
 			this->groupBox1->Controls->Add(this->rtbprogramOutput);
@@ -542,7 +520,6 @@ private: System::Windows::Forms::Label^ lAddresses;
 			// 
 			this->groupBox2->Controls->Add(this->btnStart);
 			this->groupBox2->Controls->Add(this->btnStep);
-			this->groupBox2->Controls->Add(this->btnIgnore);
 			this->groupBox2->Controls->Add(this->btnStop);
 			this->groupBox2->Controls->Add(this->btnReset);
 			this->groupBox2->ForeColor = System::Drawing::Color::White;
@@ -635,7 +612,7 @@ private: System::Windows::Forms::Label^ lAddresses;
 			this->btnClose->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)),
 				static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
 			this->btnClose->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->btnClose->Location = System::Drawing::Point(887, -1);
+			this->btnClose->Location = System::Drawing::Point(883, -1);
 			this->btnClose->Name = L"btnClose";
 			this->btnClose->Size = System::Drawing::Size(47, 24);
 			this->btnClose->TabIndex = 13;
@@ -648,7 +625,7 @@ private: System::Windows::Forms::Label^ lAddresses;
 			this->groupBox3->Controls->Add(this->groupBox5);
 			this->groupBox3->Controls->Add(this->groupBox4);
 			this->groupBox3->ForeColor = System::Drawing::Color::White;
-			this->groupBox3->Location = System::Drawing::Point(308, 34);
+			this->groupBox3->Location = System::Drawing::Point(302, 34);
 			this->groupBox3->Name = L"groupBox3";
 			this->groupBox3->Size = System::Drawing::Size(245, 251);
 			this->groupBox3->TabIndex = 14;
@@ -951,7 +928,7 @@ private: System::Windows::Forms::Label^ lAddresses;
 			this->btnLoadFile->FlatAppearance->MouseOverBackColor = System::Drawing::Color::DimGray;
 			this->btnLoadFile->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnLoadFile->ForeColor = System::Drawing::Color::WhiteSmoke;
-			this->btnLoadFile->Location = System::Drawing::Point(812, 0);
+			this->btnLoadFile->Location = System::Drawing::Point(12, 0);
 			this->btnLoadFile->Name = L"btnLoadFile";
 			this->btnLoadFile->Size = System::Drawing::Size(75, 23);
 			this->btnLoadFile->TabIndex = 18;
@@ -976,7 +953,7 @@ private: System::Windows::Forms::Label^ lAddresses;
 			this->groupBox8->Controls->Add(this->lAddresses);
 			this->groupBox8->Controls->Add(this->listBox1);
 			this->groupBox8->ForeColor = System::Drawing::Color::White;
-			this->groupBox8->Location = System::Drawing::Point(559, 34);
+			this->groupBox8->Location = System::Drawing::Point(553, 34);
 			this->groupBox8->Name = L"groupBox8";
 			this->groupBox8->Size = System::Drawing::Size(365, 251);
 			this->groupBox8->TabIndex = 34;
@@ -988,16 +965,16 @@ private: System::Windows::Forms::Label^ lAddresses;
 			this->lAddresses->AutoSize = true;
 			this->lAddresses->Location = System::Drawing::Point(5, 21);
 			this->lAddresses->Name = L"lAddresses";
-			this->lAddresses->Size = System::Drawing::Size(43, 13);
+			this->lAddresses->Size = System::Drawing::Size(331, 13);
 			this->lAddresses->TabIndex = 20;
-			this->lAddresses->Text = L"label5";
+			this->lAddresses->Text = L"Addr.| +00 | +01 | +02 | +03 | +04 | +05 | +06 | +07 |";
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Black;
-			this->ClientSize = System::Drawing::Size(934, 615);
+			this->ClientSize = System::Drawing::Size(930, 615);
 			this->Controls->Add(this->groupBox8);
 			this->Controls->Add(this->btnLoadFile);
 			this->Controls->Add(this->groupBox7);
@@ -1044,11 +1021,11 @@ private: System::Windows::Forms::Label^ lAddresses;
 		}
 #pragma endregion
 	public:
-		CPU* cpuRef = nullptr;
+		CpuInterface* cpuInterface = nullptr;
 
-		void setCpu(CPU* cpu)
+		void setProcessorInterface(CpuInterface& intf)
 		{
-			cpuRef = cpu;
+			cpuInterface = &intf;
 		}
 
 		void setProgram(const std::vector<std::string>& program)
@@ -1061,7 +1038,7 @@ private: System::Windows::Forms::Label^ lAddresses;
 				rtbprogramOutput->Text += "\r\n";
 			}
 			rtbprogramOutput->Text += "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n";
-			highlightConsoleLine(cpuRef->parser.getOpcodeInfo(0).lineInFile);
+			highlightConsoleLine(cpuInterface->getLineAtProgramCounter());
 		}
 
 		std::string asIO(bool value) {
@@ -1091,89 +1068,100 @@ private: System::Windows::Forms::Label^ lAddresses;
 
 		void updateUI()
 		{
-			lpcValue->Text = gcnew String(fmt::format("%04X", cpuRef->registerData.getPC()).c_str());
-			lpclValue->Text = gcnew String(fmt::format("%02X", cpuRef->registerData.getPC() & 0xFF).c_str());
-			lpclathValue->Text = gcnew String(fmt::format("%02X", cpuRef->registerData.getPC() >> 8 & 0xFF).c_str());
-			lwRegValue->Text = gcnew String(fmt::format("%02X", cpuRef->cpuRegisters.w).c_str());
-			lRuntime->Text = gcnew String(fmt::format("%d us", cpuRef->timeActive).c_str());
+			lpcValue->Text = gcnew String(fmt::format("%04X", cpuInterface->getProgramCounter()).c_str());
+			lpclValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getRegister(Registers::Pcl)).c_str());
+			lpclathValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getRegister(Registers::Pclath)).c_str());
+			lwRegValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getW()).c_str());
+			lRuntime->Text = gcnew String(fmt::format("%d us", cpuInterface->getCpuTime()).c_str());
 
+			auto bits = cpuInterface->getRegisterBits(Registers::TrisA);
 			lTrisA->Text = gcnew String(fmt::format("Tris A |  %s  %s  %s  %s  %s  %s  %s  %s"
-				, asIO(cpuRef->registerData.readBit(0x85, 7))
-				, asIO(cpuRef->registerData.readBit(0x85, 6))
-				, asIO(cpuRef->registerData.readBit(0x85, 5))
-				, asIO(cpuRef->registerData.readBit(0x85, 4))
-				, asIO(cpuRef->registerData.readBit(0x85, 3))
-				, asIO(cpuRef->registerData.readBit(0x85, 2))
-				, asIO(cpuRef->registerData.readBit(0x85, 1))
-				, asIO(cpuRef->registerData.readBit(0x85, 0))).c_str());
+				, asIO(bits[7])
+				, asIO(bits[6])
+				, asIO(bits[5])
+				, asIO(bits[4])
+				, asIO(bits[3])
+				, asIO(bits[2])
+				, asIO(bits[1])
+				, asIO(bits[0])).c_str());
 
-			lTrisB->Text = gcnew String(fmt::format("Tris B |  %s  %s  %s  %s  %s  %s  %s  %s"
-				, asIO(cpuRef->registerData.readBit(0x86, 7))
-				, asIO(cpuRef->registerData.readBit(0x86, 6))
-				, asIO(cpuRef->registerData.readBit(0x86, 5))
-				, asIO(cpuRef->registerData.readBit(0x86, 4))
-				, asIO(cpuRef->registerData.readBit(0x86, 3))
-				, asIO(cpuRef->registerData.readBit(0x86, 2))
-				, asIO(cpuRef->registerData.readBit(0x86, 1))
-				, asIO(cpuRef->registerData.readBit(0x86, 0))).c_str());
+			bits = cpuInterface->getRegisterBits(Registers::TrisB);
+			lTrisB->Text = gcnew String(fmt::format("Tris A |  %s  %s  %s  %s  %s  %s  %s  %s"
+				, asIO(bits[7])
+				, asIO(bits[6])
+				, asIO(bits[5])
+				, asIO(bits[4])
+				, asIO(bits[3])
+				, asIO(bits[2])
+				, asIO(bits[1])
+				, asIO(bits[0])).c_str());
 
+
+			bits = cpuInterface->getRegisterBits(Registers::Status);
 			lStatusValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
-				, cpuRef->registerData.readBit(0x3, 7)
-				, cpuRef->registerData.readBit(0x3, 6)
-				, cpuRef->registerData.readBit(0x3, 5)
-				, cpuRef->registerData.readBit(0x3, 4)
-				, cpuRef->registerData.readBit(0x3, 3)
-				, cpuRef->registerData.readBit(0x3, 2)
-				, cpuRef->registerData.readBit(0x3, 1)
-				, cpuRef->registerData.readBit(0x3, 0)).c_str());
+				, bits[7]
+				, bits[6]
+				, bits[5]
+				, bits[4]
+				, bits[3]
+				, bits[2]
+				, bits[1]
+				, bits[0]).c_str());
 
+			bits = cpuInterface->getRegisterBits(Registers::Option);
 			lOptionValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
-				, cpuRef->registerData.readBit(0x81, 7)
-				, cpuRef->registerData.readBit(0x81, 6)
-				, cpuRef->registerData.readBit(0x81, 5)
-				, cpuRef->registerData.readBit(0x81, 4)
-				, cpuRef->registerData.readBit(0x81, 3)
-				, cpuRef->registerData.readBit(0x81, 2)
-				, cpuRef->registerData.readBit(0x81, 1)
-				, cpuRef->registerData.readBit(0x81, 0)).c_str());
+				, bits[7]
+				, bits[6]
+				, bits[5]
+				, bits[4]
+				, bits[3]
+				, bits[2]
+				, bits[1]
+				, bits[0]).c_str());
 
+
+			bits = cpuInterface->getRegisterBits(Registers::Intcon);
 			lIntconValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
-				, cpuRef->registerData.readBit(0xB, 7)
-				, cpuRef->registerData.readBit(0xB, 6)
-				, cpuRef->registerData.readBit(0xB, 5)
-				, cpuRef->registerData.readBit(0xB, 4)
-				, cpuRef->registerData.readBit(0xB, 3)
-				, cpuRef->registerData.readBit(0xB, 2)
-				, cpuRef->registerData.readBit(0xB, 1)
-				, cpuRef->registerData.readBit(0xB, 0)).c_str());
+				, bits[7]
+				, bits[6]
+				, bits[5]
+				, bits[4]
+				, bits[3]
+				, bits[2]
+				, bits[1]
+				, bits[0]).c_str());
 
 
-			btnRA7->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x5, 7)).c_str());
-			btnRA6->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x5, 6)).c_str());
-			btnRA5->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x5, 5)).c_str());
-			btnRA4->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x5, 4)).c_str());
-			btnRA3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x5, 3)).c_str());
-			btnRA2->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x5, 2)).c_str());
-			btnRA1->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x5, 1)).c_str());
-			btnRA0->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x5, 0)).c_str());
 
-			btnRB3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 7)).c_str());
-			btnRB6->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 6)).c_str());
-			btnRB5->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 5)).c_str());
-			btnRB4->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 4)).c_str());
-			btnRB3->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 3)).c_str());
-			btnRB2->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 2)).c_str());
-			btnRB1->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 1)).c_str());
-			btnRB0->Text = gcnew System::String(fmt::format("%d", cpuRef->registerData.readBit(0x6, 0)).c_str());
+			btnRA7->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[7]).c_str());
+			btnRA6->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[6]).c_str());
+			btnRA5->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[5]).c_str());
+			btnRA4->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[4]).c_str());
+			btnRA3->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[3]).c_str());
+			btnRA2->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[2]).c_str());
+			btnRA1->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[1]).c_str());
+			btnRA0->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[0]).c_str());
+
+			btnRB7->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[7]).c_str());
+			btnRB6->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[6]).c_str());
+			btnRB5->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[5]).c_str());
+			btnRB4->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[4]).c_str());
+			btnRB3->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[3]).c_str());
+			btnRB2->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[2]).c_str());
+			btnRB1->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[1]).c_str());
+			btnRB0->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[0]).c_str());
+
 
 			for (int i = 0; i < 0xFF; i += 8) {
 				std::string str = fmt::format(" %2X  |", i);
 				for (int n = 0; n < 8; n++)
 				{
-					str += fmt::format(" %2X  |", cpuRef->registerData.readByte(i + n));
+					str += fmt::format(" %2X  |", cpuInterface->getRegister(i + n));
 				}
 				listBox1->Items[i / 8] = gcnew System::String(str.c_str());
 			}
+
+			highlightConsoleLine(cpuInterface->getLineAtProgramCounter());
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1204,7 +1192,6 @@ private: System::Windows::Forms::Label^ lAddresses;
 	}
 
 	private: System::Void updateTimer_Tick(System::Object^ sender, System::EventArgs^ e) {
-		assert(cpuRef != nullptr);
 		updateUI();
 	}
 
@@ -1213,18 +1200,9 @@ private: System::Windows::Forms::Label^ lAddresses;
 		btnReset->Enabled = true;
 		btnStop->Enabled = false;
 		btnStep->Enabled = true;
-		btnIgnore->Enabled = true;
-		highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
 
-
-		lAddresses->Text = "Addr.| +00 | +01 | +02 | +03 | +04 | +05 | +06 | +07 |";
 		for (int i = 0; i < 0xFF; i += 8) {
-			std::string str = fmt::format(" %2X  |", i);
-			for (int n = 0; n < 8; n++)
-			{
-				str += fmt::format(" %2X  |", cpuRef->registerData.readByte(i + n));
-			}
-			listBox1->Items->Add(gcnew System::String(str.c_str()));
+			listBox1->Items->Add(gcnew System::String(""));
 		}
 	}
 
@@ -1233,9 +1211,9 @@ private: System::Windows::Forms::Label^ lAddresses;
 		btnReset->Enabled = false;
 		btnStop->Enabled = true;
 		btnStep->Enabled = false;
-		btnIgnore->Enabled = false;
 
-		cpuRunTimer->Start();
+		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudSimSpeed->Value, 0)));
+		cpuInterface->runProcessor();
 	}
 
 	private: System::Void btnStop_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1243,110 +1221,75 @@ private: System::Windows::Forms::Label^ lAddresses;
 		btnReset->Enabled = true;
 		btnStop->Enabled = false;
 		btnStep->Enabled = true;
-		btnIgnore->Enabled = true;
 
-		cpuRunTimer->Stop();
+		cpuInterface->stopProcessor();
 	}
 
 	private: System::Void btnStep_Click(System::Object^ sender, System::EventArgs^ e) {
-		assert(cpuRef != nullptr);
-		try {
-			cpuRef->singleStep();
-			highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
-		}
-		catch (std::exception& e) {
-			cpuRunTimer->Stop();
-			MessageBoxA(GetActiveWindow(), fmt::format("Simulation Error!\n\n%s", e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
-		}
-
+		cpuInterface->executeSingleInstruction();
 	}
 	private: System::Void btnReset_Click(System::Object^ sender, System::EventArgs^ e) {
-		assert(cpuRef != nullptr);
-		cpuRef->registerData.setPC(0);
-		cpuRef->registerData.resetPowerOn();
-		cpuRef->cpuRegisters.w = 0;
-		cpuRef->timeActive = 0;
-		highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
+		cpuInterface->resetProcessor();
 	}
 	private: System::Void btnIgnore_Click(System::Object^ sender, System::EventArgs^ e) {
-		assert(cpuRef != nullptr);
-		try {
-			cpuRef->registerData.increasePCBy(1);
-			highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
-		}
-		catch (std::exception& e) {
-			cpuRunTimer->Stop();
-			MessageBoxA(GetActiveWindow(), fmt::format("Simulation Error!\n\n%s", e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
-		}
 
-	}
-	private: System::Void cpuRunTimer_Tick(System::Object^ sender, System::EventArgs^ e) {
-		assert(cpuRef != nullptr);
-		try {
-			cpuRef->singleStep();
-			highlightConsoleLine(cpuRef->parser.getLineInFile(cpuRef->registerData.getPC()));
-		}
-		catch (std::exception& e) {
-			cpuRunTimer->Stop();
-			MessageBoxA(GetActiveWindow(), fmt::format("Simulation Error!\n\n%s", e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
-		}
 	}
 	private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {
 		Application::Exit();
 	}
 	private: System::Void btnRA7_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x5, 7, btnRA7->Text == "0");
+		cpuInterface->setRegisterBit(0x5, 7, btnRA7->Text == "0");
 	}
 	private: System::Void btnRA6_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x5, 6, btnRA6->Text == "0");
+		cpuInterface->setRegisterBit(0x5, 6, btnRA6->Text == "0");
 	}
 	private: System::Void btnRA5_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x5, 5, btnRA5->Text == "0");
+		cpuInterface->setRegisterBit(0x5, 5, btnRA5->Text == "0");
 	}
 	private: System::Void btnRA4_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x5, 4, btnRA4->Text == "0");
+		cpuInterface->setRegisterBit(0x5, 4, btnRA4->Text == "0");
 	}
 	private: System::Void btnRA3_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x5, 3, btnRA3->Text == "0");
+		cpuInterface->setRegisterBit(0x5, 3, btnRA3->Text == "0");
 	}
 	private: System::Void btnRA2_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x5, 2, btnRA2->Text == "0");
+		cpuInterface->setRegisterBit(0x5, 2, btnRA2->Text == "0");
 	}
 	private: System::Void btnRA1_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x5, 1, btnRA1->Text == "0");
+		cpuInterface->setRegisterBit(0x5, 1, btnRA1->Text == "0");
 	}
 	private: System::Void btnRA0_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x5, 0, btnRA0->Text == "0");
+		cpuInterface->setRegisterBit(0x5, 0, btnRA0->Text == "0");
 	}
 	private: System::Void btnRB7_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x6, 7, btnRB7->Text == "0");
+		cpuInterface->setRegisterBit(0x6, 7, btnRB7->Text == "0");
 	}
 	private: System::Void btnRB6_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x6, 6, btnRB6->Text == "0");
+		cpuInterface->setRegisterBit(0x6, 6, btnRB6->Text == "0");
 	}
 	private: System::Void btnRB5_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x6, 5, btnRB5->Text == "0");
+		cpuInterface->setRegisterBit(0x6, 5, btnRB5->Text == "0");
 	}
 	private: System::Void btnRB4_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x6, 4, btnRB4->Text == "0");
+		cpuInterface->setRegisterBit(0x6, 4, btnRB4->Text == "0");
 	}
 	private: System::Void btnRB3_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x6, 3, btnRB3->Text == "0");
+		cpuInterface->setRegisterBit(0x6, 3, btnRB3->Text == "0");
 	}
 	private: System::Void btnRB2_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x6, 2, btnRB2->Text == "0");
+		cpuInterface->setRegisterBit(0x6, 2, btnRB2->Text == "0");
 	}
 	private: System::Void btnRB1_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x6, 1, btnRB1->Text == "0");
+		cpuInterface->setRegisterBit(0x6, 1, btnRB1->Text == "0");
 	}
 	private: System::Void btnRB0_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->registerData.writeBit(0x6, 0, btnRB0->Text == "0");
+		cpuInterface->setRegisterBit(0x6, 0, btnRB0->Text == "0");
 	}
 	private: System::Void nudSimSpeed_onValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		cpuRunTimer->Interval = 1000 / Convert::ToInt32(Math::Round(nudSimSpeed->Value, 0));
+		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudSimSpeed->Value, 0)));
 	}
 	private: System::Void btnRuntimeReset_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuRef->timeActive = 0;
+		cpuInterface->resetCpuTime();
 	}
 	private: System::Void btnLoadFile_Click(System::Object^ sender, System::EventArgs^ e) {
 		IO::Stream^ myStream;
@@ -1358,12 +1301,11 @@ private: System::Windows::Forms::Label^ lAddresses;
 		{
 			if ((myStream = openFileDialog1->OpenFile()) != nullptr)
 			{
+
 				msclr::interop::marshal_context ctx;
-				cpuRef->initialize(ctx.marshal_as<std::string>(openFileDialog1->FileName));
-				cpuRef->registerData.resetPowerOn();
-				cpuRef->cpuRegisters.w = 0;
-				cpuRef->timeActive = 0;
-				setProgram(cpuRef->parser.getFile());
+				cpuInterface->loadFile(ctx.marshal_as<std::string>(openFileDialog1->FileName));
+				cpuInterface->resetProcessor();
+				setProgram(cpuInterface->getLoadedFile());
 				updateUI();
 				myStream->Close();
 			}

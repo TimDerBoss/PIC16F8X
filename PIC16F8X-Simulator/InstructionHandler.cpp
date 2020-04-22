@@ -9,7 +9,7 @@
 #include <FormatString.h>
 
 
-#define ADD_INSTRUCTION(i, mask, value) std::make_shared<i>(#i, mask, value, rd)
+#define ADD_INSTRUCTION(i, mask, value) std::make_shared<i>(#i, mask, value)
 
 
 /* HOW DOES THIS PROGRAM IDENTIFY INSTRUCTIONS?
@@ -24,7 +24,7 @@
 * this way each operation can be clearly seperated
 */
 
-InstructionHandler::InstructionHandler(RegisterData& rd)
+InstructionHandler::InstructionHandler()
 {
 	// Here the instructions are setup
 	// each opcode is checked on the first run (after that it will be cached)

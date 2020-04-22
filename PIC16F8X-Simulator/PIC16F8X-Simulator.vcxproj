@@ -75,8 +75,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Global\StdWrapper;$(IncludePath)</IncludePath>
-    <SourcePath>$(SolutionDir)Global\StdWrapper;$(SourcePath)</SourcePath>
+    <IncludePath>$(SolutionDir)boost_1_73_0;$(SolutionDir)Global\StdWrapper;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)boost_1_73_0\stage\lib;$(SolutionDir)Global\StdWrapper;$(SourcePath)</SourcePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
@@ -88,8 +88,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Global\StdWrapper;$(IncludePath)</IncludePath>
-    <SourcePath>$(SolutionDir)Global\StdWrapper;$(SourcePath)</SourcePath>
+    <IncludePath>$(SolutionDir)boost_1_73_0;$(SolutionDir)Global\StdWrapper;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)boost_1_73_0\stage\lib;$(SolutionDir)Global\StdWrapper;$(SourcePath)</SourcePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPU.h" />
+    <ClInclude Include="CpuInterface.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
@@ -174,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPU.cpp" />
+    <ClCompile Include="CpuInterface.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="InstructionBase.cpp" />
     <ClCompile Include="InstructionHandler.cpp" />

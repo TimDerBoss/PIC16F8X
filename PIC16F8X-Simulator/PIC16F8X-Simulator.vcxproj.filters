@@ -44,6 +44,9 @@
     <ClInclude Include="Exception.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="CpuInterface.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InstructionBase.cpp">
@@ -65,6 +68,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="MainForm.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CpuInterface.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

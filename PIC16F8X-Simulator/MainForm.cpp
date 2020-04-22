@@ -31,18 +31,18 @@ using namespace System::Windows::Forms;
 
 [STAThreadAttribute]
 int main(array<String^>^ args) {
-	CPU cpu;
+	CpuInterface cpuInterface(20);
 
 	try {
-		cpu.initialize("BCDCounter.lst");
 		Application::EnableVisualStyles();
 		Application::SetCompatibleTextRenderingDefault(false);
-		PIC16F8X_Simulator::MainForm form;
-		form.setCpu(&cpu);
-		form.setProgram(cpu.parser.getFile());
-		Application::Run(% form);
+		PIC16F8X_Simulator::MainForm^ form = gcnew PIC16F8X_Simulator::MainForm();
+		cpuInterface.loadFile("BCDCounter.lst");
+		form->setProcessorInterface(cpuInterface);
+		form->setProgram(cpuInterface.getLoadedFile());
+		Application::Run(% *form);
 	}
-	catch (std::exception & e) {
+	catch (std::exception& e) {
 		MessageBoxA(GetActiveWindow(), fmt::format("%s", e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
 		exit(0);
 	}

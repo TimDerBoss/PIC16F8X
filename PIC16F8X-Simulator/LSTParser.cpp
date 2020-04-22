@@ -87,3 +87,9 @@ const std::vector<std::string>& LstParser::getFile() const
 	return lstFile;
 }
 
+uint16_t LstParser::getOpcode(uint16_t currentIndex)
+{
+	return getOpcodeInfo(currentIndex).opcode;
+}
+
+

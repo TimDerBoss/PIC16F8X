@@ -10,7 +10,7 @@ class RegisterData;
 class InstructionHandler
 {
 	public:
-		InstructionHandler(RegisterData& rd);
+		InstructionHandler();
 
 		std::shared_ptr<InstructionBase>& decode(const uint16_t& opcode);
 		InstructionData getInstructionData(const uint16_t& opcode);

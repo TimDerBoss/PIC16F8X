@@ -17,22 +17,26 @@ RegisterData::RegisterData(CPURegisters& cpuRegisters)
 
 uint8_t RegisterData::readBit(uint8_t address, uint8_t index)
 {
+	onRamRead(address);
 	return *ram.at(address) >> index & 1;
 }
 
 void RegisterData::writeBit(uint8_t address, uint8_t index, bool value)
 {
+	onRamWrite(address);
 	*ram.at(address) &= ~(1 << index);
 	*ram.at(address) |= value << index;
 }
 
 void RegisterData::writeByte(const uint8_t& address, unsigned char value)
 {
+	onRamWrite(address);
 	*ram.at(address) = value;
 }
 
 const uint8_t& RegisterData::readByte(const uint8_t& address)
 {
+	onRamRead(address);
 	return *ram.at(address);
 }
 
@@ -88,6 +92,7 @@ void RegisterData::initialize()
 		else {
 			ram.push_back(std::make_shared<uint8_t>(0));
 		}
+		onRamWrite(i);
 	}
 }
 

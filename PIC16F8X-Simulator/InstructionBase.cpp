@@ -6,11 +6,10 @@
 
 #include <iostream>
 
-InstructionBase::InstructionBase(const std::string& identifier, uint16_t mask, uint16_t value, RegisterData& rd, int cycles)
+InstructionBase::InstructionBase(const std::string& identifier, uint16_t mask, uint16_t value, int cycles)
 	: mask(mask)
 	, value(value)
 	, identifier(identifier)
-	, registerData(rd)
 	, cycles(cycles)
 {
 }
