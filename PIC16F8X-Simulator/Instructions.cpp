@@ -553,7 +553,7 @@ void RETFIE::execute(RegisterData& rd)
 	if (rd.stack.empty())
 		throw exception("Stack is empty!");
 	rd.writeByte(0xA, (rd.stack.top() << 8) & 0x1F);
-	rd.writeByte(0x2, rd.stack.top());
+	rd.writeByte(0x2, rd.stack.top() & 0xFF);
 	rd.stack.pop();
 	rd.writeBitS(0xB, 7, true); // GIE
 	printf("%s\n", identifier.c_str());
@@ -569,7 +569,7 @@ void RETLW::execute(RegisterData& rd)
 	if (rd.stack.empty())
 		throw exception("Stack is empty!");
 	rd.writeByte(0xA, (rd.stack.top() << 8) & 0x1F);
-	rd.writeByte(0x2, rd.stack.top());
+	rd.writeByte(0x2, rd.stack.top() & 0xFF);
 	rd.stack.pop();
 	rd.cpuRegisters.w = static_cast<uint8_t>(data.k);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
@@ -585,7 +585,7 @@ void RETURN::execute(RegisterData& rd)
 	if (rd.stack.empty())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	rd.writeByte(0xA, (rd.stack.top() << 8) & 0x1F);
-	rd.writeByte(0x2, rd.stack.top());
+	rd.writeByte(0x2, rd.stack.top() & 0xFF);
 	rd.stack.pop();
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
