@@ -9,6 +9,7 @@
 
 struct CPURegisters {
 	uint8_t w{ 0 };
+	uint16_t programCounter{ 0 };
 };
 
 

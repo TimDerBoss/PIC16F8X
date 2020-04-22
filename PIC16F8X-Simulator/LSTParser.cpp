@@ -50,6 +50,9 @@ void LstParser::parseLstFile()
 			// Index of the object in the vector is the instruction number
 			LstOpcodeInfo loi{};
 			loi.lineInFile = stoi(matches[3]) - 1;
+			std::stringstream ss2;
+			ss2 << std::hex << matches[1];
+			ss2 >> loi.pcValue;
 			std::stringstream ss;
 			ss << std::hex << matches[2];
 			ss >> loi.opcode;
@@ -58,27 +61,15 @@ void LstParser::parseLstFile()
 	}
 }
 
-// get the maximum value the program counter can reach in order not to crash the UI
-// e.g. showinga line with a program counter value that doesn't exist
-uint16_t LstParser::getMaxPc() const
-{
-	return static_cast<uint16_t>(lstOpcodeInfo.size()) - 1;
-}
-
-// get the opcode as well as the line in file the opcode is located at
-const LstOpcodeInfo& LstParser::getOpcodeInfo(const uint16_t& pc) const
-{
-	if (pc >= lstOpcodeInfo.size())
-		throw exception("Program counter is out of range. PC = %d, Max = %d", static_cast<int>(pc), static_cast<int>(lstOpcodeInfo.size()));
-	else return lstOpcodeInfo.at(pc);
-}
-
 // get the line in the lst file wherre the opcode is located at
 uint16_t LstParser::getLineInFile(const uint16_t& pc) const
 {
-	if (pc >= lstOpcodeInfo.size())
-		return 0;
-	else return lstOpcodeInfo.at(pc).lineInFile;
+	for (auto& info : lstOpcodeInfo)
+	{
+		if (info.pcValue == pc)
+			return info.lineInFile;
+	}
+	return 0;
 }
 
 // get the raw lst file data
@@ -87,9 +78,14 @@ const std::vector<std::string>& LstParser::getFile() const
 	return lstFile;
 }
 
-uint16_t LstParser::getOpcode(uint16_t currentIndex)
+uint16_t LstParser::getOpcode(const uint16_t& pc)
 {
-	return getOpcodeInfo(currentIndex).opcode;
+	for (auto& info : lstOpcodeInfo)
+	{
+		if (info.pcValue == pc)
+			return info.opcode;
+	}
+	return -1;
 }
 
 

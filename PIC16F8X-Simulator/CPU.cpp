@@ -8,8 +8,8 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 	// check if an interrupt has happened meanwhile
 	if (processInterrupts(registerData)) {
 		// jump to interrupt
-		registerData.stack.push(registerData.getPC());
-		registerData.setPC(4);
+		registerData.stack.push(registerData.getPcl());
+		registerData.writeByte(0x82, 4);
 		timeActive += 4;
 	}
 	else {

@@ -23,15 +23,15 @@ uint8_t RegisterData::readBit(uint8_t address, uint8_t index)
 
 void RegisterData::writeBit(uint8_t address, uint8_t index, bool value)
 {
-	onRamWrite(address);
 	*ram.at(address) &= ~(1 << index);
 	*ram.at(address) |= value << index;
+	onRamWrite(address);
 }
 
 void RegisterData::writeByte(const uint8_t& address, unsigned char value)
 {
-	onRamWrite(address);
 	*ram.at(address) = value;
+	onRamWrite(address);
 }
 
 const uint8_t& RegisterData::readByte(const uint8_t& address)
@@ -59,7 +59,7 @@ void RegisterData::writeByteS(const uint8_t& address, unsigned char value)
 {
 	assert(address <= 0x7F);
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
-	writeByte(adr, value);;
+	writeByte(adr, value);
 }
 
 const uint8_t& RegisterData::readByteS(const uint8_t& address)
@@ -73,7 +73,7 @@ const uint8_t& RegisterData::readByteS(const uint8_t& address)
 void RegisterData::resetPowerOn()
 {
 	initialize();
-	setPC(0);
+	writeByte(0x2, 0);
 	cpuRegisters.w = 0;
 	// Set default startup values
 	writeByte(0x03, 0x18); // Status
@@ -86,40 +86,33 @@ void RegisterData::initialize()
 {
 	ram.clear();
 	for (int i = 0; i <= 0xFF; i++) {
-		if (i == 0x80 || i == 0x82 || i == 0x83 || i == 0x84 || i == 0x8A || i == 0x8B || (i >=0x8C && i <= 0xAF)) {
+		if (i == 0x80 || i == 0x82 || i == 0x83 || i == 0x84 || i == 0x8A || i == 0x8B || (i >= 0x8C && i <= 0xAF)) {
 			ram.push_back(ram.at(i - 0x80));
 		}
 		else {
 			ram.push_back(std::make_shared<uint8_t>(0));
 		}
-		onRamWrite(i);
 	}
+
+	onRamWrite.connect([this](int address) {
+		if (address == 0x2)
+		{
+			this->cpuRegisters.programCounter = readByte(0x2) & 0xFF;
+			this->cpuRegisters.programCounter |= ((readByte(0xA) & 0x1F) << 8);
+		}
+		});
 }
 
 // increase the program counter by a given amount
 void RegisterData::increasePCBy(uint16_t amount)
 {
-	uint16_t programCounter = 0;
-	programCounter |= (readByte(0x2) & 0xFF);
-	programCounter |= ((readByte(0xA) & 0x1F) << 8);
-	programCounter += amount;
-	writeByte(0x2, programCounter & 0xFF);
-	writeByte(0xA, programCounter >> 8 & 0x1F);
+	cpuRegisters.programCounter = getPcl() + amount;
+	writeByte(0x82, cpuRegisters.programCounter & 0xFF);
 }
 
 
 // returns the current program counter value
-uint16_t RegisterData::getPC()
+uint16_t RegisterData::getPcl()
 {
-	uint16_t programCounter = 0;
-	programCounter |= (readByte(0x2) & 0xFF);
-	programCounter |= ((readByte(0xA) & 0x1F) << 8);
-	return programCounter;
-}
-
-// set the program counter
-void RegisterData::setPC(const uint16_t& value)
-{
-	writeByte(0x2, value & 0xFF);
-	writeByte(0xA, value >> 8 & 0x1F);
+	return cpuRegisters.programCounter;
 }

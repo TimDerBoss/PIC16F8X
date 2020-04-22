@@ -29,8 +29,7 @@ public:
 
 
 	void increasePCBy(uint16_t amount);
-	uint16_t getPC();
-	void setPC(const uint16_t& value);
+	uint16_t getPcl();
 
 	struct CPURegisters& cpuRegisters;
 	std::stack<uint16_t> stack;

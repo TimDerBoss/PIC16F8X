@@ -1301,7 +1301,6 @@ namespace PIC16F8X_Simulator {
 		{
 			if ((myStream = openFileDialog1->OpenFile()) != nullptr)
 			{
-
 				msclr::interop::marshal_context ctx;
 				cpuInterface->loadFile(ctx.marshal_as<std::string>(openFileDialog1->FileName));
 				cpuInterface->resetProcessor();

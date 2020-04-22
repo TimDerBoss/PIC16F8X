@@ -6,6 +6,7 @@
 
 struct LstOpcodeInfo
 {
+	uint16_t pcValue;
 	uint16_t opcode;
 	uint16_t lineInFile;
 };
@@ -17,11 +18,9 @@ class LstParser
 		void readFile(const std::string& fileName);
 		void parseLstFile();
 
-		uint16_t getMaxPc() const;
-		const LstOpcodeInfo& getOpcodeInfo(const uint16_t& pc) const;
 		uint16_t getLineInFile(const uint16_t& pc) const;
 		const std::vector<std::string>& getFile() const;
-		uint16_t getOpcode(uint16_t currentIndex);
+		uint16_t getOpcode(const uint16_t& pc);
 
 	private:
 		std::vector<std::string> lstFile;
