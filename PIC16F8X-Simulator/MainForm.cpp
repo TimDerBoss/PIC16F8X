@@ -31,15 +31,13 @@ using namespace System::Windows::Forms;
 
 [STAThreadAttribute]
 int main(array<String^>^ args) {
-	CpuInterface cpuInterface(20);
-
 	try {
+		CpuInterface cpuInterface(20);
+		cpuInterface.resetProcessor();
 		Application::EnableVisualStyles();
 		Application::SetCompatibleTextRenderingDefault(false);
 		PIC16F8X_Simulator::MainForm^ form = gcnew PIC16F8X_Simulator::MainForm();
-		cpuInterface.loadFile("BCDCounter.lst");
 		form->setProcessorInterface(cpuInterface);
-		form->setProgram(cpuInterface.getLoadedFile());
 		Application::Run(% *form);
 	}
 	catch (std::exception& e) {

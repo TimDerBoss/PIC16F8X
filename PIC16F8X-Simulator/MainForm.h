@@ -136,6 +136,7 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::ListBox^ listBox1;
 	private: System::Windows::Forms::GroupBox^ groupBox8;
 	private: System::Windows::Forms::Label^ lAddresses;
+private: System::Windows::Forms::Label^ label5;
 
 
 
@@ -218,6 +219,7 @@ namespace PIC16F8X_Simulator {
 			this->listBox1 = (gcnew System::Windows::Forms::ListBox());
 			this->groupBox8 = (gcnew System::Windows::Forms::GroupBox());
 			this->lAddresses = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->gbFSR->SuspendLayout();
 			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
@@ -928,7 +930,7 @@ namespace PIC16F8X_Simulator {
 			this->btnLoadFile->FlatAppearance->MouseOverBackColor = System::Drawing::Color::DimGray;
 			this->btnLoadFile->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnLoadFile->ForeColor = System::Drawing::Color::WhiteSmoke;
-			this->btnLoadFile->Location = System::Drawing::Point(12, 0);
+			this->btnLoadFile->Location = System::Drawing::Point(808, 0);
 			this->btnLoadFile->Name = L"btnLoadFile";
 			this->btnLoadFile->Size = System::Drawing::Size(75, 23);
 			this->btnLoadFile->TabIndex = 18;
@@ -969,12 +971,23 @@ namespace PIC16F8X_Simulator {
 			this->lAddresses->TabIndex = 20;
 			this->lAddresses->Text = L"Addr.| +00 | +01 | +02 | +03 | +04 | +05 | +06 | +07 |";
 			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(334, 5);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(271, 13);
+			this->label5->TabIndex = 35;
+			this->label5->Text = L"PIC16F8X Simulator - Tim Farahani - TINF18B3";
+			this->label5->Click += gcnew System::EventHandler(this, &MainForm::label5_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Black;
 			this->ClientSize = System::Drawing::Size(930, 615);
+			this->Controls->Add(this->label5);
 			this->Controls->Add(this->groupBox8);
 			this->Controls->Add(this->btnLoadFile);
 			this->Controls->Add(this->groupBox7);
@@ -1017,6 +1030,7 @@ namespace PIC16F8X_Simulator {
 			this->groupBox8->ResumeLayout(false);
 			this->groupBox8->PerformLayout();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -1192,7 +1206,7 @@ namespace PIC16F8X_Simulator {
 	}
 
 	private: System::Void updateTimer_Tick(System::Object^ sender, System::EventArgs^ e) {
-		updateUI();
+		//updateUI();
 	}
 
 	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
@@ -1312,5 +1326,7 @@ namespace PIC16F8X_Simulator {
 	}
 	private: System::Void listBox1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
-	};
+	private: System::Void label5_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+};
 }

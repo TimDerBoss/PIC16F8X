@@ -18,9 +18,9 @@ class LstParser
 		void readFile(const std::string& fileName);
 		void parseLstFile();
 
-		uint16_t getLineInFile(const uint16_t& pc) const;
+		const uint16_t& getLineInFile(const uint16_t& pc) const;
 		const std::vector<std::string>& getFile() const;
-		uint16_t getOpcode(const uint16_t& pc);
+		const uint16_t& getOpcode(const uint16_t& pc) const;
 
 	private:
 		std::vector<std::string> lstFile;

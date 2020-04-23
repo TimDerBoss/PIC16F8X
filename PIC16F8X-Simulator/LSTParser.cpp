@@ -62,14 +62,14 @@ void LstParser::parseLstFile()
 }
 
 // get the line in the lst file wherre the opcode is located at
-uint16_t LstParser::getLineInFile(const uint16_t& pc) const
+const uint16_t& LstParser::getLineInFile(const uint16_t& pc) const
 {
 	for (auto& info : lstOpcodeInfo)
 	{
 		if (info.pcValue == pc)
 			return info.lineInFile;
 	}
-	return 0;
+	throw exception("Could not find the corresponding line for PC-value '%d'", pc);
 }
 
 // get the raw lst file data
@@ -78,14 +78,14 @@ const std::vector<std::string>& LstParser::getFile() const
 	return lstFile;
 }
 
-uint16_t LstParser::getOpcode(const uint16_t& pc)
+const uint16_t& LstParser::getOpcode(const uint16_t& pc) const
 {
 	for (auto& info : lstOpcodeInfo)
 	{
 		if (info.pcValue == pc)
 			return info.opcode;
 	}
-	return -1;
+	throw exception("Could not find the corresponding opcode for PC-value '%d'", pc);
 }
 
 

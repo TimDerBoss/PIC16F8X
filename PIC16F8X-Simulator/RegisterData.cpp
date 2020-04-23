@@ -15,39 +15,39 @@ RegisterData::RegisterData(CPURegisters& cpuRegisters)
 	cpuRegisters.w = 0;
 }
 
-uint8_t RegisterData::readBit(uint8_t address, uint8_t index)
+uint8_t RegisterData::readBit(uint8_t address, uint8_t index) const
 {
 	onRamRead(address);
 	return *ram.at(address) >> index & 1;
 }
 
-void RegisterData::writeBit(uint8_t address, uint8_t index, bool value)
+void RegisterData::writeBit(uint8_t address, uint8_t index, bool value) const
 {
 	*ram.at(address) &= ~(1 << index);
 	*ram.at(address) |= value << index;
 	onRamWrite(address);
 }
 
-void RegisterData::writeByte(const uint8_t& address, unsigned char value)
+void RegisterData::writeByte(const uint8_t& address, unsigned char value) const
 {
 	*ram.at(address) = value;
 	onRamWrite(address);
 }
 
-const uint8_t& RegisterData::readByte(const uint8_t& address)
+const uint8_t& RegisterData::readByte(const uint8_t& address) const
 {
 	onRamRead(address);
 	return *ram.at(address);
 }
 
-uint8_t RegisterData::readBitS(uint8_t address, uint8_t index)
+uint8_t RegisterData::readBitS(uint8_t address, uint8_t index) const
 {
 	assert(address <= 0x7F);
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	return readBit(adr, index);
 }
 
-void RegisterData::writeBitS(uint8_t address, uint8_t index, bool value)
+void RegisterData::writeBitS(uint8_t address, uint8_t index, bool value) const
 {
 	assert(address <= 0x7F);
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
@@ -55,14 +55,14 @@ void RegisterData::writeBitS(uint8_t address, uint8_t index, bool value)
 	writeByte(adr, readByte(adr) | value << index); // set bit to value
 }
 
-void RegisterData::writeByteS(const uint8_t& address, unsigned char value)
+void RegisterData::writeByteS(const uint8_t& address, unsigned char value) const
 {
 	assert(address <= 0x7F);
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	writeByte(adr, value);
 }
 
-const uint8_t& RegisterData::readByteS(const uint8_t& address)
+const uint8_t& RegisterData::readByteS(const uint8_t& address) const
 {
 	assert(address <= 0x7F);
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
@@ -112,7 +112,7 @@ void RegisterData::increasePCBy(uint16_t amount)
 
 
 // returns the current program counter value
-uint16_t RegisterData::getPcl()
+const uint16_t& RegisterData::getPcl() const
 {
 	return cpuRegisters.programCounter;
 }
