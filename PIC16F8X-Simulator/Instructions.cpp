@@ -15,8 +15,8 @@ void ADDWF::execute(RegisterData& rd)
 {
 	auto& w = rd.cpuRegisters.w;
 	int fnum = rd.readByteS(data.f);
-	bool digitCarry = ((w & 0xF) + (fnum & 0xF)) & 0xF0;
 	int result = static_cast<int>(w + fnum);
+	bool digitCarry = ((w & 0xF) + (fnum & 0xF)) & 0xF0;
 	if (!data.d) {
 		w = static_cast<uint8_t>(result);
 	}
@@ -26,7 +26,6 @@ void ADDWF::execute(RegisterData& rd)
 	rd.writeBitS(0x3, 0x0, result > 255 || result < 0); // carry bit
 	rd.writeBitS(0x3, 0x1, digitCarry); // digit carry
 	rd.writeBitS(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
-
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	rd.increasePCBy(getCycles());
 }
@@ -317,7 +316,8 @@ void SUBWF::execute(RegisterData& rd)
 {
 
 	auto& w = rd.cpuRegisters.w;
-	int result = rd.readByteS(data.f) - w;
+	auto& fnum = rd.readByteS(data.f);
+	int result = fnum - w;
 	if (!data.d) {
 		w = static_cast<uint8_t>(result);
 	}
@@ -325,8 +325,8 @@ void SUBWF::execute(RegisterData& rd)
 		rd.writeByteS(data.f, static_cast<uint8_t>(result));
 	}
 	rd.writeBitS(0x3, 0x0, result >= 0); // carry bit
-	// TODO: fix DC
-	rd.writeBitS(0x3, 0x1, false); // digit carry
+	bool digitCarry = ((fnum & 0xF) + ((~w + 1) & 0xF)) & 0xF0;
+	rd.writeBitS(0x3, 0x1, !digitCarry); // digit carry
 	rd.writeBitS(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	rd.increasePCBy(getCycles());
@@ -451,9 +451,9 @@ void ADDLW::execute(RegisterData& rd)
 	int result = w + data.k;
 	auto preResult = w;
 	w = static_cast<uint8_t>(result);
-
+	bool digitCarry = ((w & 0xF) + (data.k & 0xF)) & 0xF0;
 	rd.writeBitS(0x3, 0x0, result > 255); // carry bit
-	rd.writeBitS(0x3, 0x1, preResult <= 0xF && static_cast<uint8_t>(result) > 0xF); // digit carry
+	rd.writeBitS(0x3, 0x1, digitCarry); // digit carry
 	rd.writeBitS(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 	rd.increasePCBy(getCycles());
@@ -611,9 +611,10 @@ void SUBLW::execute(RegisterData& rd)
 	auto& w = rd.cpuRegisters.w;
 	int result = static_cast<int>(data.k) - w;
 	w = static_cast<uint8_t>(result);
+	bool digitCarry = ((data.k & 0xF) + ((~w + 1) & 0xF)) & 0xF0;
 	rd.writeBitS(0x3, 0x0, result >= 0); // carry bit
 	// TODO: fix DC
-	rd.writeBitS(0x3, 0x1, false); // digit carry
+	rd.writeBitS(0x3, 0x1, !digitCarry); // digit carry
 	rd.writeBitS(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	rd.increasePCBy(getCycles());
