@@ -109,19 +109,23 @@ void CpuInterface::resetProcessor()
 
 void CpuInterface::runProcessor()
 {
-	processorActive = true;
-	processorThread = std::thread([this]() {
-		while (processorActive) {
-			executeSingleInstruction();
-			std::this_thread::sleep_for(std::chrono::milliseconds(1000 / processorClock));
-		}
-		});
+	if (!processorActive) {
+		processorActive = true;
+		processorThread = std::thread([this]() {
+			while (processorActive) {
+				executeSingleInstruction();
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000 / processorClock));
+			}
+			});
+	}
 }
 
 void CpuInterface::stopProcessor()
 {
-	processorActive = false;
-	processorThread.join();
+	if (processorActive) {
+		processorActive = false;
+		processorThread.join();
+	}
 }
 
 void CpuInterface::executeSingleInstruction()

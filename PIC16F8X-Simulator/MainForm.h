@@ -486,7 +486,7 @@ private: System::Windows::Forms::Label^ label5;
 			// 
 			// updateTimer
 			// 
-			this->updateTimer->Enabled = true;
+			this->updateTimer->Enabled = false;
 			this->updateTimer->Interval = 20;
 			this->updateTimer->Tick += gcnew System::EventHandler(this, &MainForm::updateTimer_Tick);
 			// 
@@ -1206,7 +1206,7 @@ private: System::Windows::Forms::Label^ label5;
 	}
 
 	private: System::Void updateTimer_Tick(System::Object^ sender, System::EventArgs^ e) {
-		//updateUI();
+		updateUI();
 	}
 
 	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
@@ -1249,6 +1249,8 @@ private: System::Windows::Forms::Label^ label5;
 
 	}
 	private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuInterface->stopProcessor();
+		this->updateTimer->Enabled = false;
 		Application::Exit();
 	}
 	private: System::Void btnRA7_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1321,6 +1323,7 @@ private: System::Windows::Forms::Label^ label5;
 				setProgram(cpuInterface->getLoadedFile());
 				updateUI();
 				myStream->Close();
+				updateTimer->Enabled = true;
 			}
 		}
 	}

@@ -36,9 +36,9 @@ int main(array<String^>^ args) {
 		cpuInterface.resetProcessor();
 		Application::EnableVisualStyles();
 		Application::SetCompatibleTextRenderingDefault(false);
-		PIC16F8X_Simulator::MainForm^ form = gcnew PIC16F8X_Simulator::MainForm();
-		form->setProcessorInterface(cpuInterface);
-		Application::Run(% *form);
+		PIC16F8X_Simulator::MainForm form;
+		form.setProcessorInterface(cpuInterface);
+		Application::Run(%form);
 	}
 	catch (std::exception& e) {
 		MessageBoxA(GetActiveWindow(), fmt::format("%s", e.what()).c_str(), "CPU Error", MB_OK | MB_ICONERROR);
