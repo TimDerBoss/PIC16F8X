@@ -208,7 +208,7 @@ void IORWF::execute(RegisterData& rd)
 	else {
 		rd.writeByteS(data.f, result);
 	}
-	rd.writeBitS(0x3, 0x2, result == 0); // zero flag
+	rd.writeBitS(0x3, 0x2, result != 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
 	rd.increasePCBy(getCycles());
 }
@@ -220,7 +220,6 @@ MOVF::MOVF(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void MOVF::execute(RegisterData& rd)
 {
-
 	auto& w = rd.cpuRegisters.w;
 	if (!data.d) {
 		w = rd.readByteS(data.f);

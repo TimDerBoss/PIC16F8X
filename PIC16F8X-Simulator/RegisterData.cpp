@@ -21,17 +21,15 @@ uint8_t RegisterData::readBit(uint8_t address, uint8_t index) const
 	return *ram.at(address) >> index & 1;
 }
 
-void RegisterData::writeBit(uint8_t address, uint8_t index, bool value) const
+void RegisterData::writeBit(uint8_t address, uint8_t offset, bool value) const
 {
-	*ram.at(address) &= ~(1 << index);
-	*ram.at(address) |= value << index;
-	onRamWrite(address);
+	onRamWrite(address, offset, value);
 }
 
 void RegisterData::writeByte(const uint8_t& address, unsigned char value) const
 {
-	*ram.at(address) = value;
-	onRamWrite(address);
+	for (int i = 0; i < 8; i++)
+		writeBit(address, i, (value >> i) & 1);
 }
 
 const uint8_t& RegisterData::readByte(const uint8_t& address) const
@@ -47,12 +45,11 @@ uint8_t RegisterData::readBitS(uint8_t address, uint8_t index) const
 	return readBit(adr, index);
 }
 
-void RegisterData::writeBitS(uint8_t address, uint8_t index, bool value) const
+void RegisterData::writeBitS(uint8_t address, uint8_t offset, bool value) const
 {
 	assert(address <= 0x7F);
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
-	writeByte(adr, readByte(adr) & ~(1 << index)); // clear bit
-	writeByte(adr, readByte(adr) | value << index); // set bit to value
+	writeBit(adr, offset, value); // clear bit
 }
 
 void RegisterData::writeByteS(const uint8_t& address, unsigned char value) const
@@ -94,11 +91,21 @@ void RegisterData::initialize()
 		}
 	}
 
-	onRamWrite.connect([this](int address) {
-		if (address == 0x2)
-		{
-			this->cpuRegisters.programCounter = readByte(0x2) & 0xFF;
-			this->cpuRegisters.programCounter |= ((readByte(0xA) & 0x1F) << 8);
+	onRamWrite.connect([this](int address, int offset, int value) {
+		if ((address == 0x5 || address == 0x6) && readBit(address + 0x80, offset)) {
+			portBuffer[address + offset] = value;
+		}
+		else if ((address == 0x85 || address == 0x86) && value == 0) {
+			setBit(*ram.at(address-0x80), offset, portBuffer[address - 0x80 + offset]);
+			setBit(*ram.at(address), offset,value);
+		}
+		else {
+			setBit(*ram.at(address), offset, value);
+			if (address == 0x2)
+			{
+				this->cpuRegisters.programCounter = readByte(0x2) & 0xFF;
+				this->cpuRegisters.programCounter |= ((readByte(0xA) & 0x1F) << 8);
+			}
 		}
 		});
 }
@@ -115,4 +122,10 @@ void RegisterData::increasePCBy(uint16_t amount)
 const uint16_t& RegisterData::getPcl() const
 {
 	return cpuRegisters.programCounter;
+}
+
+void RegisterData::setBit(uint8_t& source, int offset, int value)
+{
+	source &= ~(1 << offset);
+	source |= value << offset;
 }

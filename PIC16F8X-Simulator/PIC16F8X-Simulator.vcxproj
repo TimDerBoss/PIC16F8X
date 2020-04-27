@@ -173,6 +173,7 @@
     <ClInclude Include="Instructions.h" />
     <ClInclude Include="LSTParser.h" />
     <ClInclude Include="RegisterData.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPU.cpp" />

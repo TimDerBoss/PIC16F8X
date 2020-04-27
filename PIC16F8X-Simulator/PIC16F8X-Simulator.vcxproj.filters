@@ -47,6 +47,9 @@
     <ClInclude Include="CpuInterface.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InstructionBase.cpp">

@@ -19,6 +19,7 @@ struct CPU
 	bool processInterrupts(RegisterData& registerData);
 	double timeActive{ 0 };
 	double clockSpeed{ 0 };
+	int cycles{ 0 };
 	CPURegisters cpuRegisters;
 	InstructionHandler instructionHandler;
 };
