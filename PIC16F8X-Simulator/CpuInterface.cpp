@@ -14,7 +14,7 @@ const uint8_t& CpuInterface::getRegister(Registers r) const
 }
 
 
-const uint8_t& CpuInterface::getRegister(int address) const
+const uint8_t& CpuInterface::getRegister(uint8_t address) const
 {
 	return registers.readByte(address);
 }
@@ -49,7 +49,7 @@ std::array<bool, 8> CpuInterface::getRegisterBits(uint8_t address) const
 	return result;
 }
 
-const int& CpuInterface::getCpuTime() const
+const double& CpuInterface::getCpuTime() const
 {
 	return processor.timeActive;
 }
@@ -89,7 +89,7 @@ void CpuInterface::resetCpuTime()
 	processor.timeActive = 0;
 }
 
-void CpuInterface::setProcessorClock(int frequency)
+void CpuInterface::setProcessorClock(double frequency)
 {
 	processorClock = frequency;
 }
@@ -104,17 +104,17 @@ void CpuInterface::resetProcessor()
 {
 	registers.resetPowerOn();
 	processor.cpuRegisters.w = 0;
-	processor.timeActive = 0;
 }
 
 void CpuInterface::runProcessor()
 {
 	if (!processorActive) {
+		processor.clockSpeed = processorClock;
 		processorActive = true;
 		processorThread = std::thread([this]() {
 			while (processorActive) {
 				executeSingleInstruction();
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000 / processorClock));
+				std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			}
 			});
 	}
@@ -130,6 +130,7 @@ void CpuInterface::stopProcessor()
 
 void CpuInterface::executeSingleInstruction()
 {
+	processor.clockSpeed = processorClock;
 	if (parser.getLineInFile(registers.getPcl()) != -1) {
 		processor.singleStep(registers, parser.getOpcode(registers.getPcl()));
 	}

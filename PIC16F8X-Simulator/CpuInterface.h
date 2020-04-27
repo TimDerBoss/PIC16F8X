@@ -20,29 +20,26 @@ enum Registers : uint8_t
 	Pclath = 0xA
 };
 
-
 class CpuInterface
 {
 public:
-
 	CpuInterface(int processorClock);
 
 	const uint8_t& getRegister(Registers r) const;
-	const uint8_t& getRegister(int address) const;
+	const uint8_t& getRegister(uint8_t address) const;
 	const uint16_t& getProgramCounter() const;
 	const uint16_t& getLineAtProgramCounter() const;
-	const int& getCpuTime() const;
+	const double& getCpuTime() const;
 	int getW() const;
 	const std::vector<std::string>& getLoadedFile() const;
 	std::array<bool, 8> getRegisterBits(Registers r) const;
 	std::array<bool, 8> getRegisterBits(uint8_t address) const;
 
-
 	void setRegister(Registers r, uint8_t value) const;
 	void setRegister(uint8_t address, uint8_t value) const;
 	void setRegisterBit(Registers r, uint8_t bit, bool value) const;
 	void setRegisterBit(uint8_t address, uint8_t bit, bool value) const;
-	void setProcessorClock(int frequency);
+	void setProcessorClock(double frequency);
 
 	void resetCpuTime();
 	void loadFile(const std::string& path);
@@ -50,6 +47,7 @@ public:
 	void runProcessor();
 	void stopProcessor();
 	void executeSingleInstruction();
+
 private:
 	CPU processor;
 	RegisterData registers;
@@ -58,6 +56,6 @@ private:
 	bool processorActive{ false };
 	std::thread processorThread;
 
-	int processorClock;
+	double processorClock;
 };
 

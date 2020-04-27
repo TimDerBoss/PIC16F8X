@@ -10,13 +10,13 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 		// jump to interrupt
 		registerData.stack.push(registerData.getPcl());
 		registerData.writeByte(0x82, 4);
-		timeActive += 4;
+		timeActive += 4 / (clockSpeed / 4.0);
 	}
 	else {
 		// else execute the normal code
 		auto& instruction = instructionHandler.decode(opcode);
 		instruction->execute(registerData);
-		timeActive += instruction->getCycles();
+		timeActive += instruction->getCycles() / (clockSpeed / 4.0);
 	}
 }
 

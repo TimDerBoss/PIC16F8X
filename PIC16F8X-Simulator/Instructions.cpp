@@ -613,7 +613,6 @@ void SUBLW::execute(RegisterData& rd)
 	w = static_cast<uint8_t>(result);
 	bool digitCarry = ((data.k & 0xF) + ((~w + 1) & 0xF)) & 0xF0;
 	rd.writeBitS(0x3, 0x0, result >= 0); // carry bit
-	// TODO: fix DC
 	rd.writeBitS(0x3, 0x1, !digitCarry); // digit carry
 	rd.writeBitS(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
 	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);

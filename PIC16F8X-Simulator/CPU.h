@@ -17,7 +17,8 @@ struct CPU
 {
 	void singleStep(RegisterData& registerData, uint16_t opcode);
 	bool processInterrupts(RegisterData& registerData);
-	int timeActive{ 0 };
+	double timeActive{ 0 };
+	double clockSpeed{ 0 };
 	CPURegisters cpuRegisters;
 	InstructionHandler instructionHandler;
 };

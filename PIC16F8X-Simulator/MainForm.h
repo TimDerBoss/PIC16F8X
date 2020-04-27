@@ -98,7 +98,8 @@ namespace PIC16F8X_Simulator {
 	private: System::Windows::Forms::Button^ btnClose;
 	private: System::Windows::Forms::GroupBox^ groupBox3;
 	private: System::Windows::Forms::Label^ label6;
-	private: System::Windows::Forms::NumericUpDown^ nudSimSpeed;
+	private: System::Windows::Forms::NumericUpDown^ nudClockSpeed;
+
 	private: System::Windows::Forms::Label^ lRuntime;
 
 	private: System::Windows::Forms::Label^ btnRA0;
@@ -185,7 +186,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->btnRuntimeReset = (gcnew System::Windows::Forms::Button());
 			this->lRuntime = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->nudSimSpeed = (gcnew System::Windows::Forms::NumericUpDown());
+			this->nudClockSpeed = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->lTrisA = (gcnew System::Windows::Forms::Label());
 			this->lPortA = (gcnew System::Windows::Forms::Label());
@@ -226,7 +227,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->gbStatus->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nudSimSpeed))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nudClockSpeed))->BeginInit();
 			this->groupBox3->SuspendLayout();
 			this->groupBox5->SuspendLayout();
 			this->groupBox4->SuspendLayout();
@@ -486,7 +487,6 @@ private: System::Windows::Forms::Label^ label5;
 			// 
 			// updateTimer
 			// 
-			this->updateTimer->Enabled = false;
 			this->updateTimer->Interval = 20;
 			this->updateTimer->Tick += gcnew System::EventHandler(this, &MainForm::updateTimer_Tick);
 			// 
@@ -551,32 +551,32 @@ private: System::Windows::Forms::Label^ label5;
 			this->lRuntime->AutoSize = true;
 			this->lRuntime->Location = System::Drawing::Point(3, 16);
 			this->lRuntime->Name = L"lRuntime";
-			this->lRuntime->Size = System::Drawing::Size(31, 13);
+			this->lRuntime->Size = System::Drawing::Size(49, 13);
 			this->lRuntime->TabIndex = 18;
-			this->lRuntime->Text = L"0 us";
+			this->lRuntime->Text = L"0.00 us";
 			// 
 			// label6
 			// 
 			this->label6->AutoSize = true;
 			this->label6->Location = System::Drawing::Point(3, 16);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(67, 13);
+			this->label6->Size = System::Drawing::Size(73, 13);
 			this->label6->TabIndex = 16;
-			this->label6->Text = L"Speed (Hz)";
+			this->label6->Text = L"Clock (MHz)";
 			// 
-			// nudSimSpeed
+			// nudClockSpeed
 			// 
-			this->nudSimSpeed->BackColor = System::Drawing::Color::Black;
-			this->nudSimSpeed->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->nudSimSpeed->ForeColor = System::Drawing::Color::White;
-			this->nudSimSpeed->Location = System::Drawing::Point(6, 32);
-			this->nudSimSpeed->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
-			this->nudSimSpeed->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			this->nudSimSpeed->Name = L"nudSimSpeed";
-			this->nudSimSpeed->Size = System::Drawing::Size(75, 20);
-			this->nudSimSpeed->TabIndex = 15;
-			this->nudSimSpeed->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
-			this->nudSimSpeed->ValueChanged += gcnew System::EventHandler(this, &MainForm::nudSimSpeed_onValueChanged);
+			this->nudClockSpeed->BackColor = System::Drawing::Color::Black;
+			this->nudClockSpeed->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->nudClockSpeed->ForeColor = System::Drawing::Color::White;
+			this->nudClockSpeed->Location = System::Drawing::Point(6, 32);
+			this->nudClockSpeed->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
+			this->nudClockSpeed->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->nudClockSpeed->Name = L"nudClockSpeed";
+			this->nudClockSpeed->Size = System::Drawing::Size(75, 20);
+			this->nudClockSpeed->TabIndex = 15;
+			this->nudClockSpeed->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
+			this->nudClockSpeed->ValueChanged += gcnew System::EventHandler(this, &MainForm::nudSimSpeed_onValueChanged);
 			// 
 			// label1
 			// 
@@ -908,7 +908,7 @@ private: System::Windows::Forms::Label^ label5;
 			// groupBox7
 			// 
 			this->groupBox7->Controls->Add(this->label6);
-			this->groupBox7->Controls->Add(this->nudSimSpeed);
+			this->groupBox7->Controls->Add(this->nudClockSpeed);
 			this->groupBox7->ForeColor = System::Drawing::Color::White;
 			this->groupBox7->Location = System::Drawing::Point(800, 532);
 			this->groupBox7->Name = L"groupBox7";
@@ -1017,7 +1017,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->gbStatus->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox2->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nudSimSpeed))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nudClockSpeed))->EndInit();
 			this->groupBox3->ResumeLayout(false);
 			this->groupBox5->ResumeLayout(false);
 			this->groupBox5->PerformLayout();
@@ -1045,10 +1045,10 @@ private: System::Windows::Forms::Label^ label5;
 		void setProgram(const std::vector<std::string>& program)
 		{
 			rtbprogramOutput->Text = "";
-			for (auto& line : program) {
+			for (auto line : program) {
+				while (line.length() < 150)
+					line += " ";
 				rtbprogramOutput->Text += gcnew String(line.c_str());
-				//for (int i = line.length(); i < 150; i++)
-					//rtbprogramOutput->Text += " ";
 				rtbprogramOutput->Text += "\r\n";
 			}
 			rtbprogramOutput->Text += "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n";
@@ -1086,7 +1086,7 @@ private: System::Windows::Forms::Label^ label5;
 			lpclValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getRegister(Registers::Pcl)).c_str());
 			lpclathValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getRegister(Registers::Pclath)).c_str());
 			lwRegValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getW()).c_str());
-			lRuntime->Text = gcnew String(fmt::format("%d us", cpuInterface->getCpuTime()).c_str());
+			lRuntime->Text = gcnew String(fmt::format("%.2f us", cpuInterface->getCpuTime()).c_str());
 
 			auto bits = cpuInterface->getRegisterBits(Registers::TrisA);
 			lTrisA->Text = gcnew String(fmt::format("Tris A |  %s  %s  %s  %s  %s  %s  %s  %s"
@@ -1226,7 +1226,7 @@ private: System::Windows::Forms::Label^ label5;
 		btnStop->Enabled = true;
 		btnStep->Enabled = false;
 
-		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudSimSpeed->Value, 0)));
+		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
 		cpuInterface->runProcessor();
 	}
 
@@ -1302,7 +1302,7 @@ private: System::Windows::Forms::Label^ label5;
 		cpuInterface->setRegisterBit(Registers::PortB, 0, btnRB0->Text == "0");
 	}
 	private: System::Void nudSimSpeed_onValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudSimSpeed->Value, 0)));
+		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
 	}
 	private: System::Void btnRuntimeReset_Click(System::Object^ sender, System::EventArgs^ e) {
 		cpuInterface->resetCpuTime();
