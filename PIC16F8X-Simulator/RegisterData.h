@@ -9,6 +9,12 @@
 
 #include <boost/signals2/signal.hpp>
 
+enum DataSource
+{
+	FromUser,
+	FromCpu
+};
+
 class RegisterData
 {
 public:
@@ -19,12 +25,12 @@ public:
 
 	uint8_t readBit(uint8_t address, uint8_t offset) const;
 	uint8_t readBitS(uint8_t address, uint8_t offset) const;
-	void writeBit(uint8_t address, uint8_t offset, bool value) const;
-	void writeBitS(uint8_t address, uint8_t offset, bool value) const;
+	void writeBit(uint8_t address, uint8_t offset, bool value, DataSource source = FromCpu) const;
+	void writeBitS(uint8_t address, uint8_t offset, bool value, DataSource source = FromCpu) const;
 	const uint8_t& readByte(const uint8_t& address) const;
 	const uint8_t& readByteS(const uint8_t& address) const;
-	void writeByte(const uint8_t& address, unsigned char value) const;
-	void writeByteS(const uint8_t& address, unsigned char value) const;
+	void writeByte(const uint8_t& address, unsigned char value, DataSource source = FromCpu) const;
+	void writeByteS(const uint8_t& address, unsigned char value, DataSource source = FromCpu) const;
 
 
 	void increasePCBy(uint16_t amount);
@@ -35,7 +41,7 @@ public:
 	std::map<uint8_t, uint8_t> portBuffer;
 
 	boost::signals2::signal<void(int address)> onRamRead;
-	boost::signals2::signal<void(int address, int offset, int value)> onRamWrite;
+	boost::signals2::signal<void(int address, int offset, int value, DataSource source)> onRamWrite;
 
 private:
 	void setBit(uint8_t& source, int offset, int value);

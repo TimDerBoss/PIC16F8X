@@ -21,15 +21,15 @@ uint8_t RegisterData::readBit(uint8_t address, uint8_t index) const
 	return *ram.at(address) >> index & 1;
 }
 
-void RegisterData::writeBit(uint8_t address, uint8_t offset, bool value) const
+void RegisterData::writeBit(uint8_t address, uint8_t offset, bool value, DataSource source) const
 {
-	onRamWrite(address, offset, value);
+	onRamWrite(address, offset, value, source);
 }
 
-void RegisterData::writeByte(const uint8_t& address, unsigned char value) const
+void RegisterData::writeByte(const uint8_t& address, unsigned char value, DataSource source) const
 {
 	for (int i = 0; i < 8; i++)
-		writeBit(address, i, (value >> i) & 1);
+		writeBit(address, i, (value >> i) & 1, source);
 }
 
 const uint8_t& RegisterData::readByte(const uint8_t& address) const
@@ -45,18 +45,18 @@ uint8_t RegisterData::readBitS(uint8_t address, uint8_t index) const
 	return readBit(adr, index);
 }
 
-void RegisterData::writeBitS(uint8_t address, uint8_t offset, bool value) const
+void RegisterData::writeBitS(uint8_t address, uint8_t offset, bool value, DataSource source) const
 {
 	assert(address <= 0x7F);
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
-	writeBit(adr, offset, value); // clear bit
+	writeBit(adr, offset, value, source); // clear bit
 }
 
-void RegisterData::writeByteS(const uint8_t& address, unsigned char value) const
+void RegisterData::writeByteS(const uint8_t& address, unsigned char value, DataSource source) const
 {
 	assert(address <= 0x7F);
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
-	writeByte(adr, value);
+	writeByte(adr, value, source);
 }
 
 const uint8_t& RegisterData::readByteS(const uint8_t& address) const
@@ -91,8 +91,8 @@ void RegisterData::initialize()
 		}
 	}
 
-	onRamWrite.connect([this](int address, int offset, int value) {
-		if ((address == 0x5 || address == 0x6) && readBit(address + 0x80, offset)) {
+	onRamWrite.connect([this](int address, int offset, int value, DataSource source) {
+		if ((address == 0x5 || address == 0x6) && (readBit(address + 0x80, offset) == static_cast<bool>(source))) {
 			// if trying to set a port bit while its tris bit is set to input buffer the value
 			portBuffer[address + offset] = value;
 		}
@@ -102,14 +102,15 @@ void RegisterData::initialize()
 			int portBitAdr = portAdr + offset;
 			if (portBuffer.find(portBitAdr) != portBuffer.end()) {
 				setBit(*ram.at(portAdr), offset, portBuffer[portBitAdr]);
-				setBit(*ram.at(address), offset, value);
 				portBuffer.erase(portBitAdr);
 			}
+			setBit(*ram.at(address), offset, value);
 		}
 		else {
 			setBit(*ram.at(address), offset, value);
-			if (address == 0x2)
+			if (address == 0x2 && offset >= 7)
 			{
+				// optimization: only set the pc once not 8 times
 				this->cpuRegisters.programCounter = readByte(0x2) & 0xFF;
 				this->cpuRegisters.programCounter |= ((readByte(0xA) & 0x1F) << 8);
 			}

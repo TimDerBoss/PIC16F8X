@@ -66,22 +66,22 @@ const std::vector<std::string>& CpuInterface::getLoadedFile() const
 
 void CpuInterface::setRegister(Registers r, uint8_t value) const
 {
-	registers.writeByte(r, value);
+	registers.writeByte(r, value, DataSource::FromUser);
 }
 
 void CpuInterface::setRegister(uint8_t address, uint8_t value) const
 {
-	registers.writeByte(address, value);
+	registers.writeByte(address, value, DataSource::FromUser);
 }
 
 void CpuInterface::setRegisterBit(Registers r, uint8_t bit, bool value) const
 {
-	registers.writeBit(r, bit, value);
+	registers.writeBit(r, bit, value, DataSource::FromUser);
 }
 
 void CpuInterface::setRegisterBit(uint8_t address, uint8_t bit, bool value) const
 {
-	registers.writeBit(address, bit, value);
+	registers.writeBit(address, bit, value, DataSource::FromUser);
 }
 
 void CpuInterface::resetCpuTime()
