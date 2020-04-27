@@ -93,11 +93,18 @@ void RegisterData::initialize()
 
 	onRamWrite.connect([this](int address, int offset, int value) {
 		if ((address == 0x5 || address == 0x6) && readBit(address + 0x80, offset)) {
+			// if trying to set a port bit while its tris bit is set to input buffer the value
 			portBuffer[address + offset] = value;
 		}
 		else if ((address == 0x85 || address == 0x86) && value == 0) {
-			setBit(*ram.at(address-0x80), offset, portBuffer[address - 0x80 + offset]);
-			setBit(*ram.at(address), offset,value);
+			// if a tris bit is set to output write the buffered port value into the corresopnding port (if available)
+			int portAdr = address - 0x80;
+			int portBitAdr = portAdr + offset;
+			if (portBuffer.find(portBitAdr) != portBuffer.end()) {
+				setBit(*ram.at(portAdr), offset, portBuffer[portBitAdr]);
+				setBit(*ram.at(address), offset, value);
+				portBuffer.erase(portBitAdr);
+			}
 		}
 		else {
 			setBit(*ram.at(address), offset, value);
