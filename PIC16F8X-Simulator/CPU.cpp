@@ -2,6 +2,13 @@
 
 #include <FormatString.h>
 
+CPU::CPU()
+{
+	this->onCpuTimeChanged.connect([this](double difference) {
+		timeActive += difference;
+		});
+}
+
 // run just the next instruction
 void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 {
@@ -10,17 +17,18 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 		// jump to interrupt
 		registerData.stack.push(registerData.getPcl());
 		registerData.writeByte(0x82, 4);
-		timeActive += 4 / (clockSpeed / 4.0);
+		onCpuTimeChanged(4 / (clockSpeed / 4.0));
 		cycles++;
 	}
 	else {
 		// else execute the normal code
 		auto& instruction = instructionHandler.decode(opcode);
 		instruction->execute(registerData);
-		timeActive += instruction->getCycles() / (clockSpeed / 4.0);
+		onCpuTimeChanged(instruction->getCycles() / (clockSpeed / 4.0));
 		cycles++;
 	}
 
+	// TODO: timer inerrupt
 //	// T0CS
 //	if (!registerData.readBit(0x81, 5))
 //	{

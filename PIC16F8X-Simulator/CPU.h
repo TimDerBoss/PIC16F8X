@@ -15,6 +15,8 @@ struct CPURegisters {
 
 struct CPU
 {
+	CPU();
+
 	void singleStep(RegisterData& registerData, uint16_t opcode);
 	bool processInterrupts(RegisterData& registerData);
 	double timeActive{ 0 };
@@ -22,4 +24,5 @@ struct CPU
 	int cycles{ 0 };
 	CPURegisters cpuRegisters;
 	InstructionHandler instructionHandler;
+	boost::signals2::signal<void(double difference)> onCpuTimeChanged;
 };

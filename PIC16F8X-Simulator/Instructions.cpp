@@ -496,7 +496,9 @@ CLRWDT::CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void CLRWDT::execute(RegisterData& rd)
 {
-	throw exception("Not implemented: %s", identifier);
+	rd.writeByte(0x81, "xxxxxccc");
+	rd.writeByte(0x3, "xxxssxxx");
+	rd.watchdog.reset();
 	rd.increasePCBy(getCycles());
 }
 
