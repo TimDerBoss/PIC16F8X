@@ -52,6 +52,7 @@ public:
 	Watchdog watchdog;
 
 private:
+	boost::signals2::connection localRamConnection;
 	void setBit(uint8_t& source, int offset, int value);
 	std::vector<std::shared_ptr<uint8_t>> ram;
 };

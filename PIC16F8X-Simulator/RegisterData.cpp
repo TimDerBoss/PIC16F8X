@@ -47,9 +47,9 @@ void RegisterData::writeByte(const uint8_t& address, const std::string& value, D
 			writeBit(address, 7 - i, true);
 		else if (value[i] == 'c')
 			writeBit(address, 7 - i, false);
-		else if(value[i] != 'x')
+		else if (value[i] != 'x')
 			throw exception("Unknown byte string character: %c", value[i]);
-		
+
 	}
 }
 
@@ -102,8 +102,8 @@ void RegisterData::resetPowerOn()
 
 void RegisterData::otherReset()
 {
-	writeByte(0x2, "cccccccc"); // PCL
-	writeByte(0x3, "cccxxxxx"); 
+	writeByte(0x2, 0); // PCL
+	writeByte(0x3, "cccxxxxx");
 	writeByte(0x5, "cccxxxxx");
 	writeByte(0xA, 0);
 	writeByte(0xB, "cccccccx");
@@ -115,7 +115,6 @@ void RegisterData::otherReset()
 
 void RegisterData::initialize()
 {
-	ram.clear();
 	for (int i = 0; i <= 0xFF; i++) {
 		if (i == 0x80 || i == 0x82 || i == 0x83 || i == 0x84 || i == 0x8A || i == 0x8B || (i >= 0x8C && i <= 0xAF)) {
 			ram.push_back(ram.at(i - 0x80));
@@ -124,33 +123,34 @@ void RegisterData::initialize()
 			ram.push_back(std::make_shared<uint8_t>(0));
 		}
 	}
-
-	onRamWrite.connect([this](int address, int offset, int value, DataSource source) {
-		if ((address == 0x5 || address == 0x6) && (readBit(address + 0x80, offset) == static_cast<uint8_t>(source))) {
-			// if trying to set a port bit while its tris bit is set to input buffer the value
-			if (source == FromCpu)
-				portBuffer[address + offset] = value;
-		}
-		else if ((address == 0x85 || address == 0x86) && value == 0) {
-			// if a tris bit is set to output write the buffered port value into the corresopnding port (if available)
-			int portAdr = address - 0x80;
-			int portBitAdr = portAdr + offset;
-			if (portBuffer.find(portBitAdr) != portBuffer.end()) {
-				setBit(*ram.at(portAdr), offset, portBuffer[portBitAdr]);
-				portBuffer.erase(portBitAdr);
+	if (!localRamConnection.connected()) {
+		localRamConnection = onRamWrite.connect([this](int address, int offset, int value, DataSource source) {
+			if ((address == 0x5 || address == 0x6) && (readBit(address + 0x80, offset) == static_cast<uint8_t>(source))) {
+				// if trying to set a port bit while its tris bit is set to input buffer the value
+				if (source == FromCpu)
+					portBuffer[address + offset] = value;
 			}
-			setBit(*ram.at(address), offset, value);
-		}
-		else {
-			setBit(*ram.at(address), offset, value);
-			if (address == 0x2 && offset >= 7)
-			{
-				// optimization: only set the pc once not 8 times
-				this->cpuRegisters.programCounter = readByte(0x2) & 0xFF;
-				this->cpuRegisters.programCounter |= ((readByte(0xA) & 0x1F) << 8);
+			else if ((address == 0x85 || address == 0x86) && value == 0) {
+				// if a tris bit is set to output write the buffered port value into the corresopnding port (if available)
+				int portAdr = address - 0x80;
+				int portBitAdr = portAdr + offset;
+				if (portBuffer.find(portBitAdr) != portBuffer.end()) {
+					setBit(*ram.at(portAdr), offset, portBuffer[portBitAdr]);
+					portBuffer.erase(portBitAdr);
+				}
+				setBit(*ram.at(address), offset, value);
 			}
-		}
-		});
+			else {
+				setBit(*ram.at(address), offset, value);
+				if (address == 0x2 && offset >= 7)
+				{
+					// optimization: only set the pc once not 8 times
+					this->cpuRegisters.programCounter = readByte(0x2) & 0xFF;
+					this->cpuRegisters.programCounter |= ((readByte(0xA) & 0x1F) << 8);
+				}
+			}
+			});
+	}
 }
 
 // increase the program counter by a given amount

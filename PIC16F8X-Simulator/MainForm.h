@@ -1174,8 +1174,6 @@ private: System::Windows::Forms::Label^ label5;
 				}
 				listBox1->Items[i / 8] = gcnew System::String(str.c_str());
 			}
-
-			highlightConsoleLine(cpuInterface->getLineAtProgramCounter());
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1214,10 +1212,11 @@ private: System::Windows::Forms::Label^ label5;
 		btnReset->Enabled = true;
 		btnStop->Enabled = false;
 		btnStep->Enabled = true;
-
+		cpuInterface->resetProcessor();
 		for (int i = 0; i < 0xFF; i += 8) {
 			listBox1->Items->Add(gcnew System::String(""));
 		}
+		updateUI();
 	}
 
 	private: System::Void btnStart_Click(System::Object^ sender, System::EventArgs^ e) {
