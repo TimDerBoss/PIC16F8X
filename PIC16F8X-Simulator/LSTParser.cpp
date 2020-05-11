@@ -25,14 +25,14 @@ void LstParser::readFile(const std::string& fileName)
 		while (getline(file, line)) {
 			std::smatch matches;
 			if (!std::regex_match(line, matches, fileRegex)) {
-				throw exception("Invalid file format");
+				throw fatal_exception("Invalid file format");
 			}
 			lstFile.push_back(line);
 		}
 		file.close();
 	}
 	else {
-		throw exception("File not found: %s", fileName);
+		throw fatal_exception("File not found: %s", fileName);
 	}
 }
 
@@ -69,7 +69,7 @@ const uint16_t& LstParser::getLineInFile(const uint16_t& pc) const
 		if (info.pcValue == pc)
 			return info.lineInFile;
 	}
-	throw exception("Could not find the corresponding line for PC-value '%d'", pc);
+	throw fatal_exception("Could not find the corresponding line for PC-value '%d'", pc);
 }
 
 // get the raw lst file data
@@ -85,7 +85,7 @@ const uint16_t& LstParser::getOpcode(const uint16_t& pc) const
 		if (info.pcValue == pc)
 			return info.opcode;
 	}
-	throw exception("Could not find the corresponding opcode for PC-value '%d'", pc);
+	throw fatal_exception("Could not find the corresponding opcode for PC-value '%d'", pc);
 }
 
 

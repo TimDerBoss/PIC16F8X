@@ -3,7 +3,6 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include <stack>
 #include <vector>
 #include <functional>
 #include <FormatString.h>
@@ -16,6 +15,30 @@ enum DataSource
 {
 	FromUser,
 	FromCpu
+};
+
+class Stack {
+public:
+	Stack() {
+		values.clear();
+	}
+	int pop() {
+		auto tmp = values.back();
+		values.pop_back();
+		return tmp;
+	}
+	void push(int value) {
+		values.push_back(value);
+	}
+	int at(int idx) {
+		return values.at(idx);
+	}
+	int top() {
+		return values.back();
+	}
+	int Size() { return values.size(); }
+private:
+	std::vector<int> values;
 };
 
 class RegisterData
@@ -43,7 +66,7 @@ public:
 	const uint16_t& getPcl() const;
 
 	struct CPURegisters& cpuRegisters;
-	std::stack<uint16_t> stack;
+	Stack stack;
 	std::map<uint8_t, uint8_t> portBuffer;
 
 	boost::signals2::signal<void(int address)> onRamRead;

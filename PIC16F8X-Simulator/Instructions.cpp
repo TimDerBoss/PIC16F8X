@@ -480,7 +480,7 @@ CALL::CALL(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void CALL::execute(RegisterData& rd)
 {
-	rd.stack.emplace(rd.getPcl() + 1);
+	rd.stack.push(rd.getPcl() + 1);
 	int pclath = 0;
 	pclath |= ((data.k >> 8) & 0b111);
 	pclath |= ((rd.readByte(0xA) & 0x11000) << 3);
@@ -551,8 +551,8 @@ RETFIE::RETFIE(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void RETFIE::execute(RegisterData& rd)
 {
-	if (rd.stack.empty())
-		throw exception("Stack is empty!");
+	if (!rd.stack.Size())
+		throw fatal_exception("Stack is empty!");
 	rd.writeByte(0xA, (rd.stack.top() << 8) & 0x1F);
 	rd.writeByte(0x2, rd.stack.top() & 0xFF);
 	rd.stack.pop();
@@ -567,8 +567,8 @@ RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void RETLW::execute(RegisterData& rd)
 {
-	if (rd.stack.empty())
-		throw exception("Stack is empty!");
+	if (!rd.stack.Size())
+		throw fatal_exception("Stack is empty!");
 	rd.writeByte(0xA, (rd.stack.top() << 8) & 0x1F);
 	rd.writeByte(0x2, rd.stack.top() & 0xFF);
 	rd.stack.pop();
@@ -583,7 +583,7 @@ RETURN::RETURN(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void RETURN::execute(RegisterData& rd)
 {
-	if (rd.stack.empty())
+	if (!rd.stack.Size())
 		throw std::runtime_error(fmt::format("%s: Stack is empty!", __FUNCTION__));
 	rd.writeByte(0xA, (rd.stack.top() << 8) & 0x1F);
 	rd.writeByte(0x2, rd.stack.top() & 0xFF);

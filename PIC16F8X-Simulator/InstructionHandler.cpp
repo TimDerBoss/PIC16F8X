@@ -127,6 +127,6 @@ std::shared_ptr<InstructionBase>& InstructionHandler::decode(const uint16_t& opc
 				return i;
 			}
 		}
-		throw exception("Requested instruction is not implemented: 0x%X", opcode);
+		throw fatal_exception("Requested instruction is not implemented: 0x%X", opcode);
 	}
 }

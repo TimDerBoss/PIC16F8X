@@ -1,4 +1,5 @@
 #include "CpuInterface.h"
+#include "Exception.h"
 
 #include <array>
 
@@ -47,6 +48,11 @@ std::array<bool, 8> CpuInterface::getRegisterBits(uint8_t address) const
 		result[i] = registers.readBit(address, i);
 	}
 	return result;
+}
+
+Stack& CpuInterface::getStack()
+{
+	return registers.stack;
 }
 
 const double& CpuInterface::getCpuTime() const
@@ -98,6 +104,7 @@ void CpuInterface::loadFile(const std::string& path)
 {
 	parser.readFile(path);
 	parser.parseLstFile();
+	initialized = true;
 }
 
 void CpuInterface::resetProcessor()
@@ -109,12 +116,20 @@ void CpuInterface::resetProcessor()
 void CpuInterface::runProcessor()
 {
 	if (!processorActive) {
+		if (processorThread.joinable())
+			processorThread.join();
 		processor.clockSpeed = processorClock;
 		processorActive = true;
 		processorThread = std::thread([this]() {
 			while (processorActive) {
-				executeSingleInstruction();
-				//std::this_thread::sleep_for(std::chrono::milliseconds(5));
+				if (getProgramCounter() == breakpointValue && useBreakpoint) {
+					processorActive = false;
+					break;
+				}
+				else {
+					executeSingleInstruction();
+					std::this_thread::sleep_for(std::chrono::milliseconds(5));
+				}
 			}
 			});
 	}
@@ -134,4 +149,28 @@ void CpuInterface::executeSingleInstruction()
 	if (parser.getLineInFile(registers.getPcl()) != -1) {
 		processor.singleStep(registers, parser.getOpcode(registers.getPcl()));
 	}
+}
+
+void CpuInterface::setBreakPointEnabled(bool enabled, int value)
+{
+	useBreakpoint = enabled;
+	breakpointValue = value;
+}
+
+void CpuInterface::setWatchdogEnabled(bool enabled)
+{
+	if (enabled)
+		registers.watchdog.start();
+	else
+		registers.watchdog.stop();
+}
+
+bool CpuInterface::isInitialized()
+{
+	return initialized;
+}
+
+bool CpuInterface::isProcessorActive()
+{
+	return processorActive;
 }

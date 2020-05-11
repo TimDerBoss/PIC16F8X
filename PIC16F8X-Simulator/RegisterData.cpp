@@ -41,14 +41,14 @@ void RegisterData::writeByte(const uint8_t& address, unsigned char value, DataSo
 void RegisterData::writeByte(const uint8_t& address, const std::string& value, DataSource source) const
 {
 	if (value.length() != 8)
-		throw exception("Byte string length must equal 8");
+		throw fatal_exception("Byte string length must equal 8");
 	for (int i = 7; i > 0; i--) {
 		if (value[i] == 's')
 			writeBit(address, 7 - i, true);
 		else if (value[i] == 'c')
 			writeBit(address, 7 - i, false);
 		else if (value[i] != 'x')
-			throw exception("Unknown byte string character: %c", value[i]);
+			throw fatal_exception("Unknown byte string character: %c", value[i]);
 
 	}
 }

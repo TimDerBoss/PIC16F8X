@@ -34,6 +34,7 @@ public:
 	const std::vector<std::string>& getLoadedFile() const;
 	std::array<bool, 8> getRegisterBits(Registers r) const;
 	std::array<bool, 8> getRegisterBits(uint8_t address) const;
+	Stack& getStack();
 
 	void setRegister(Registers r, uint8_t value) const;
 	void setRegister(uint8_t address, uint8_t value) const;
@@ -47,6 +48,11 @@ public:
 	void runProcessor();
 	void stopProcessor();
 	void executeSingleInstruction();
+	void setWatchdogEnabled(bool enabled);
+	void setBreakPointEnabled(bool enabled, int value);
+
+	bool isInitialized();
+	bool isProcessorActive();
 
 private:
 	CPU processor;
@@ -57,5 +63,8 @@ private:
 	std::thread processorThread;
 
 	double processorClock;
+	bool initialized{ false };
+	bool useBreakpoint{ false };
+	int breakpointValue{ 0 };
 };
 

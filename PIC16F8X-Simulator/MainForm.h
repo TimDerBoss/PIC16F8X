@@ -130,14 +130,20 @@ namespace PIC16F8X_Simulator {
 
 	private: System::Windows::Forms::Label^ btnRB5;
 	private: System::Windows::Forms::Button^ btnRuntimeReset;
-	private: System::Windows::Forms::GroupBox^ groupBox6;
+
 	private: System::Windows::Forms::GroupBox^ groupBox7;
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 	private: System::Windows::Forms::Button^ btnLoadFile;
 	private: System::Windows::Forms::ListBox^ listBox1;
 	private: System::Windows::Forms::GroupBox^ groupBox8;
 	private: System::Windows::Forms::Label^ lAddresses;
-private: System::Windows::Forms::Label^ label5;
+	private: System::Windows::Forms::Label^ label5;
+	private: System::Windows::Forms::CheckBox^ cbWatchdog;
+	private: System::Windows::Forms::CheckBox^ cbBreakpoint;
+	private: System::Windows::Forms::TextBox^ tbBreakpoint;
+	private: System::Windows::Forms::GroupBox^ gbStack;
+	private: System::Windows::Forms::ListBox^ lbStack;
+	private: System::Windows::Forms::Label^ label7;
 
 
 
@@ -213,14 +219,19 @@ private: System::Windows::Forms::Label^ label5;
 			this->btnRA6 = (gcnew System::Windows::Forms::Label());
 			this->btnRA4 = (gcnew System::Windows::Forms::Label());
 			this->btnRA5 = (gcnew System::Windows::Forms::Label());
-			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
+			this->tbBreakpoint = (gcnew System::Windows::Forms::TextBox());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->cbBreakpoint = (gcnew System::Windows::Forms::CheckBox());
+			this->cbWatchdog = (gcnew System::Windows::Forms::CheckBox());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->btnLoadFile = (gcnew System::Windows::Forms::Button());
 			this->listBox1 = (gcnew System::Windows::Forms::ListBox());
 			this->groupBox8 = (gcnew System::Windows::Forms::GroupBox());
 			this->lAddresses = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->gbStack = (gcnew System::Windows::Forms::GroupBox());
+			this->lbStack = (gcnew System::Windows::Forms::ListBox());
 			this->gbFSR->SuspendLayout();
 			this->gbIntcon->SuspendLayout();
 			this->gbOption->SuspendLayout();
@@ -231,9 +242,9 @@ private: System::Windows::Forms::Label^ label5;
 			this->groupBox3->SuspendLayout();
 			this->groupBox5->SuspendLayout();
 			this->groupBox4->SuspendLayout();
-			this->groupBox6->SuspendLayout();
 			this->groupBox7->SuspendLayout();
 			this->groupBox8->SuspendLayout();
+			this->gbStack->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// gbFSR
@@ -252,9 +263,9 @@ private: System::Windows::Forms::Label^ label5;
 			this->gbFSR->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->gbFSR->ForeColor = System::Drawing::Color::White;
-			this->gbFSR->Location = System::Drawing::Point(13, 34);
+			this->gbFSR->Location = System::Drawing::Point(13, 29);
 			this->gbFSR->Name = L"gbFSR";
-			this->gbFSR->Size = System::Drawing::Size(283, 251);
+			this->gbFSR->Size = System::Drawing::Size(283, 276);
 			this->gbFSR->TabIndex = 0;
 			this->gbFSR->TabStop = false;
 			this->gbFSR->Text = L"Special Function Registers";
@@ -264,7 +275,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->gbIntcon->Controls->Add(this->lIntconValues);
 			this->gbIntcon->Controls->Add(this->label3);
 			this->gbIntcon->ForeColor = System::Drawing::Color::White;
-			this->gbIntcon->Location = System::Drawing::Point(15, 189);
+			this->gbIntcon->Location = System::Drawing::Point(15, 211);
 			this->gbIntcon->Name = L"gbIntcon";
 			this->gbIntcon->Size = System::Drawing::Size(253, 53);
 			this->gbIntcon->TabIndex = 12;
@@ -293,7 +304,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->gbOption->Controls->Add(this->lOptionValues);
 			this->gbOption->Controls->Add(this->label2);
 			this->gbOption->ForeColor = System::Drawing::Color::White;
-			this->gbOption->Location = System::Drawing::Point(15, 130);
+			this->gbOption->Location = System::Drawing::Point(15, 151);
 			this->gbOption->Name = L"gbOption";
 			this->gbOption->Size = System::Drawing::Size(253, 53);
 			this->gbOption->TabIndex = 9;
@@ -333,7 +344,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->gbStatus->Controls->Add(this->label17);
 			this->gbStatus->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
 			this->gbStatus->ForeColor = System::Drawing::Color::White;
-			this->gbStatus->Location = System::Drawing::Point(15, 71);
+			this->gbStatus->Location = System::Drawing::Point(15, 92);
 			this->gbStatus->Name = L"gbStatus";
 			this->gbStatus->Size = System::Drawing::Size(253, 53);
 			this->gbStatus->TabIndex = 10;
@@ -437,7 +448,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->btnStart->ForeColor = System::Drawing::Color::White;
 			this->btnStart->Location = System::Drawing::Point(6, 14);
 			this->btnStart->Name = L"btnStart";
-			this->btnStart->Size = System::Drawing::Size(75, 23);
+			this->btnStart->Size = System::Drawing::Size(87, 23);
 			this->btnStart->TabIndex = 1;
 			this->btnStart->Text = L"Start";
 			this->btnStart->UseVisualStyleBackColor = false;
@@ -451,7 +462,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->btnStop->ForeColor = System::Drawing::Color::White;
 			this->btnStop->Location = System::Drawing::Point(6, 43);
 			this->btnStop->Name = L"btnStop";
-			this->btnStop->Size = System::Drawing::Size(75, 23);
+			this->btnStop->Size = System::Drawing::Size(87, 23);
 			this->btnStop->TabIndex = 2;
 			this->btnStop->Text = L"Stop";
 			this->btnStop->UseVisualStyleBackColor = false;
@@ -465,7 +476,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->btnStep->ForeColor = System::Drawing::Color::White;
 			this->btnStep->Location = System::Drawing::Point(6, 72);
 			this->btnStep->Name = L"btnStep";
-			this->btnStep->Size = System::Drawing::Size(75, 23);
+			this->btnStep->Size = System::Drawing::Size(87, 23);
 			this->btnStep->TabIndex = 3;
 			this->btnStep->Text = L"Step";
 			this->btnStep->UseVisualStyleBackColor = false;
@@ -477,9 +488,9 @@ private: System::Windows::Forms::Label^ label5;
 			this->btnReset->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnReset->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
 			this->btnReset->ForeColor = System::Drawing::Color::White;
-			this->btnReset->Location = System::Drawing::Point(6, 130);
+			this->btnReset->Location = System::Drawing::Point(6, 101);
 			this->btnReset->Name = L"btnReset";
-			this->btnReset->Size = System::Drawing::Size(75, 23);
+			this->btnReset->Size = System::Drawing::Size(87, 23);
 			this->btnReset->TabIndex = 4;
 			this->btnReset->Text = L"Reset";
 			this->btnReset->UseVisualStyleBackColor = false;
@@ -501,7 +512,7 @@ private: System::Windows::Forms::Label^ label5;
 			this->rtbprogramOutput->Name = L"rtbprogramOutput";
 			this->rtbprogramOutput->ReadOnly = true;
 			this->rtbprogramOutput->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
-			this->rtbprogramOutput->Size = System::Drawing::Size(769, 285);
+			this->rtbprogramOutput->Size = System::Drawing::Size(786, 285);
 			this->rtbprogramOutput->TabIndex = 7;
 			this->rtbprogramOutput->TabStop = false;
 			this->rtbprogramOutput->Text = L"";
@@ -511,9 +522,9 @@ private: System::Windows::Forms::Label^ label5;
 			// 
 			this->groupBox1->Controls->Add(this->rtbprogramOutput);
 			this->groupBox1->ForeColor = System::Drawing::Color::White;
-			this->groupBox1->Location = System::Drawing::Point(13, 293);
+			this->groupBox1->Location = System::Drawing::Point(13, 311);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(781, 305);
+			this->groupBox1->Size = System::Drawing::Size(800, 305);
 			this->groupBox1->TabIndex = 9;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Program";
@@ -525,9 +536,9 @@ private: System::Windows::Forms::Label^ label5;
 			this->groupBox2->Controls->Add(this->btnStop);
 			this->groupBox2->Controls->Add(this->btnReset);
 			this->groupBox2->ForeColor = System::Drawing::Color::White;
-			this->groupBox2->Location = System::Drawing::Point(800, 293);
+			this->groupBox2->Location = System::Drawing::Point(819, 480);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(88, 161);
+			this->groupBox2->Size = System::Drawing::Size(99, 136);
 			this->groupBox2->TabIndex = 10;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Controls";
@@ -538,9 +549,9 @@ private: System::Windows::Forms::Label^ label5;
 			this->btnRuntimeReset->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->btnRuntimeReset->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
 			this->btnRuntimeReset->ForeColor = System::Drawing::Color::White;
-			this->btnRuntimeReset->Location = System::Drawing::Point(6, 32);
+			this->btnRuntimeReset->Location = System::Drawing::Point(169, 42);
 			this->btnRuntimeReset->Name = L"btnRuntimeReset";
-			this->btnRuntimeReset->Size = System::Drawing::Size(75, 23);
+			this->btnRuntimeReset->Size = System::Drawing::Size(60, 20);
 			this->btnRuntimeReset->TabIndex = 19;
 			this->btnRuntimeReset->Text = L"Reset";
 			this->btnRuntimeReset->UseVisualStyleBackColor = false;
@@ -549,7 +560,7 @@ private: System::Windows::Forms::Label^ label5;
 			// lRuntime
 			// 
 			this->lRuntime->AutoSize = true;
-			this->lRuntime->Location = System::Drawing::Point(3, 16);
+			this->lRuntime->Location = System::Drawing::Point(61, 46);
 			this->lRuntime->Name = L"lRuntime";
 			this->lRuntime->Size = System::Drawing::Size(49, 13);
 			this->lRuntime->TabIndex = 18;
@@ -558,7 +569,7 @@ private: System::Windows::Forms::Label^ label5;
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(3, 16);
+			this->label6->Location = System::Drawing::Point(6, 17);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(73, 13);
 			this->label6->TabIndex = 16;
@@ -569,11 +580,11 @@ private: System::Windows::Forms::Label^ label5;
 			this->nudClockSpeed->BackColor = System::Drawing::Color::Black;
 			this->nudClockSpeed->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->nudClockSpeed->ForeColor = System::Drawing::Color::White;
-			this->nudClockSpeed->Location = System::Drawing::Point(6, 32);
+			this->nudClockSpeed->Location = System::Drawing::Point(169, 14);
 			this->nudClockSpeed->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
 			this->nudClockSpeed->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->nudClockSpeed->Name = L"nudClockSpeed";
-			this->nudClockSpeed->Size = System::Drawing::Size(75, 20);
+			this->nudClockSpeed->Size = System::Drawing::Size(60, 20);
 			this->nudClockSpeed->TabIndex = 15;
 			this->nudClockSpeed->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
 			this->nudClockSpeed->ValueChanged += gcnew System::EventHandler(this, &MainForm::nudSimSpeed_onValueChanged);
@@ -627,9 +638,9 @@ private: System::Windows::Forms::Label^ label5;
 			this->groupBox3->Controls->Add(this->groupBox5);
 			this->groupBox3->Controls->Add(this->groupBox4);
 			this->groupBox3->ForeColor = System::Drawing::Color::White;
-			this->groupBox3->Location = System::Drawing::Point(302, 34);
+			this->groupBox3->Location = System::Drawing::Point(673, 29);
 			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(245, 251);
+			this->groupBox3->Size = System::Drawing::Size(245, 145);
 			this->groupBox3->TabIndex = 14;
 			this->groupBox3->TabStop = false;
 			this->groupBox3->Text = L"Ports";
@@ -893,29 +904,64 @@ private: System::Windows::Forms::Label^ label5;
 			this->btnRA5->Text = L"0";
 			this->btnRA5->Click += gcnew System::EventHandler(this, &MainForm::btnRA5_Click);
 			// 
-			// groupBox6
-			// 
-			this->groupBox6->Controls->Add(this->btnRuntimeReset);
-			this->groupBox6->Controls->Add(this->lRuntime);
-			this->groupBox6->ForeColor = System::Drawing::Color::White;
-			this->groupBox6->Location = System::Drawing::Point(800, 460);
-			this->groupBox6->Name = L"groupBox6";
-			this->groupBox6->Size = System::Drawing::Size(88, 66);
-			this->groupBox6->TabIndex = 15;
-			this->groupBox6->TabStop = false;
-			this->groupBox6->Text = L"Runtime";
-			// 
 			// groupBox7
 			// 
+			this->groupBox7->Controls->Add(this->btnRuntimeReset);
+			this->groupBox7->Controls->Add(this->lRuntime);
+			this->groupBox7->Controls->Add(this->tbBreakpoint);
 			this->groupBox7->Controls->Add(this->label6);
+			this->groupBox7->Controls->Add(this->label7);
+			this->groupBox7->Controls->Add(this->cbBreakpoint);
 			this->groupBox7->Controls->Add(this->nudClockSpeed);
+			this->groupBox7->Controls->Add(this->cbWatchdog);
 			this->groupBox7->ForeColor = System::Drawing::Color::White;
-			this->groupBox7->Location = System::Drawing::Point(800, 532);
+			this->groupBox7->Location = System::Drawing::Point(673, 180);
 			this->groupBox7->Name = L"groupBox7";
-			this->groupBox7->Size = System::Drawing::Size(88, 66);
+			this->groupBox7->Size = System::Drawing::Size(245, 125);
 			this->groupBox7->TabIndex = 17;
 			this->groupBox7->TabStop = false;
 			this->groupBox7->Text = L"Simulation";
+			// 
+			// tbBreakpoint
+			// 
+			this->tbBreakpoint->BackColor = System::Drawing::Color::Black;
+			this->tbBreakpoint->ForeColor = System::Drawing::Color::White;
+			this->tbBreakpoint->Location = System::Drawing::Point(169, 70);
+			this->tbBreakpoint->Name = L"tbBreakpoint";
+			this->tbBreakpoint->Size = System::Drawing::Size(60, 20);
+			this->tbBreakpoint->TabIndex = 38;
+			this->tbBreakpoint->Text = L"FFFF";
+			this->tbBreakpoint->TextChanged += gcnew System::EventHandler(this, &MainForm::tbBreakpoint_TextChanged);
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(6, 46);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(55, 13);
+			this->label7->TabIndex = 39;
+			this->label7->Text = L"Runtime:";
+			// 
+			// cbBreakpoint
+			// 
+			this->cbBreakpoint->AutoSize = true;
+			this->cbBreakpoint->Location = System::Drawing::Point(5, 73);
+			this->cbBreakpoint->Name = L"cbBreakpoint";
+			this->cbBreakpoint->Size = System::Drawing::Size(158, 17);
+			this->cbBreakpoint->TabIndex = 37;
+			this->cbBreakpoint->Text = L"Breakpoint at PC-Value";
+			this->cbBreakpoint->UseVisualStyleBackColor = true;
+			// 
+			// cbWatchdog
+			// 
+			this->cbWatchdog->AutoSize = true;
+			this->cbWatchdog->Location = System::Drawing::Point(5, 96);
+			this->cbWatchdog->Name = L"cbWatchdog";
+			this->cbWatchdog->Size = System::Drawing::Size(74, 17);
+			this->cbWatchdog->TabIndex = 36;
+			this->cbWatchdog->Text = L"Watchdog";
+			this->cbWatchdog->UseVisualStyleBackColor = true;
+			this->cbWatchdog->CheckedChanged += gcnew System::EventHandler(this, &MainForm::cbWatchdog_CheckedChanged);
 			// 
 			// openFileDialog1
 			// 
@@ -942,12 +988,14 @@ private: System::Windows::Forms::Label^ label5;
 			// 
 			this->listBox1->BackColor = System::Drawing::Color::Black;
 			this->listBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->listBox1->DrawMode = System::Windows::Forms::DrawMode::OwnerDrawFixed;
 			this->listBox1->ForeColor = System::Drawing::SystemColors::Window;
 			this->listBox1->FormattingEnabled = true;
 			this->listBox1->Location = System::Drawing::Point(6, 37);
 			this->listBox1->Name = L"listBox1";
-			this->listBox1->Size = System::Drawing::Size(353, 208);
+			this->listBox1->Size = System::Drawing::Size(353, 234);
 			this->listBox1->TabIndex = 19;
+			this->listBox1->DrawItem += gcnew System::Windows::Forms::DrawItemEventHandler(this, &MainForm::ramDrawItem);
 			this->listBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &MainForm::listBox1_SelectedIndexChanged);
 			// 
 			// groupBox8
@@ -955,9 +1003,9 @@ private: System::Windows::Forms::Label^ label5;
 			this->groupBox8->Controls->Add(this->lAddresses);
 			this->groupBox8->Controls->Add(this->listBox1);
 			this->groupBox8->ForeColor = System::Drawing::Color::White;
-			this->groupBox8->Location = System::Drawing::Point(553, 34);
+			this->groupBox8->Location = System::Drawing::Point(302, 29);
 			this->groupBox8->Name = L"groupBox8";
-			this->groupBox8->Size = System::Drawing::Size(365, 251);
+			this->groupBox8->Size = System::Drawing::Size(365, 276);
 			this->groupBox8->TabIndex = 34;
 			this->groupBox8->TabStop = false;
 			this->groupBox8->Text = L"RAM";
@@ -981,18 +1029,42 @@ private: System::Windows::Forms::Label^ label5;
 			this->label5->Text = L"PIC16F8X Simulator - Tim Farahani - TINF18B3";
 			this->label5->Click += gcnew System::EventHandler(this, &MainForm::label5_Click);
 			// 
+			// gbStack
+			// 
+			this->gbStack->Controls->Add(this->lbStack);
+			this->gbStack->ForeColor = System::Drawing::Color::White;
+			this->gbStack->Location = System::Drawing::Point(819, 311);
+			this->gbStack->Name = L"gbStack";
+			this->gbStack->Size = System::Drawing::Size(99, 163);
+			this->gbStack->TabIndex = 35;
+			this->gbStack->TabStop = false;
+			this->gbStack->Text = L"Stack";
+			// 
+			// lbStack
+			// 
+			this->lbStack->BackColor = System::Drawing::Color::Black;
+			this->lbStack->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->lbStack->DrawMode = System::Windows::Forms::DrawMode::OwnerDrawFixed;
+			this->lbStack->ForeColor = System::Drawing::SystemColors::Window;
+			this->lbStack->FormattingEnabled = true;
+			this->lbStack->Location = System::Drawing::Point(6, 19);
+			this->lbStack->Name = L"lbStack";
+			this->lbStack->Size = System::Drawing::Size(87, 130);
+			this->lbStack->TabIndex = 19;
+			this->lbStack->DrawItem += gcnew System::Windows::Forms::DrawItemEventHandler(this, &MainForm::stackDrawItem);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Black;
-			this->ClientSize = System::Drawing::Size(930, 615);
+			this->ClientSize = System::Drawing::Size(931, 626);
+			this->Controls->Add(this->gbStack);
 			this->Controls->Add(this->label5);
+			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox8);
 			this->Controls->Add(this->btnLoadFile);
 			this->Controls->Add(this->groupBox7);
-			this->Controls->Add(this->groupBox6);
-			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->btnClose);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
@@ -1023,12 +1095,11 @@ private: System::Windows::Forms::Label^ label5;
 			this->groupBox5->PerformLayout();
 			this->groupBox4->ResumeLayout(false);
 			this->groupBox4->PerformLayout();
-			this->groupBox6->ResumeLayout(false);
-			this->groupBox6->PerformLayout();
 			this->groupBox7->ResumeLayout(false);
 			this->groupBox7->PerformLayout();
 			this->groupBox8->ResumeLayout(false);
 			this->groupBox8->PerformLayout();
+			this->gbStack->ResumeLayout(false);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -1082,6 +1153,11 @@ private: System::Windows::Forms::Label^ label5;
 
 		void updateUI()
 		{
+			btnStart->Enabled = !cpuInterface->isProcessorActive();
+			btnReset->Enabled = !cpuInterface->isProcessorActive();
+			btnStop->Enabled = cpuInterface->isProcessorActive();
+			btnStep->Enabled = !cpuInterface->isProcessorActive();
+
 			lpcValue->Text = gcnew String(fmt::format("%04X", cpuInterface->getProgramCounter()).c_str());
 			lpclValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getRegister(Registers::Pcl)).c_str());
 			lpclathValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getRegister(Registers::Pclath)).c_str());
@@ -1174,6 +1250,18 @@ private: System::Windows::Forms::Label^ label5;
 				}
 				listBox1->Items[i / 8] = gcnew System::String(str.c_str());
 			}
+
+			for (int n = cpuInterface->getStack().Size(); n > 0; n--)
+			{
+				lbStack->Items[cpuInterface->getStack().Size() - n] = gcnew System::String(fmt::format("%4X", cpuInterface->getStack().at(n - 1)).c_str());
+			}
+			for (int n = cpuInterface->getStack().Size(); n < 8; n++)
+			{
+				lbStack->Items[n] = gcnew System::String("");
+			}
+
+			if (cpuInterface->isInitialized())
+				highlightConsoleLine(cpuInterface->getLineAtProgramCounter());
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1208,33 +1296,22 @@ private: System::Windows::Forms::Label^ label5;
 	}
 
 	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
-		btnStart->Enabled = true;
-		btnReset->Enabled = true;
-		btnStop->Enabled = false;
-		btnStep->Enabled = true;
 		cpuInterface->resetProcessor();
 		for (int i = 0; i < 0xFF; i += 8) {
 			listBox1->Items->Add(gcnew System::String(""));
+		}
+		for (int i = 0; i < 8; i++) {
+			lbStack->Items->Add(gcnew System::String(""));
 		}
 		updateUI();
 	}
 
 	private: System::Void btnStart_Click(System::Object^ sender, System::EventArgs^ e) {
-		btnStart->Enabled = false;
-		btnReset->Enabled = false;
-		btnStop->Enabled = true;
-		btnStep->Enabled = false;
-
 		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
 		cpuInterface->runProcessor();
 	}
 
 	private: System::Void btnStop_Click(System::Object^ sender, System::EventArgs^ e) {
-		btnStart->Enabled = true;
-		btnReset->Enabled = true;
-		btnStop->Enabled = false;
-		btnStep->Enabled = true;
-
 		cpuInterface->stopProcessor();
 	}
 
@@ -1330,5 +1407,51 @@ private: System::Windows::Forms::Label^ label5;
 	}
 	private: System::Void label5_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
-};
+	private: System::Void listBox_drawItem(System::Object^ sender, System::Windows::Forms::DrawItemEventArgs^ e, ListBox^ lb) {
+		if (e->Index < 0) return;
+		//if the item state is selected them change the back color
+
+		Color fontColor;
+		Color bgColor;
+
+		if ((e->State & DrawItemState::Selected) == DrawItemState::Selected) {
+			bgColor = Color::White;
+			fontColor = Color::Black;
+			e = gcnew DrawItemEventArgs(e->Graphics,
+				e->Font,
+				e->Bounds,
+				e->Index,
+				e->State ^ DrawItemState::Selected,
+				fontColor,
+				bgColor);//Choose the color
+		}
+		else {
+			bgColor = Color::Black;
+			fontColor = Color::White;
+			e->Graphics->FillRectangle(gcnew SolidBrush(bgColor), e->Bounds);
+		}
+
+		// Draw the background of the ListBox control for each item.
+		e->DrawBackground();
+		// Draw the current item text
+		e->Graphics->DrawString(lb->Items[e->Index]->ToString(), e->Font, gcnew SolidBrush(fontColor), e->Bounds, StringFormat::GenericDefault);
+		// If the ListBox has focus, draw a focus rectangle around the selected item.
+		e->DrawFocusRectangle();
+
+	}
+	private: System::Void cbWatchdog_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		cpuInterface->setWatchdogEnabled(cbWatchdog->Enabled);
+	}
+	private: System::Void tbBreakpoint_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		std::string bpValue = msclr::interop::marshal_as<std::string>(tbBreakpoint->Text);
+		cpuInterface->setBreakPointEnabled(cbBreakpoint->Enabled, stoi(bpValue, nullptr, 16));
+	}
+	private: System::Void stackDrawItem(System::Object^ sender, System::Windows::Forms::DrawItemEventArgs^ e) {
+		listBox_drawItem(sender, e, lbStack);
+	}
+	private: System::Void ramDrawItem(System::Object^ sender, System::Windows::Forms::DrawItemEventArgs^ e) {
+		listBox_drawItem(sender, e, listBox1);
+	}
+	};
 }
+
