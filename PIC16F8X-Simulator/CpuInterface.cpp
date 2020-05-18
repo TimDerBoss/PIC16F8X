@@ -22,12 +22,12 @@ const uint8_t& CpuInterface::getRegister(uint8_t address) const
 
 const uint16_t& CpuInterface::getProgramCounter() const
 {
-	return registers.getPcl();
+	return registers.getPc();
 }
 
 const uint16_t& CpuInterface::getLineAtProgramCounter() const
 {
-	return parser.getLineInFile(registers.getPcl());
+	return parser.getLineInFile(registers.getPc());
 }
 
 std::array<bool, 8> CpuInterface::getRegisterBits(Registers r) const
@@ -146,8 +146,8 @@ void CpuInterface::stopProcessor()
 void CpuInterface::executeSingleInstruction()
 {
 	processor.clockSpeed = processorClock;
-	if (parser.getLineInFile(registers.getPcl()) != -1) {
-		processor.singleStep(registers, parser.getOpcode(registers.getPcl()));
+	if (parser.getLineInFile(registers.getPc()) != -1) {
+		processor.singleStep(registers, parser.getOpcode(registers.getPc()));
 	}
 }
 

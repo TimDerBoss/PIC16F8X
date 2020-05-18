@@ -148,6 +148,15 @@ namespace PIC16F8X_Simulator {
 
 
 
+
+
+
+
+private: System::Windows::Forms::Button^ button1;
+
+
+
+
 	private: System::ComponentModel::IContainer^ components;
 	private:
 		/// <summary>
@@ -189,6 +198,7 @@ namespace PIC16F8X_Simulator {
 			this->rtbprogramOutput = (gcnew System::Windows::Forms::RichTextBox());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->btnRuntimeReset = (gcnew System::Windows::Forms::Button());
 			this->lRuntime = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
@@ -531,17 +541,32 @@ namespace PIC16F8X_Simulator {
 			// 
 			// groupBox2
 			// 
+			this->groupBox2->Controls->Add(this->button1);
 			this->groupBox2->Controls->Add(this->btnStart);
 			this->groupBox2->Controls->Add(this->btnStep);
 			this->groupBox2->Controls->Add(this->btnStop);
 			this->groupBox2->Controls->Add(this->btnReset);
 			this->groupBox2->ForeColor = System::Drawing::Color::White;
-			this->groupBox2->Location = System::Drawing::Point(819, 480);
+			this->groupBox2->Location = System::Drawing::Point(819, 455);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(99, 136);
+			this->groupBox2->Size = System::Drawing::Size(99, 161);
 			this->groupBox2->TabIndex = 10;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Controls";
+			// 
+			// button1
+			// 
+			this->button1->BackColor = System::Drawing::Color::Black;
+			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button1->Font = (gcnew System::Drawing::Font(L"Consolas", 8.25F));
+			this->button1->ForeColor = System::Drawing::Color::White;
+			this->button1->Location = System::Drawing::Point(6, 130);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(87, 23);
+			this->button1->TabIndex = 5;
+			this->button1->Text = L"Ignore Step";
+			this->button1->UseVisualStyleBackColor = false;
+			this->button1->Click += gcnew System::EventHandler(this, &MainForm::button1_Click);
 			// 
 			// btnRuntimeReset
 			// 
@@ -1035,7 +1060,7 @@ namespace PIC16F8X_Simulator {
 			this->gbStack->ForeColor = System::Drawing::Color::White;
 			this->gbStack->Location = System::Drawing::Point(819, 311);
 			this->gbStack->Name = L"gbStack";
-			this->gbStack->Size = System::Drawing::Size(99, 163);
+			this->gbStack->Size = System::Drawing::Size(99, 138);
 			this->gbStack->TabIndex = 35;
 			this->gbStack->TabStop = false;
 			this->gbStack->Text = L"Stack";
@@ -1047,9 +1072,9 @@ namespace PIC16F8X_Simulator {
 			this->lbStack->DrawMode = System::Windows::Forms::DrawMode::OwnerDrawFixed;
 			this->lbStack->ForeColor = System::Drawing::SystemColors::Window;
 			this->lbStack->FormattingEnabled = true;
-			this->lbStack->Location = System::Drawing::Point(6, 19);
+			this->lbStack->Location = System::Drawing::Point(6, 15);
 			this->lbStack->Name = L"lbStack";
-			this->lbStack->Size = System::Drawing::Size(87, 130);
+			this->lbStack->Size = System::Drawing::Size(87, 117);
 			this->lbStack->TabIndex = 19;
 			this->lbStack->DrawItem += gcnew System::Windows::Forms::DrawItemEventHandler(this, &MainForm::stackDrawItem);
 			// 
@@ -1303,6 +1328,7 @@ namespace PIC16F8X_Simulator {
 		for (int i = 0; i < 8; i++) {
 			lbStack->Items->Add(gcnew System::String(""));
 		}
+		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
 		updateUI();
 	}
 
@@ -1453,6 +1479,9 @@ namespace PIC16F8X_Simulator {
 	private: System::Void ramDrawItem(System::Object^ sender, System::Windows::Forms::DrawItemEventArgs^ e) {
 		listBox_drawItem(sender, e, listBox1);
 	}
-	};
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuInterface->setRegister(Registers::Pcl, cpuInterface->getRegister(Registers::Pcl) + 1);
+	}
+};
 }
 

@@ -28,6 +28,8 @@ public:
 		return tmp;
 	}
 	void push(int value) {
+		if (values.size() == 8)
+			values.erase(values.begin());
 		values.push_back(value);
 	}
 	int at(int idx) {
@@ -66,19 +68,21 @@ public:
 
 
 	void increasePCBy(uint16_t amount);
-	const uint16_t& getPcl() const;
+	const uint16_t& getPc() const;
+	const void setPc(const uint16_t& value) const;
 
 	struct CPURegisters& cpuRegisters;
 	Stack stack;
 	std::map<uint8_t, uint8_t> portBuffer;
 
-	boost::signals2::signal<void(int address)> onRamRead;
+	boost::signals2::signal<uint8_t(int address)> onRamRead;
 	boost::signals2::signal<void(int address, int offset, int value, DataSource source)> onRamWrite;
 
 	Watchdog watchdog;
 
 private:
 	boost::signals2::connection localRamConnection;
+	boost::signals2::connection localRamReadConnection;
 	void setBit(uint8_t& source, int offset, int value);
 	std::vector<std::shared_ptr<uint8_t>> ram;
 };

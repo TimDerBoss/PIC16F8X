@@ -479,12 +479,14 @@ CALL::CALL(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void CALL::execute(RegisterData& rd)
 {
-	rd.stack.push(rd.getPcl() + 1);
-	int pclath = 0;
-	pclath |= ((data.k >> 8) & 0b111);
-	pclath |= ((rd.readByte(0xA) & 0x11000) << 3);
-	rd.writeByte(0xA, pclath);
+	rd.stack.push(rd.getPc() + 1);
+
+	int tmp = 0;
+	tmp |= data.k;
+	tmp |= ((rd.readByte(0xA) << 8) & 0x1800);
 	rd.writeByte(0x2, data.k & 0xFF);
+	rd.setPc(tmp);
+
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
 
@@ -508,11 +510,12 @@ GOTO::GOTO(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void GOTO::execute(RegisterData& rd)
 {
-	int pclath = 0;
-	pclath |= ((data.k >> 8) & 0b111);
-	pclath |= ((rd.readByte(0xA) & 0x11000));
-	rd.writeByte(0xA, pclath);
+	int tmp = 0;
+	tmp |= data.k;
+	tmp |= ((rd.readByte(0xA) << 8) & 0x1800);
 	rd.writeByte(0x2, data.k & 0xFF);
+	rd.setPc(tmp);
+
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
 

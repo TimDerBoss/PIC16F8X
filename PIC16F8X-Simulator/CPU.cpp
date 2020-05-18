@@ -15,18 +15,19 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 	// check if an interrupt has happened meanwhile
 	if (processInterrupts(registerData)) {
 		// jump to interrupt
-		registerData.stack.push(registerData.getPcl());
+		registerData.stack.push(registerData.getPc());
 		registerData.writeByte(0x2, 4);
 		onCpuTimeChanged(4 / (clockSpeed / 4.0));
 		cycles++;
+		return;
 	}
-	else {
-		// else execute the normal code
-		auto& instruction = instructionHandler.decode(opcode);
-		instruction->execute(registerData);
-		onCpuTimeChanged(instruction->getCycles() / (clockSpeed / 4.0));
-		cycles++;
-	}
+
+	// else execute the normal code
+	auto& instruction = instructionHandler.decode(opcode);
+	instruction->execute(registerData);
+	onCpuTimeChanged(instruction->getCycles() / (clockSpeed / 4.0));
+	cycles++;
+
 
 	// TODO: timer inerrupt
 	// T0CS
@@ -34,7 +35,7 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 	static int counter = 0;
 	if (!registerData.readBit(0x81, 5))
 	{
-		counter++;
+		counter += instruction->getCycles();
 	}
 	else { // T0CS == 1
 
@@ -42,13 +43,13 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 		if (!registerData.readBit(0x81, 5)) {
 			if (lastRA4 != registerData.readBit(5, 4) && lastRA4 == 0) {
 				// rising edge on RA4
-				counter++;
+				counter += 1;
 			}
 		}
 		else { // Falling edge on RA4
 			if (lastRA4 != registerData.readBit(5, 4) && lastRA4 == 1) {
-				// fall9ng edge on RA4
-				counter++;
+				// falling edge on RA4
+				counter += 1;
 			}
 		}
 	}
@@ -56,7 +57,7 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 	int prescaleValue = 0;
 	if (registerData.readBit(0x81, 3) == 0)
 		prescaleValue = 2 << (registerData.readByte(0x81) & 0x7);
-	else 
+	else
 		prescaleValue = 1;
 	if (counter >= prescaleValue) {
 		// T0IE && overflow

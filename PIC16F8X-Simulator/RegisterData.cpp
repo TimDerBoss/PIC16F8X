@@ -23,8 +23,7 @@ uint8_t& RegisterData::dataReference(const uint8_t& address)
 
 uint8_t RegisterData::readBit(uint8_t address, uint8_t index) const
 {
-	onRamRead(address);
-	return *ram.at(address) >> index & 1;
+	return *onRamRead(address) >> index & 1;
 }
 
 void RegisterData::writeBit(uint8_t address, uint8_t offset, bool value, DataSource source) const
@@ -55,8 +54,7 @@ void RegisterData::writeByte(const uint8_t& address, const std::string& value, D
 
 const uint8_t& RegisterData::readByte(const uint8_t& address) const
 {
-	onRamRead(address);
-	return *ram.at(address);
+	return *onRamRead(address);
 }
 
 uint8_t RegisterData::readBitS(uint8_t address, uint8_t index) const
@@ -127,6 +125,8 @@ void RegisterData::initialize()
 	}
 	if (!localRamConnection.connected()) {
 		localRamConnection = onRamWrite.connect([this](int address, int offset, int value, DataSource source) {
+			if (address == 0 && *ram.at(4) != 0) address = readByte(4);
+
 			if ((address == 0x5 || address == 0x6) && (readBit(address + 0x80, offset) == static_cast<uint8_t>(source))) {
 				// if trying to set a port bit while its tris bit is set to input buffer the value
 				if (source == FromCpu)
@@ -153,20 +153,32 @@ void RegisterData::initialize()
 			}
 			});
 	}
+	if (!localRamReadConnection.connected()) {
+		localRamReadConnection = onRamRead.connect([this](int address) -> uint8_t {
+			if (address == 0 && *ram.at(4) != 0)
+				address = *ram.at(4);
+			return *ram.at(address);
+			});
+	}
 }
 
 // increase the program counter by a given amount
 void RegisterData::increasePCBy(uint16_t amount)
 {
-	cpuRegisters.programCounter = getPcl() + amount;
+	cpuRegisters.programCounter = getPc() + amount;
 	writeByte(0x82, cpuRegisters.programCounter & 0xFF);
 }
 
 
 // returns the current program counter value
-const uint16_t& RegisterData::getPcl() const
+const uint16_t& RegisterData::getPc() const
 {
 	return cpuRegisters.programCounter;
+}
+
+const void RegisterData::setPc(const uint16_t& value) const
+{
+	cpuRegisters.programCounter = value;
 }
 
 void RegisterData::setBit(uint8_t& source, int offset, int value)
