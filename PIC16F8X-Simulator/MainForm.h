@@ -1253,7 +1253,7 @@ namespace PIC16F8X_Simulator {
 
 			for (int n = cpuInterface->getStack().Size(); n > 0; n--)
 			{
-				lbStack->Items[cpuInterface->getStack().Size() - n] = gcnew System::String(fmt::format("%4X", cpuInterface->getStack().at(n - 1)).c_str());
+				lbStack->Items[cpuInterface->getStack().Size() - n] = gcnew System::String(fmt::format("%.4X", cpuInterface->getStack().at(n - 1)).c_str());
 			}
 			for (int n = cpuInterface->getStack().Size(); n < 8; n++)
 			{

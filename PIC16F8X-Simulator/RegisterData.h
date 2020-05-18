@@ -36,6 +36,9 @@ public:
 	int top() {
 		return values.back();
 	}
+	void clear() {
+		values.clear();
+	}
 	int Size() { return values.size(); }
 private:
 	std::vector<int> values;

@@ -16,7 +16,7 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 	if (processInterrupts(registerData)) {
 		// jump to interrupt
 		registerData.stack.push(registerData.getPcl());
-		registerData.writeByte(0x82, 4);
+		registerData.writeByte(0x2, 4);
 		onCpuTimeChanged(4 / (clockSpeed / 4.0));
 		cycles++;
 	}
@@ -28,15 +28,9 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 		cycles++;
 	}
 
-	// T0IE && overflow
-	if (registerData.readBit(0xB, 5) && registerData.readByte(1) == 0xFF)
-	{
-		// intcon - t0if
-		registerData.writeBit(0xB, 2, true);
-	}
 	// TODO: timer inerrupt
 	// T0CS
-	static bool lastRA4 = 0;
+	static uint8_t lastRA4 = 0;
 	static int counter = 0;
 	if (!registerData.readBit(0x81, 5))
 	{
@@ -65,6 +59,12 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 	else 
 		prescaleValue = 1;
 	if (counter >= prescaleValue) {
+		// T0IE && overflow
+		if (registerData.readBit(0xB, 5) && registerData.readByte(1) == 0xFF)
+		{
+			// intcon - t0if
+			registerData.writeBit(0xB, 2, true);
+		}
 		registerData.writeByte(1, registerData.readByte(1) + 1);
 		counter = 0;
 	}
@@ -73,7 +73,8 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 
 bool CPU::processInterrupts(RegisterData& registerData)
 {
-	static bool lastRB0;
+	static uint8_t lastRB0;
+	static uint8_t lastRB4_7;
 	// GIE set
 	if (registerData.readBit(0xB, 7))
 	{
@@ -90,15 +91,28 @@ bool CPU::processInterrupts(RegisterData& registerData)
 			registerData.writeBit(0xB, 1, true);
 			return true;
 		}
-	}
-	// Timer0 Interrupt
-	// T0IE set && T0IF
-	if (registerData.readBit(0xB, 5) && registerData.readBit(0xB, 2))
-	{
-		// Disable GIE to prevent further Interrupts while executing the current one
-		registerData.writeBit(0xB, 7, false);
-		return true;
+
+		// RB4-7 Interrupt
+		// INTE set && Geänderte Flanke
+		if (lastRB4_7 != ((registerData.readByte(0x6) & 0xF0) >> 4))
+		{
+			// Disable GIE to prevent further Interrupts while executing the current one
+			registerData.writeBit(0xB, 7, false);
+			// Set the RBIF flag
+			registerData.writeBit(0xB, 0, true);
+			return true;
+		}
+
+		// Timer0 Interrupt
+		// T0IE set && T0IF
+		if (registerData.readBit(0xB, 5) && registerData.readBit(0xB, 2))
+		{
+			// Disable GIE to prevent further Interrupts while executing the current one
+			registerData.writeBit(0xB, 7, false);
+			return true;
+		}
 	}
 	lastRB0 = registerData.readBit(0x6, 0);
+	lastRB4_7 = (registerData.readByte(0x6) & 0xF0) >> 4;
 	return false;
 }
