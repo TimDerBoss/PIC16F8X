@@ -385,7 +385,6 @@ BCF::BCF(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void BCF::execute(RegisterData& rd)
 {
-
 	rd.writeBitS(data.f, data.b, false);
 	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.b);
 	rd.increasePCBy(getCycles());

@@ -28,22 +28,47 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 		cycles++;
 	}
 
+	// T0IE && overflow
+	if (registerData.readBit(0xB, 5) && registerData.readByte(1) == 0xFF)
+	{
+		// intcon - t0if
+		registerData.writeBit(0xB, 2, true);
+	}
 	// TODO: timer inerrupt
-//	// T0CS
-//	if (!registerData.readBit(0x81, 5))
-//	{
-//		static int lastCycles = 0;
-//		// T0IE && overflow
-//		if (registerData.readBit(0xB, 5) && registerData.readByte(1) == 0xFF)
-//		{
-//			// intcon - t0if
-//			registerData.writeBit(0xB, 2, true);
-//		}
-//		if (cycles - lastCycles >= 2) {
-//			registerData.writeByte(1, registerData.readByte(1) + 1);
-//			lastCycles = cycles;
-//		}
-//	}
+	// T0CS
+	static bool lastRA4 = 0;
+	static int counter = 0;
+	if (!registerData.readBit(0x81, 5))
+	{
+		counter++;
+	}
+	else { // T0CS == 1
+
+		// !T0SE -> Rising edge on RA4
+		if (!registerData.readBit(0x81, 5)) {
+			if (lastRA4 != registerData.readBit(5, 4) && lastRA4 == 0) {
+				// rising edge on RA4
+				counter++;
+			}
+		}
+		else { // Falling edge on RA4
+			if (lastRA4 != registerData.readBit(5, 4) && lastRA4 == 1) {
+				// fall9ng edge on RA4
+				counter++;
+			}
+		}
+	}
+	// prescaler (PSA Bit == 0)
+	int prescaleValue = 0;
+	if (registerData.readBit(0x81, 3) == 0)
+		prescaleValue = 2 << (registerData.readByte(0x81) & 0x7);
+	else 
+		prescaleValue = 1;
+	if (counter >= prescaleValue) {
+		registerData.writeByte(1, registerData.readByte(1) + 1);
+		counter = 0;
+	}
+	lastRA4 = registerData.readBit(0x5, 4);
 }
 
 bool CPU::processInterrupts(RegisterData& registerData)

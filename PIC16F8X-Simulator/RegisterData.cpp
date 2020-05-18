@@ -115,6 +115,7 @@ void RegisterData::otherReset()
 
 void RegisterData::initialize()
 {
+	ram.clear();
 	for (int i = 0; i <= 0xFF; i++) {
 		if (i == 0x80 || i == 0x82 || i == 0x83 || i == 0x84 || i == 0x8A || i == 0x8B || (i >= 0x8C && i <= 0xAF)) {
 			ram.push_back(ram.at(i - 0x80));

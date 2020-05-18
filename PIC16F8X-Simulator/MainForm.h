@@ -326,7 +326,7 @@ namespace PIC16F8X_Simulator {
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(235, 13);
 			this->label2->TabIndex = 11;
-			this->label2->Text = L"RBP  IEdg T0CS T0SE PS  PS2   PS1  PS0";
+			this->label2->Text = L"RBP  IEdg T0CS T0SE PSA PS2   PS1  PS0";
 			// 
 			// lpc
 			// 
@@ -1384,6 +1384,7 @@ namespace PIC16F8X_Simulator {
 		cpuInterface->resetCpuTime();
 	}
 	private: System::Void btnLoadFile_Click(System::Object^ sender, System::EventArgs^ e) {
+		cpuInterface->stopProcessor();
 		IO::Stream^ myStream;
 		openFileDialog1->Filter = "LST files (*.lst)|*.lst";
 		openFileDialog1->FilterIndex = 2;
