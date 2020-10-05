@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Submodules\boost;$(SolutionDir)StdWrapper;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)boost;$(SolutionDir)StdWrapper;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <SourcePath>$(SolutionDir)StdWrapper;$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -95,7 +95,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Submodules\boost;$(SolutionDir)StdWrapper;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)boost;$(SolutionDir)StdWrapper;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <SourcePath>$(SolutionDir)StdWrapper;$(SourcePath)</SourcePath>
   </PropertyGroup>
