@@ -18,9 +18,8 @@ public:
 	InstructionBase(const std::string& identifier, uint16_t mask, uint16_t value, int cycles = 1);
 	bool match(const uint16_t& opcode);
 	const int& getCycles();
-	void cacheData(InstructionData data);
 
-	virtual void execute(RegisterData& rd) = 0;
+	virtual void execute(RegisterData& rd, InstructionData& data) = 0;
 
 protected:
 	void setCycles(int count);
@@ -28,7 +27,6 @@ protected:
 	uint16_t mask;
 	uint16_t value;
 	std::string identifier;
-	InstructionData data;
 
 private:
 	int cycles;

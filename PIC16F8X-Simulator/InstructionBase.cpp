@@ -26,12 +26,6 @@ const int& InstructionBase::getCycles()
 	return cycles;
 }
 
-void InstructionBase::cacheData(InstructionData data)
-{
-	// cache some data to use later
-	this->data = data;
-}
-
 void InstructionBase::setCycles(int count)
 {
 	cycles = count;

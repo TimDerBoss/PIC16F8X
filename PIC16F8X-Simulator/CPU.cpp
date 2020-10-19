@@ -24,7 +24,7 @@ void CPU::singleStep(RegisterData& registerData, uint16_t opcode)
 
 	// else execute the normal code
 	auto& instruction = instructionHandler.decode(opcode);
-	instruction->execute(registerData);
+	instruction->execute(registerData, instructionHandler.getInstructionData(opcode));
 	onCpuTimeChanged(instruction->getCycles() / (clockSpeed / 4.0));
 	cycles++;
 
@@ -82,7 +82,7 @@ bool CPU::processInterrupts(RegisterData& registerData)
 		// RB0 Interrupt
 		// INTE set && Flanke && ((RB0 && IntEdg) || (!RB0 && !IntEdg))
 		if (registerData.readBit(0xB, 4)
-			&& lastRB0 != static_cast<bool>(registerData.readBit(0x6, 0))
+			&& lastRB0 != registerData.readBit(0x6, 0)
 			&& registerData.readBit(0x6, 0) == registerData.readBit(0x81, 6)
 			)
 		{

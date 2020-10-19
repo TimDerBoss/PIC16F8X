@@ -23,7 +23,7 @@ uint8_t& RegisterData::dataReference(const uint8_t& address)
 
 uint8_t RegisterData::readBit(uint8_t address, uint8_t index) const
 {
-	return *onRamRead(address) >> index & 1;
+	return readByte(address) >> index & 1;
 }
 
 void RegisterData::writeBit(uint8_t address, uint8_t offset, bool value, DataSource source) const
@@ -54,7 +54,9 @@ void RegisterData::writeByte(const uint8_t& address, const std::string& value, D
 
 const uint8_t& RegisterData::readByte(const uint8_t& address) const
 {
-	return *onRamRead(address);
+	if (address == 0 && *ram.at(4) != 0)
+		*ram.at(*ram.at(4));
+	return *ram.at(address);
 }
 
 uint8_t RegisterData::readBitS(uint8_t address, uint8_t index) const
@@ -151,13 +153,6 @@ void RegisterData::initialize()
 					this->cpuRegisters.programCounter |= ((readByte(0xA) & 0x1F) << 8);
 				}
 			}
-			});
-	}
-	if (!localRamReadConnection.connected()) {
-		localRamReadConnection = onRamRead.connect([this](int address) -> uint8_t {
-			if (address == 0 && *ram.at(4) != 0)
-				address = *ram.at(4);
-			return *ram.at(address);
 			});
 	}
 }

@@ -41,7 +41,7 @@ public:
 	void clear() {
 		values.clear();
 	}
-	int Size() { return values.size(); }
+	int Size() { return static_cast<int>(values.size()); }
 private:
 	std::vector<int> values;
 };
@@ -82,7 +82,6 @@ public:
 
 private:
 	boost::signals2::connection localRamConnection;
-	boost::signals2::connection localRamReadConnection;
 	void setBit(uint8_t& source, int offset, int value);
 	std::vector<std::shared_ptr<uint8_t>> ram;
 };

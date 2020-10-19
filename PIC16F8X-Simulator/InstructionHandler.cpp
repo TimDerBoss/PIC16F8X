@@ -116,14 +116,12 @@ std::shared_ptr<InstructionBase>& InstructionHandler::decode(const uint16_t& opc
 {
 	auto instruction = instructionCache.find(opcode);
 	if (instruction != instructionCache.end()) {
-		instruction->second->cacheData(getInstructionData(opcode));
 		return instruction->second;
 	}
 	else {
 		for (auto& i : instructions) {
 			if (i->match(opcode)) {
 				instructionCache[opcode] = i;
-				i->cacheData(getInstructionData(opcode));
 				return i;
 			}
 		}
