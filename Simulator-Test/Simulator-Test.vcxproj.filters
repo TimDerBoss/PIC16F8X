@@ -26,6 +26,7 @@
       <Filter>Test Dependencies</Filter>
     </ClCompile>
     <ClCompile Include="Instruction.test.cpp" />
+    <ClCompile Include="RegisterData.test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

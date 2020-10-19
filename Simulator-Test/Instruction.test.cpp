@@ -1,12 +1,10 @@
-#pragma once
-
 #include "gtest/gtest.h"
 
 #include <Instructions.h>
 #include <RegisterData.h>
 #include <CPU.h>
 
-constexpr int TEST_MEMORY_LOCATION = 0x0C;
+constexpr int TestMemoryAddress = 0x0C;
 
 
 TEST(InstructionTest, Addwf) {
@@ -20,8 +18,8 @@ TEST(InstructionTest, Addwf) {
 	auto& ram = registers.getRam();
 
 	// set the corresponding memory address to a value to be added to the accumulator
-	instructionData.fileRegisterAddress = TEST_MEMORY_LOCATION;
-	*ram[TEST_MEMORY_LOCATION] = 12;
+	instructionData.fileRegisterAddress = TestMemoryAddress;
+	*ram[TestMemoryAddress] = 12;
 	registers.cpuRegisters.accumulator = 2;
 
 	// add the contents of the specified register to the accumulator and store the result in the accumulator
