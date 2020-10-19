@@ -7,8 +7,7 @@ constexpr int TestMemoryAddress = 0x0C;
 
 TEST(RegisterDataTest, WriteByte) {
 
-	CPU cpu;
-	RegisterData registers(cpu);
+	RegisterData registers;
 
 	auto& ram = registers.getRam();
 	uint8_t valueToWrite = 123;
@@ -20,8 +19,7 @@ TEST(RegisterDataTest, WriteByte) {
 
 TEST(RegisterDataTest, WriteBit) {
 
-	CPU cpu;
-	RegisterData registers(cpu);
+	RegisterData registers;
 
 	auto& ram = registers.getRam();
 	uint8_t bitIndex = 3;
@@ -34,8 +32,7 @@ TEST(RegisterDataTest, WriteBit) {
 
 TEST(RegisterDataTest, ReadByte) {
 
-	CPU cpu;
-	RegisterData registers(cpu);
+	RegisterData registers;
 
 	auto& ram = registers.getRam();
 	uint8_t valueToRead = 123;
@@ -47,8 +44,7 @@ TEST(RegisterDataTest, ReadByte) {
 
 TEST(RegisterDataTest, ReadBit) {
 
-	CPU cpu;
-	RegisterData registers(cpu);
+	RegisterData registers;
 
 	auto& ram = registers.getRam();
 	uint8_t bitIndex = 3;

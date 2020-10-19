@@ -9,8 +9,7 @@ constexpr int TestMemoryAddress = 0x0C;
 
 TEST(InstructionTest, Addwf) {
 
-	CPU cpu;
-	RegisterData registers(cpu);
+	RegisterData registers;
 	InstructionData instructionData;
 	ADDWF instruction("InstructionName", 0, 0);
 
