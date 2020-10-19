@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="test.cpp" />
     <ClCompile Include="..\PIC16F8X-Simulator\CPU.cpp">
       <Filter>Test Dependencies</Filter>
     </ClCompile>
@@ -26,6 +25,7 @@
     <ClCompile Include="..\PIC16F8X-Simulator\Watchdog.cpp">
       <Filter>Test Dependencies</Filter>
     </ClCompile>
+    <ClCompile Include="Instruction.test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

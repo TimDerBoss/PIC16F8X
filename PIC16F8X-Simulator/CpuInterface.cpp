@@ -62,7 +62,7 @@ const double& CpuInterface::getCpuTime() const
 
 int CpuInterface::getW() const
 {
-	return processor.cpuRegisters.w;
+	return processor.cpuRegisters.accumulator;
 }
 
 const std::vector<std::string>& CpuInterface::getLoadedFile() const
@@ -110,7 +110,7 @@ void CpuInterface::loadFile(const std::string& path)
 void CpuInterface::resetProcessor()
 {
 	registers.resetPowerOn();
-	processor.cpuRegisters.w = 0;
+	processor.cpuRegisters.accumulator = 0;
 }
 
 void CpuInterface::runProcessor()

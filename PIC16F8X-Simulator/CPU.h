@@ -8,7 +8,7 @@
 #include <string>
 
 struct CPURegisters {
-	uint8_t w{ 0 };
+	uint8_t accumulator{ 0 };
 	uint16_t programCounter{ 0 };
 };
 

@@ -13,20 +13,20 @@ ADDWF::ADDWF(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void ADDWF::execute(RegisterData& rd, InstructionData& data)
 {
-	auto& w = rd.cpuRegisters.w;
-	int fnum = rd.readByteS(data.f);
+	auto& w = rd.cpuRegisters.accumulator;
+	int fnum = rd.readByteS(data.fileRegisterAddress);
 	int result = static_cast<int>(w + fnum);
 	bool digitCarry = ((w & 0xF) + (fnum & 0xF)) & 0xF0;
-	if (!data.d) {
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = static_cast<uint8_t>(result);
 	}
 	else {
-		rd.writeByteS(data.f, static_cast<uint8_t>(result));
+		rd.writeByteS(data.fileRegisterAddress, static_cast<uint8_t>(result));
 	}
 	rd.writeBitS(0x3, 0x0, result > 255 || result < 0); // carry bit
 	rd.writeBitS(0x3, 0x1, digitCarry); // digit carry
 	rd.writeBitS(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -37,16 +37,16 @@ ANDWF::ANDWF(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void ANDWF::execute(RegisterData& rd, InstructionData& data)
 {
-	auto& w = rd.cpuRegisters.w;
-	uint8_t result = w & rd.readByteS(data.f);
-	if (!data.d) {
+	auto& w = rd.cpuRegisters.accumulator;
+	uint8_t result = w & rd.readByteS(data.fileRegisterAddress);
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = result;
 	}
 	else {
-		rd.writeByteS(data.f, result);
+		rd.writeByteS(data.fileRegisterAddress, result);
 	}
 	rd.writeBitS(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -58,9 +58,9 @@ CLRF::CLRF(const std::string& identifier, uint16_t mask, uint16_t value)
 void CLRF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	rd.writeByteS(data.f, 0);
+	rd.writeByteS(data.fileRegisterAddress, 0);
 	rd.writeBitS(0x3, 0x2, true); // zero flag
-	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.d);
+	printf("%s 0x%X, %d\n", identifier.c_str(), data.fileRegisterAddress, data.destination);
 	rd.increasePCBy(getCycles());
 }
 
@@ -71,7 +71,7 @@ CLRW::CLRW(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void CLRW::execute(RegisterData& rd, InstructionData& data)
 {
-	rd.cpuRegisters.w = 0;
+	rd.cpuRegisters.accumulator = 0;
 	rd.writeBitS(0x3, 0x2, true); // zero flag
 	printf("%s\n", identifier.c_str());
 	rd.increasePCBy(getCycles());
@@ -85,16 +85,16 @@ COMF::COMF(const std::string& identifier, uint16_t mask, uint16_t value)
 void COMF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	uint8_t result = ~rd.readByteS(data.f);
-	if (!data.d) {
+	auto& w = rd.cpuRegisters.accumulator;
+	uint8_t result = ~rd.readByteS(data.fileRegisterAddress);
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = result;
 	}
 	else {
-		rd.writeByteS(data.f, result);
+		rd.writeByteS(data.fileRegisterAddress, result);
 	}
 	rd.writeBitS(0x3, 0x2, result == 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -106,16 +106,16 @@ DECF::DECF(const std::string& identifier, uint16_t mask, uint16_t value)
 void DECF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	uint8_t result = rd.readByteS(data.f) - 1;
-	if (!data.d) {
+	auto& w = rd.cpuRegisters.accumulator;
+	uint8_t result = rd.readByteS(data.fileRegisterAddress) - 1;
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = result;
 	}
 	else {
-		rd.writeByteS(data.f, result);
+		rd.writeByteS(data.fileRegisterAddress, result);
 	}
 	rd.writeBitS(0x3, 0x2, result == 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -127,13 +127,13 @@ DECFSZ::DECFSZ(const std::string& identifier, uint16_t mask, uint16_t value)
 void DECFSZ::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	uint8_t result = rd.readByteS(data.f) - 1;
-	if (!data.d) {
+	auto& w = rd.cpuRegisters.accumulator;
+	uint8_t result = rd.readByteS(data.fileRegisterAddress) - 1;
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = result;
 	}
 	else {
-		rd.writeByteS(data.f, result);
+		rd.writeByteS(data.fileRegisterAddress, result);
 	}
 	if (result == 0) {
 		setCycles(2);
@@ -141,7 +141,7 @@ void DECFSZ::execute(RegisterData& rd, InstructionData& data)
 	else {
 		setCycles(1);
 	}
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -153,16 +153,16 @@ INCF::INCF(const std::string& identifier, uint16_t mask, uint16_t value)
 void INCF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	uint8_t result = rd.readByteS(data.f) + 1;
-	if (!data.d) {
+	auto& w = rd.cpuRegisters.accumulator;
+	uint8_t result = rd.readByteS(data.fileRegisterAddress) + 1;
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = result;
 	}
 	else {
-		rd.writeByteS(data.f, result);
+		rd.writeByteS(data.fileRegisterAddress, result);
 	}
 	rd.writeBitS(0x3, 0x2, result == 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -174,13 +174,13 @@ INCFSZ::INCFSZ(const std::string& identifier, uint16_t mask, uint16_t value)
 void INCFSZ::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	uint8_t result = rd.readByteS(data.f) + 1;
-	if (!data.d) {
+	auto& w = rd.cpuRegisters.accumulator;
+	uint8_t result = rd.readByteS(data.fileRegisterAddress) + 1;
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = result;
 	}
 	else {
-		rd.writeByteS(data.f, result);
+		rd.writeByteS(data.fileRegisterAddress, result);
 	}
 	if (result == 0) {
 		setCycles(2);
@@ -188,7 +188,7 @@ void INCFSZ::execute(RegisterData& rd, InstructionData& data)
 	else {
 		setCycles(1);
 	}
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -200,16 +200,16 @@ IORWF::IORWF(const std::string& identifier, uint16_t mask, uint16_t value)
 void IORWF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	uint8_t result = rd.readByteS(data.f) | w;
-	if (!data.d) {
+	auto& w = rd.cpuRegisters.accumulator;
+	uint8_t result = rd.readByteS(data.fileRegisterAddress) | w;
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = result;
 	}
 	else {
-		rd.writeByteS(data.f, result);
+		rd.writeByteS(data.fileRegisterAddress, result);
 	}
 	rd.writeBitS(0x3, 0x2, result != 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -220,12 +220,12 @@ MOVF::MOVF(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void MOVF::execute(RegisterData& rd, InstructionData& data)
 {
-	auto& w = rd.cpuRegisters.w;
-	if (!data.d) {
-		w = rd.readByteS(data.f);
+	auto& w = rd.cpuRegisters.accumulator;
+	if (data.destination == ResultDestination::ToAccumulator) {
+		w = rd.readByteS(data.fileRegisterAddress);
 	}
-	rd.writeBitS(0x3, 0x2, rd.readByteS(data.f) == 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	rd.writeBitS(0x3, 0x2, rd.readByteS(data.fileRegisterAddress) == 0); // zero flag
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -237,9 +237,9 @@ MOVWF::MOVWF(const std::string& identifier, uint16_t mask, uint16_t value)
 void MOVWF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	rd.writeByteS(data.f, w);
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	auto& w = rd.cpuRegisters.accumulator;
+	rd.writeByteS(data.fileRegisterAddress, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -263,20 +263,20 @@ void RLF::execute(RegisterData& rd, InstructionData& data)
 {
 
 	uint8_t tempCarry = rd.readBitS(0x3, 0x0);
-	uint8_t fBefore = rd.readByteS(data.f);
-	auto& w = rd.cpuRegisters.w;
+	uint8_t fBefore = rd.readByteS(data.fileRegisterAddress);
+	auto& w = rd.cpuRegisters.accumulator;
 
 	rd.writeBitS(0x3, 0x0, (fBefore >> 7) & 1);
 	fBefore <<= 1;
 	fBefore |= tempCarry;
 
-	if (!data.d) {
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = fBefore;
 	}
 	else {
-		rd.writeByteS(data.f, fBefore);
+		rd.writeByteS(data.fileRegisterAddress, fBefore);
 	}
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -288,21 +288,21 @@ RRF::RRF(const std::string& identifier, uint16_t mask, uint16_t value)
 void RRF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	uint8_t fBefore = rd.readByteS(data.f);
-	auto& w = rd.cpuRegisters.w;
+	uint8_t fBefore = rd.readByteS(data.fileRegisterAddress);
+	auto& w = rd.cpuRegisters.accumulator;
 
 	bool tmpOverflow = fBefore & 1;
 	fBefore >>= 1;
 	fBefore |= (rd.readBitS(0x3, 0) << 7);
 	rd.writeBitS(0x3, 0, tmpOverflow);
 
-	if (!data.d) {
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = fBefore;
 	}
 	else {
-		rd.writeByteS(data.f, fBefore);
+		rd.writeByteS(data.fileRegisterAddress, fBefore);
 	}
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -314,20 +314,20 @@ SUBWF::SUBWF(const std::string& identifier, uint16_t mask, uint16_t value)
 void SUBWF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	auto& fnum = rd.readByteS(data.f);
+	auto& w = rd.cpuRegisters.accumulator;
+	auto& fnum = rd.readByteS(data.fileRegisterAddress);
 	int result = fnum - w;
-	if (!data.d) {
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = static_cast<uint8_t>(result);
 	}
 	else {
-		rd.writeByteS(data.f, static_cast<uint8_t>(result));
+		rd.writeByteS(data.fileRegisterAddress, static_cast<uint8_t>(result));
 	}
 	rd.writeBitS(0x3, 0x0, result >= 0); // carry bit
 	bool digitCarry = ((fnum & 0xF) + ((~w + 1) & 0xF)) & 0xF0;
 	rd.writeBitS(0x3, 0x1, !digitCarry); // digit carry
 	rd.writeBitS(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -340,20 +340,20 @@ SWAPF::SWAPF(const std::string& identifier, uint16_t mask, uint16_t value)
 void SWAPF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	uint8_t result = rd.readByteS(data.f);
+	auto& w = rd.cpuRegisters.accumulator;
+	uint8_t result = rd.readByteS(data.fileRegisterAddress);
 
 	uint8_t temp = result & 0xF;
 	result >>= 4;
 	result |= (temp << 4);
 
-	if (!data.d) {
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = result;
 	}
 	else {
-		rd.writeByteS(data.f, result);
+		rd.writeByteS(data.fileRegisterAddress, result);
 	}
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -365,16 +365,16 @@ XORWF::XORWF(const std::string& identifier, uint16_t mask, uint16_t value)
 void XORWF::execute(RegisterData& rd, InstructionData& data)
 {
 
-	auto& w = rd.cpuRegisters.w;
-	uint8_t result = rd.readByteS(data.f) ^ w;
-	if (!data.d) {
+	auto& w = rd.cpuRegisters.accumulator;
+	uint8_t result = rd.readByteS(data.fileRegisterAddress) ^ w;
+	if (data.destination == ResultDestination::ToAccumulator) {
 		w = result;
 	}
 	else {
-		rd.writeByteS(data.f, result);
+		rd.writeByteS(data.fileRegisterAddress, result);
 	}
 	rd.writeBitS(0x3, 0x2, result == 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -385,8 +385,8 @@ BCF::BCF(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void BCF::execute(RegisterData& rd, InstructionData& data)
 {
-	rd.writeBitS(data.f, data.b, false);
-	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.b);
+	rd.writeBitS(data.fileRegisterAddress, data.bits, false);
+	printf("%s 0x%X, %d\n", identifier.c_str(), data.fileRegisterAddress, data.bits);
 	rd.increasePCBy(getCycles());
 }
 
@@ -397,8 +397,8 @@ BSF::BSF(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void BSF::execute(RegisterData& rd, InstructionData& data)
 {
-	rd.writeBitS(data.f, data.b, true);
-	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.b);
+	rd.writeBitS(data.fileRegisterAddress, data.bits, true);
+	printf("%s 0x%X, %d\n", identifier.c_str(), data.fileRegisterAddress, data.bits);
 	rd.increasePCBy(getCycles());
 }
 
@@ -409,14 +409,14 @@ BTFSC::BTFSC(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void BTFSC::execute(RegisterData& rd, InstructionData& data)
 {
-	uint8_t bit = rd.readBitS(data.f, data.b);
+	uint8_t bit = rd.readBitS(data.fileRegisterAddress, data.bits);
 	if (bit) {
 		setCycles(1);
 	}
 	else {
 		setCycles(2);
 	}
-	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.b);
+	printf("%s 0x%X, %d\n", identifier.c_str(), data.fileRegisterAddress, data.bits);
 	rd.increasePCBy(getCycles());
 }
 
@@ -427,14 +427,14 @@ BTFSS::BTFSS(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void BTFSS::execute(RegisterData& rd, InstructionData& data)
 {
-	uint8_t bit = rd.readBitS(data.f, data.b);
+	uint8_t bit = rd.readBitS(data.fileRegisterAddress, data.bits);
 	if (!bit) {
 		setCycles(1);
 	}
 	else {
 		setCycles(2);
 	}
-	printf("%s 0x%X, %d\n", identifier.c_str(), data.f, data.b);
+	printf("%s 0x%X, %d\n", identifier.c_str(), data.fileRegisterAddress, data.bits);
 	rd.increasePCBy(getCycles());
 }
 
@@ -445,7 +445,7 @@ ADDLW::ADDLW(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void ADDLW::execute(RegisterData& rd, InstructionData& data)
 {
-	auto& w = rd.cpuRegisters.w;
+	auto& w = rd.cpuRegisters.accumulator;
 	int result = w + data.k;
 	auto preResult = w;
 	w = static_cast<uint8_t>(result);
@@ -464,7 +464,7 @@ ANDLW::ANDLW(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void ANDLW::execute(RegisterData& rd, InstructionData& data)
 {
-	auto& w = rd.cpuRegisters.w;
+	auto& w = rd.cpuRegisters.accumulator;
 	uint8_t result = w & data.k;
 	w = result;
 	rd.writeBitS(0x3, 0x2, result == 0); // zero flag
@@ -526,7 +526,7 @@ IORLW::IORLW(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void IORLW::execute(RegisterData& rd, InstructionData& data)
 {
-	auto& w = rd.cpuRegisters.w;
+	auto& w = rd.cpuRegisters.accumulator;
 	uint8_t result = w | data.k;
 	w = result;
 	rd.writeBitS(0x3, 0x2, result == 0); // zero flag
@@ -541,7 +541,7 @@ MOVLW::MOVLW(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void MOVLW::execute(RegisterData& rd, InstructionData& data)
 {
-	rd.cpuRegisters.w = static_cast<uint8_t>(data.k);
+	rd.cpuRegisters.accumulator = static_cast<uint8_t>(data.k);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 	rd.increasePCBy(getCycles());
 }
@@ -574,7 +574,7 @@ void RETLW::execute(RegisterData& rd, InstructionData& data)
 	rd.writeByte(0xA, (rd.stack.top() << 8) & 0x1F);
 	rd.writeByte(0x2, rd.stack.top() & 0xFF);
 	rd.stack.pop();
-	rd.cpuRegisters.w = static_cast<uint8_t>(data.k);
+	rd.cpuRegisters.accumulator = static_cast<uint8_t>(data.k);
 	printf("%s 0x%X\n", identifier.c_str(), data.k);
 }
 
@@ -611,14 +611,14 @@ SUBLW::SUBLW(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void SUBLW::execute(RegisterData& rd, InstructionData& data)
 {
-	auto& w = rd.cpuRegisters.w;
+	auto& w = rd.cpuRegisters.accumulator;
 	int result = static_cast<int>(data.k) - w;
 	w = static_cast<uint8_t>(result);
 	bool digitCarry = ((data.k & 0xF) + ((~w + 1) & 0xF)) & 0xF0;
 	rd.writeBitS(0x3, 0x0, result >= 0); // carry bit
 	rd.writeBitS(0x3, 0x1, !digitCarry); // digit carry
 	rd.writeBitS(0x3, 0x2, static_cast<uint8_t>(result) == 0); // zero flag
-	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.f, data.d, w);
+	printf("%s 0x%X, %d (w = %d)\n", identifier.c_str(), data.fileRegisterAddress, data.destination, w);
 	rd.increasePCBy(getCycles());
 }
 
@@ -629,7 +629,7 @@ XORLW::XORLW(const std::string& identifier, uint16_t mask, uint16_t value)
 
 void XORLW::execute(RegisterData& rd, InstructionData& data)
 {
-	auto& w = rd.cpuRegisters.w;
+	auto& w = rd.cpuRegisters.accumulator;
 	uint8_t result = w ^ data.k;
 	w = result;
 	rd.writeBitS(0x3, 0x2, result == 0); // zero flag

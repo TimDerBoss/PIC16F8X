@@ -49,7 +49,7 @@
     <ClCompile Include="..\PIC16F8X-Simulator\LSTParser.cpp" />
     <ClCompile Include="..\PIC16F8X-Simulator\RegisterData.cpp" />
     <ClCompile Include="..\PIC16F8X-Simulator\Watchdog.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="Instruction.test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PIC16F8X-Simulator\PIC16F8X-Simulator.vcxproj">

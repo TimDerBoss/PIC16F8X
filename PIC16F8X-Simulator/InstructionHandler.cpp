@@ -87,13 +87,13 @@ InstructionData InstructionHandler::getInstructionData(const uint16_t& opcode)
 	switch (commandType) {
 		// if these bits equal to 0000 the instruction is byte oriented
 	case 0x0000: // Byte oriented command
-		data.d = opcode >> 0x7u & 0x1u;
-		data.f = opcode & 0x007Fu;
+		data.destination = opcode >> 0x7u & 0x1u;
+		data.fileRegisterAddress = opcode & 0x007Fu;
 		break;
 		// if these bits equal to 0001 the instruction is byte oriented
 	case 0x1000: // Bit oriented command
-		data.b = opcode >> 0x7u & 0x7u;
-		data.f = opcode & 0x007Fu;
+		data.bits = opcode >> 0x7u & 0x7u;
+		data.fileRegisterAddress = opcode & 0x007Fu;
 		break;
 		// if these bits equal to 0010 the instruction is byte oriented
 	case 0x2000: // literal and control long address

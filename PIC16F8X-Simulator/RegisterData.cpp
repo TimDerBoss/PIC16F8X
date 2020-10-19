@@ -13,7 +13,7 @@ RegisterData::RegisterData(CPU& cpu)
 	// reset all registers to the initial power-on values
 	resetPowerOn();
 	// reset w register
-	cpuRegisters.w = 0;
+	cpuRegisters.accumulator = 0;
 }
 
 uint8_t& RegisterData::dataReference(const uint8_t& address)
@@ -92,7 +92,7 @@ void RegisterData::resetPowerOn()
 {
 	initialize();
 	writeByte(0x2, 0);
-	cpuRegisters.w = 0;
+	cpuRegisters.accumulator = 0;
 	// Set default startup values
 	writeByte(0x03, 0x18); // Status
 	writeByte(0x81, 0xFF);

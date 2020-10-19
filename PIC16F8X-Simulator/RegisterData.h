@@ -71,6 +71,11 @@ public:
 	const uint16_t& getPc() const;
 	const void setPc(const uint16_t& value) const;
 
+	inline std::vector<std::shared_ptr<uint8_t>>& getRam() {
+		return ram;
+	}
+
+
 	struct CPURegisters& cpuRegisters;
 	Stack stack;
 	std::map<uint8_t, uint8_t> portBuffer;
