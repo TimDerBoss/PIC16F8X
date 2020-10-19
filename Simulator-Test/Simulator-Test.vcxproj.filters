@@ -67,5 +67,6 @@
     <ClInclude Include="..\PIC16F8X-Simulator\Watchdog.h">
       <Filter>Test Dependencies</Filter>
     </ClInclude>
+    <ClInclude Include="FakeData.h" />
   </ItemGroup>
 </Project>

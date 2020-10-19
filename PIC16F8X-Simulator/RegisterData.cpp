@@ -4,9 +4,7 @@
 #include <cassert>
 #include <FormatString.h>
 
-RegisterData::RegisterData(CPU& cpu)
-	: cpuRegisters(cpu.cpuRegisters)
-	, watchdog(cpu, *this)
+RegisterData::RegisterData()
 {
 	// set up ram array
 	initialize();
@@ -171,7 +169,7 @@ const uint16_t& RegisterData::getPc() const
 	return cpuRegisters.programCounter;
 }
 
-const void RegisterData::setPc(const uint16_t& value) const
+const void RegisterData::setPc(const uint16_t& value)
 {
 	cpuRegisters.programCounter = value;
 }

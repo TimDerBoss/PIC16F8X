@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include <CPU.h>
 #include <RegisterData.h>
+#include <CPU.h>
 
 constexpr int TestMemoryAddress = 0x0C;
 

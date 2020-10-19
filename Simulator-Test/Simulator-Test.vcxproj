@@ -71,6 +71,7 @@
     <ClInclude Include="..\PIC16F8X-Simulator\RegisterData.h" />
     <ClInclude Include="..\PIC16F8X-Simulator\Timer.h" />
     <ClInclude Include="..\PIC16F8X-Simulator\Watchdog.h" />
+    <ClInclude Include="FakeData.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

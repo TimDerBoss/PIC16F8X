@@ -6,6 +6,7 @@
 
 #include <thread>
 #include "InstructionBase.h"
+#include "Watchdog.h"
 
 enum Registers : uint8_t
 {
@@ -58,6 +59,7 @@ private:
 	CPU processor;
 	RegisterData registers;
 	LstParser parser;
+	Watchdog watchdog;
 
 	bool processorActive{ false };
 	std::thread processorThread;

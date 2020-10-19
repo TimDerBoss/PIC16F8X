@@ -7,12 +7,6 @@
 #include <cstdint>
 #include <string>
 
-struct CPURegisters {
-	uint8_t accumulator{ 0 };
-	uint16_t programCounter{ 0 };
-};
-
-
 struct CPU
 {
 	CPU();
@@ -22,7 +16,6 @@ struct CPU
 	double timeActive{ 0 };
 	double clockSpeed{ 0 };
 	int cycles{ 0 };
-	CPURegisters cpuRegisters;
 	InstructionHandler instructionHandler;
 	boost::signals2::signal<void(double difference)> onCpuTimeChanged;
 };

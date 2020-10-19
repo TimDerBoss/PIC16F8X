@@ -41,15 +41,20 @@ public:
 	void clear() {
 		values.clear();
 	}
-	int Size() { return static_cast<int>(values.size()); }
+	inline int Size() { return static_cast<int>(values.size()); }
 private:
 	std::vector<int> values;
+};
+
+struct CPURegisters {
+	uint8_t accumulator{ 0 };
+	uint16_t programCounter{ 0 };
 };
 
 class RegisterData
 {
 public:
-	explicit RegisterData(struct CPU& cpu);
+	explicit RegisterData();
 	void resetPowerOn();
 	void otherReset();
 
@@ -69,21 +74,18 @@ public:
 
 	void increasePCBy(uint16_t amount);
 	const uint16_t& getPc() const;
-	const void setPc(const uint16_t& value) const;
+	const void setPc(const uint16_t& value);
 
 	inline std::vector<std::shared_ptr<uint8_t>>& getRam() {
 		return ram;
 	}
 
-
-	struct CPURegisters& cpuRegisters;
+	CPURegisters cpuRegisters;
 	Stack stack;
 	std::map<uint8_t, uint8_t> portBuffer;
 
 	boost::signals2::signal<uint8_t(int address)> onRamRead;
 	boost::signals2::signal<void(int address, int offset, int value, DataSource source)> onRamWrite;
-
-	Watchdog watchdog;
 
 private:
 	boost::signals2::connection localRamConnection;

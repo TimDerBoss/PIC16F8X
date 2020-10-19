@@ -5,7 +5,7 @@
 
 CpuInterface::CpuInterface(int processorClock)
 	: processorClock(processorClock)
-	, registers(processor)
+	, watchdog(processor, registers)
 {
 }
 
@@ -62,7 +62,7 @@ const double& CpuInterface::getCpuTime() const
 
 int CpuInterface::getW() const
 {
-	return processor.cpuRegisters.accumulator;
+	return registers.cpuRegisters.accumulator;
 }
 
 const std::vector<std::string>& CpuInterface::getLoadedFile() const
@@ -110,7 +110,7 @@ void CpuInterface::loadFile(const std::string& path)
 void CpuInterface::resetProcessor()
 {
 	registers.resetPowerOn();
-	processor.cpuRegisters.accumulator = 0;
+	registers.cpuRegisters.accumulator = 0;
 }
 
 void CpuInterface::runProcessor()
@@ -160,9 +160,9 @@ void CpuInterface::setBreakPointEnabled(bool enabled, int value)
 void CpuInterface::setWatchdogEnabled(bool enabled)
 {
 	if (enabled)
-		registers.watchdog.start();
+		watchdog.start();
 	else
-		registers.watchdog.stop();
+		watchdog.stop();
 }
 
 bool CpuInterface::isInitialized()
