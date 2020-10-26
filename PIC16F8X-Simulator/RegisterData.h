@@ -54,7 +54,7 @@ struct CPURegisters {
 class RegisterData
 {
 public:
-	explicit RegisterData();
+	RegisterData();
 	void resetPowerOn();
 	void otherReset();
 
@@ -87,7 +87,7 @@ public:
 	boost::signals2::signal<uint8_t(int address)> onRamRead;
 	boost::signals2::signal<void(int address, int offset, int value, DataSource source)> onRamWrite;
 
-private:
+protected:
 	boost::signals2::connection localRamConnection;
 	void setBit(uint8_t& source, int offset, int value);
 	std::vector<std::shared_ptr<uint8_t>> ram;
