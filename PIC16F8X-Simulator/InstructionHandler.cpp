@@ -15,16 +15,17 @@
 /* HOW DOES THIS PROGRAM IDENTIFY INSTRUCTIONS?
 *
 * Each instruction has a unique bit pattern with a unique length.
-* All we have to do to read instructions is to execute a logical and operation on the bit pattern of 
+* All we have to do to read instructions is to execute a logical and operation on the bit pattern of
 * the opcode with a mask that cuts off everything that isnt part of the opcode itself (e.g. arguments)
 *
 * EXAMPLE:
 * if the full bit pattern of the operation is kkk0 1001 the mask would equal 0001 1111 (to get the last 5 bits which are relevant in order to uniquely identify the opcode)
-* if the result of the logical and equals to 0000 1001 we know that this is the specific operation 
+* if the result of the logical and equals to 0000 1001 we know that this is the specific operation
 * this way each operation can be clearly seperated
 */
 
-InstructionHandler::InstructionHandler()
+InstructionHandler::InstructionHandler(const std::vector<LstOpcodeInfo>& lstOpcodeInfo)
+	: lstOpcodeInfo(lstOpcodeInfo)
 {
 	// Here the instructions are setup
 	// each opcode is checked on the first run (after that it will be cached)
@@ -74,12 +75,27 @@ InstructionHandler::InstructionHandler()
 	instructions.emplace_back(ADD_INSTRUCTION(XORLW, 0xFF00, 0x3A00));
 }
 
-InstructionData InstructionHandler::getInstructionData(const uint16_t& opcode)
+// this function decodes an instruction by using the code showed above
+// there is an instruction cache, that means that the logical and operation doesn't need to be executed every time a instruction is calles but just the first time.
+// after that it can be read from the cache (minimal performance improvement)
+uint16_t InstructionHandler::getOpcodeAtPC(int programCounter)
+{
+	for (auto& info : lstOpcodeInfo)
+	{
+		if (info.pcValue == programCounter)
+			return info.opcode;
+	}
+	throw fatal_exception("Could not find the corresponding opcode for PC-value '%d'", programCounter);
+}
+
+InstructionData InstructionHandler::getInstructionData(int programCounter)
 {
 	// Each type of instruction has a unique bit pattern from which we can determine which type the opcode has
 	// for the aske of convenience we can extract the needed bits for each operation
 	// (some have b-bits, others have k-bits... see the dicumentation for more information)
 	// we plit the instruction to conveniently use these bits in the instruction implementation
+
+	uint16_t opcode = getOpcodeAtPC(programCounter);
 
 	InstructionData data{};
 	// the most significant 4 bits tell us what type the instruction has
@@ -112,19 +128,12 @@ InstructionData InstructionHandler::getInstructionData(const uint16_t& opcode)
 // this function decodes an instruction by using the code showed above
 // there is an instruction cache, that means that the logical and operation doesn't need to be executed every time a instruction is calles but just the first time.
 // after that it can be read from the cache (minimal performance improvement)
-std::shared_ptr<InstructionBase>& InstructionHandler::decode(const uint16_t& opcode)
+std::shared_ptr<InstructionBase>& InstructionHandler::decodeAt(int programCounter)
 {
-	auto instruction = instructionCache.find(opcode);
-	if (instruction != instructionCache.end()) {
-		return instruction->second;
-	}
-	else {
-		for (auto& i : instructions) {
-			if (i->match(opcode)) {
-				instructionCache[opcode] = i;
-				return i;
-			}
+	for (auto& i : instructions) {
+		if (i->match(getOpcodeAtPC(programCounter))) {
+			return i;
 		}
-		throw fatal_exception("Requested instruction is not implemented: 0x%X", opcode);
 	}
+	throw fatal_exception("Requested instruction is not implemented: 0x%X", getOpcodeAtPC(programCounter));
 }

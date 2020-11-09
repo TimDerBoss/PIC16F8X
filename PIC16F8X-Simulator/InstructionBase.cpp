@@ -16,7 +16,7 @@ InstructionBase::InstructionBase(const std::string& identifier, uint16_t mask, u
 
 bool InstructionBase::match(const uint16_t& opcode)
 {
-	// and the opcode with the mask and return the result
+	// and the opcode with the instruction mask and return the result
 	return (opcode & mask) == value;
 }
 

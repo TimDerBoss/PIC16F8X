@@ -5,54 +5,43 @@
 
 CpuInterface::CpuInterface(int processorClock)
 	: processorClock(processorClock)
-	, watchdog(processor, registers)
+	, processor(parser.getAllOpcodes())
 {
 }
 
 const uint8_t& CpuInterface::getRegister(Registers r) const
 {
-	return registers.readByte(r);
+	return processor.registers.readByte(r);
 }
-
 
 const uint8_t& CpuInterface::getRegister(uint8_t address) const
 {
-	return registers.readByte(address);
+	return processor.registers.readByte(address);
 }
 
 const uint16_t& CpuInterface::getProgramCounter() const
 {
-	return registers.getPc();
+	return processor.registers.getPc();
 }
 
 const uint16_t& CpuInterface::getLineAtProgramCounter() const
 {
-	return parser.getLineInFile(registers.getPc());
+	return parser.getLineInFile(processor.registers.getPc());
 }
 
-std::array<bool, 8> CpuInterface::getRegisterBits(Registers r) const
+const std::array<bool, 8> CpuInterface::getRegisterBits(Registers r) const
 {
-	std::array<bool, 8> result;
-	for (int i = 0; i < 8; i++)
-	{
-		result[i] = registers.readBit(r, i);
-	}
-	return result;
+	return processor.registers.getRegisterBits(r);
 }
 
-std::array<bool, 8> CpuInterface::getRegisterBits(uint8_t address) const
+const std::array<bool, 8> CpuInterface::getRegisterBits(uint8_t address) const
 {
-	std::array<bool, 8> result;
-	for (int i = 0; i < 8; i++)
-	{
-		result[i] = registers.readBit(address, i);
-	}
-	return result;
+	return processor.registers.getRegisterBits(address);
 }
 
 Stack& CpuInterface::getStack()
 {
-	return registers.stack;
+	return processor.registers.stack;
 }
 
 const double& CpuInterface::getCpuTime() const
@@ -62,7 +51,7 @@ const double& CpuInterface::getCpuTime() const
 
 int CpuInterface::getW() const
 {
-	return registers.cpuRegisters.accumulator;
+	return processor.registers.cpuRegisters.accumulator;
 }
 
 const std::vector<std::string>& CpuInterface::getLoadedFile() const
@@ -72,22 +61,22 @@ const std::vector<std::string>& CpuInterface::getLoadedFile() const
 
 void CpuInterface::setRegister(Registers r, uint8_t value) const
 {
-	registers.writeByte(r, value, DataSource::FromUser);
+	processor.registers.writeByte(r, value, DataSource::FromUser);
 }
 
 void CpuInterface::setRegister(uint8_t address, uint8_t value) const
 {
-	registers.writeByte(address, value, DataSource::FromUser);
+	processor.registers.writeByte(address, value, DataSource::FromUser);
 }
 
 void CpuInterface::setRegisterBit(Registers r, uint8_t bit, bool value) const
 {
-	registers.writeBit(r, bit, value, DataSource::FromUser);
+	processor.registers.writeBit(r, bit, value, DataSource::FromUser);
 }
 
 void CpuInterface::setRegisterBit(uint8_t address, uint8_t bit, bool value) const
 {
-	registers.writeBit(address, bit, value, DataSource::FromUser);
+	processor.registers.writeBit(address, bit, value, DataSource::FromUser);
 }
 
 void CpuInterface::resetCpuTime()
@@ -109,60 +98,41 @@ void CpuInterface::loadFile(const std::string& path)
 
 void CpuInterface::resetProcessor()
 {
-	registers.resetPowerOn();
-	registers.cpuRegisters.accumulator = 0;
+	processor.registers.resetPowerOn();
+	processor.registers.cpuRegisters.accumulator = 0;
 }
 
 void CpuInterface::runProcessor()
 {
-	if (!processorActive) {
-		if (processorThread.joinable())
-			processorThread.join();
-		processor.clockSpeed = processorClock;
-		processorActive = true;
-		processorThread = std::thread([this]() {
-			while (processorActive) {
-				if (getProgramCounter() == breakpointValue && useBreakpoint) {
-					processorActive = false;
-					break;
-				}
-				else {
-					executeSingleInstruction();
-					std::this_thread::sleep_for(std::chrono::milliseconds(5));
-				}
-			}
-			});
-	}
+	processor.start(processorClock);
 }
 
 void CpuInterface::stopProcessor()
 {
-	if (processorActive) {
-		processorActive = false;
-		processorThread.join();
-	}
+	processor.stop();
 }
 
 void CpuInterface::executeSingleInstruction()
 {
 	processor.clockSpeed = processorClock;
-	if (parser.getLineInFile(registers.getPc()) != -1) {
-		processor.singleStep(registers, parser.getOpcode(registers.getPc()));
+	if (parser.getLineInFile(processor.registers.getPc()) != -1) {
+		processor.singleStep(processor.registers.getPc());
 	}
 }
 
 void CpuInterface::setBreakPointEnabled(bool enabled, int value)
 {
-	useBreakpoint = enabled;
-	breakpointValue = value;
+	processor.setBreakpoint(value);
+	processor.enableBreakpoint(enabled);
 }
 
 void CpuInterface::setWatchdogEnabled(bool enabled)
 {
-	if (enabled)
-		watchdog.start();
-	else
-		watchdog.stop();
+	// TODO: watchdog
+//	if (enabled)
+//		processor.watchdog.start();
+//	else
+//		processor.watchdog.stop();
 }
 
 bool CpuInterface::isInitialized()
@@ -172,5 +142,5 @@ bool CpuInterface::isInitialized()
 
 bool CpuInterface::isProcessorActive()
 {
-	return processorActive;
+	return processor.processorActive;
 }

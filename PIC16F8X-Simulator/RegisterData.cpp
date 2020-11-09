@@ -3,6 +3,7 @@
 #include "Exception.h"
 #include <cassert>
 #include <FormatString.h>
+#include <array>
 
 RegisterData::RegisterData()
 {
@@ -59,28 +60,28 @@ const uint8_t& RegisterData::readByte(const uint8_t& address) const
 
 uint8_t RegisterData::readBitS(uint8_t address, uint8_t index) const
 {
-	assert(address <= 0x7F);
+	if (address > 0x7F) throw fatal_exception("Simulated address must be smaller than 0x80");
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	return readBit(adr, index);
 }
 
 void RegisterData::writeBitS(uint8_t address, uint8_t offset, bool value, DataSource source) const
 {
-	assert(address <= 0x7F);
+	if (address > 0x7F) throw fatal_exception("Simulated address must be smaller than 0x80");
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	writeBit(adr, offset, value, source); // clear bit
 }
 
 void RegisterData::writeByteS(const uint8_t& address, unsigned char value, DataSource source) const
 {
-	assert(address <= 0x7F);
+	if (address > 0x7F) throw fatal_exception("Simulated address must be smaller than 0x80");
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	writeByte(adr, value, source);
 }
 
 const uint8_t& RegisterData::readByteS(const uint8_t& address) const
 {
-	assert(address <= 0x7F);
+	if (address > 0x7F) throw fatal_exception("Simulated address must be smaller than 0x80");
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	return readByte(adr);
 }
@@ -151,8 +152,18 @@ void RegisterData::initialize()
 					this->cpuRegisters.programCounter |= ((readByte(0xA) & 0x1F) << 8);
 				}
 			}
-			});
+		});
 	}
+}
+
+const std::array<bool, 8> RegisterData::getRegisterBits(uint8_t address) const
+{
+	std::array<bool, 8> result;
+	for (int i = 0; i < 8; i++)
+	{
+		result[i] = readBit(address, i);
+	}
+	return result;
 }
 
 // increase the program counter by a given amount

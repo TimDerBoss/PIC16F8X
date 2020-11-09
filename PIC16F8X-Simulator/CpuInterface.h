@@ -21,6 +21,7 @@ enum Registers : uint8_t
 	Pclath = 0xA
 };
 
+
 class CpuInterface
 {
 public:
@@ -33,8 +34,8 @@ public:
 	const double& getCpuTime() const;
 	int getW() const;
 	const std::vector<std::string>& getLoadedFile() const;
-	std::array<bool, 8> getRegisterBits(Registers r) const;
-	std::array<bool, 8> getRegisterBits(uint8_t address) const;
+	const std::array<bool, 8> getRegisterBits(Registers r) const;
+	const std::array<bool, 8> getRegisterBits(uint8_t address) const;
 	Stack& getStack();
 
 	void setRegister(Registers r, uint8_t value) const;
@@ -57,16 +58,9 @@ public:
 
 private:
 	CPU processor;
-	RegisterData registers;
 	LstParser parser;
-	Watchdog watchdog;
-
-	bool processorActive{ false };
-	std::thread processorThread;
 
 	double processorClock;
 	bool initialized{ false };
-	bool useBreakpoint{ false };
-	int breakpointValue{ 0 };
 };
 

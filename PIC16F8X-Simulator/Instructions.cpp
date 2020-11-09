@@ -499,7 +499,8 @@ void CLRWDT::execute(RegisterData& rd, InstructionData& data)
 {
 	rd.writeByte(0x81, "xxxxxccc");
 	rd.writeByte(0x3, "xxxssxxx");
-	// TODO: watchdog.reset();
+	// TODO: watchdog
+	// watchdog.reset();
 	rd.increasePCBy(getCycles());
 }
 

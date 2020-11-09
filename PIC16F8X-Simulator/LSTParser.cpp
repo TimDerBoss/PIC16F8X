@@ -78,14 +78,9 @@ const std::vector<std::string>& LstParser::getFile() const
 	return lstFile;
 }
 
-const uint16_t& LstParser::getOpcode(const uint16_t& pc) const
+const std::vector<LstOpcodeInfo>& LstParser::getAllOpcodes()
 {
-	for (auto& info : lstOpcodeInfo)
-	{
-		if (info.pcValue == pc)
-			return info.opcode;
-	}
-	throw fatal_exception("Could not find the corresponding opcode for PC-value '%d'", pc);
+	return lstOpcodeInfo;
 }
 
 

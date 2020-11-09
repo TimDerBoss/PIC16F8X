@@ -27,6 +27,7 @@
     </ClCompile>
     <ClCompile Include="Instruction.test.cpp" />
     <ClCompile Include="RegisterData.test.cpp" />
+    <ClCompile Include="Stack.test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -67,6 +68,5 @@
     <ClInclude Include="..\PIC16F8X-Simulator\Watchdog.h">
       <Filter>Test Dependencies</Filter>
     </ClInclude>
-    <ClInclude Include="FakeData.h" />
   </ItemGroup>
 </Project>
