@@ -37,7 +37,7 @@ void CPU::stop()
 	}
 }
 
-
+// TODO: code smells large method
 // run just the next instruction
 void CPU::singleStep(int programCounter)
 {

@@ -53,6 +53,9 @@
     <ClInclude Include="Watchdog.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InstructionBase.cpp">

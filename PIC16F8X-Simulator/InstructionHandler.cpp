@@ -125,9 +125,7 @@ InstructionData InstructionHandler::getInstructionData(int programCounter)
 	return data;
 }
 
-// this function decodes an instruction by using the code showed above
-// there is an instruction cache, that means that the logical and operation doesn't need to be executed every time a instruction is calles but just the first time.
-// after that it can be read from the cache (minimal performance improvement)
+
 std::shared_ptr<InstructionBase>& InstructionHandler::decodeAt(int programCounter)
 {
 	for (auto& i : instructions) {

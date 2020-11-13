@@ -7,11 +7,8 @@
 
 RegisterData::RegisterData()
 {
-	// set up ram array
 	initialize();
-	// reset all registers to the initial power-on values
 	resetPowerOn();
-	// reset w register
 	cpuRegisters.accumulator = 0;
 }
 
@@ -86,7 +83,7 @@ const uint8_t& RegisterData::readByteS(const uint8_t& address) const
 	return readByte(adr);
 }
 
-// reset all values to their power-on defaults
+
 void RegisterData::resetPowerOn()
 {
 	initialize();
@@ -112,6 +109,8 @@ void RegisterData::otherReset()
 	writeByte(0x86, 0xFF);
 }
 
+
+// TODO: code smells long method
 void RegisterData::initialize()
 {
 	stack.clear();
@@ -166,7 +165,7 @@ const std::array<bool, 8> RegisterData::getRegisterBits(uint8_t address) const
 	return result;
 }
 
-// increase the program counter by a given amount
+
 void RegisterData::increasePCBy(uint16_t amount)
 {
 	cpuRegisters.programCounter = getPc() + amount;
@@ -174,7 +173,6 @@ void RegisterData::increasePCBy(uint16_t amount)
 }
 
 
-// returns the current program counter value
 const uint16_t& RegisterData::getPc() const
 {
 	return cpuRegisters.programCounter;

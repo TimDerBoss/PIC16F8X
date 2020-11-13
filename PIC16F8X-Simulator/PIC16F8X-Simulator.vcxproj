@@ -173,6 +173,7 @@
     <ClInclude Include="Instructions.h" />
     <ClInclude Include="LSTParser.h" />
     <ClInclude Include="RegisterData.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Watchdog.h" />
   </ItemGroup>

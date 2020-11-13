@@ -17,35 +17,6 @@ enum DataSource
 	FromCpu
 };
 
-class Stack {
-public:
-	Stack() {
-		values.clear();
-	}
-	int pop() {
-		auto tmp = values.back();
-		values.pop_back();
-		return tmp;
-	}
-	void push(int value) {
-		if (values.size() == 8)
-			values.erase(values.begin());
-		values.push_back(value);
-	}
-	int at(int idx) {
-		return values.at(idx);
-	}
-	int top() {
-		return values.back();
-	}
-	void clear() {
-		values.clear();
-	}
-	inline int Size() { return static_cast<int>(values.size()); }
-private:
-	std::vector<int> values;
-};
-
 struct CPURegisters {
 	uint8_t accumulator{ 0 };
 	uint16_t programCounter{ 0 };
@@ -57,7 +28,6 @@ public:
 	RegisterData();
 	void resetPowerOn();
 	void otherReset();
-
 	void initialize();
 
 	uint8_t& dataReference(const uint8_t& address);
