@@ -1,4 +1,5 @@
 #include "CPU.h"
+#include "RegisterData.h"
 
 #include <FormatString.h>
 
@@ -11,7 +12,6 @@ CPU::CPU(const std::vector<LstOpcodeInfo>& lstOpcodeInfo)
 		timeActive += difference;
 	});
 }
-
 
 void CPU::start(double clockSpeed)
 {
@@ -37,39 +37,110 @@ void CPU::stop()
 	}
 }
 
-// TODO: code smells large method
-// run just the next instruction
 void CPU::singleStep(int programCounter)
 {
-	if (breakpointEnabled && programCounter == breakpointAddress) {
+	int cyclesPassed = executeInstruction(programCounter);
+
+	processPortInterrupts();
+	processTimerInterrupt(cyclesPassed);
+	processBreakpoint();
+}
+
+int CPU::getCpuTime()
+{
+	return timeActive;
+}
+
+bool CPU::getProcessorActive()
+{
+	return processorActive;
+}
+
+RegisterData& CPU::getRegisters()
+{
+	return registers;
+}
+
+void CPU::setCpuTime(int time)
+{
+	timeActive = time;
+}
+
+void CPU::setClockSpeed(double speed)
+{
+	clockSpeed = speed;
+}
+
+InterruptType CPU::detectInterrupt()
+{
+	static bool lastRB0;
+	bool currentRB0 = registers.applyRequest(Request(Registers::PortB).getBit(0));
+	static uint8_t lastRB47;
+	uint8_t currentRB47 = registers.applyRequest(Request(Registers::PortB).fullValue()) & 0xF0;
+
+	if (globalInterruptsEnabled())
+	{
+		bool hasToBeRisingEdge = registers.applyRequest(Request(Registers::Option).getBit(6));
+		if (portBLowInterruptEnabled() && lastRB0 != currentRB0 && currentRB0 == hasToBeRisingEdge)
+			return InterruptType::PortB0;
+
+		if (portBHighInterruptEnabled() && lastRB47 != currentRB47)
+			return InterruptType::PortB47;
+
+		if (timerInterruptEnabled() && timerInterruptFlagSet())
+			return InterruptType::Timer0;
+	}
+	lastRB0 = registers.applyRequest(Request(Registers::PortB).getBit(0));
+	lastRB47 = registers.applyRequest(Request(Registers::PortB).fullValue()) & 0xF0;
+	return InterruptType::None;
+}
+
+void CPU::jumpToInterruptRoutine()
+{
+	registers.stack.push(registers.getPc());
+	registers.writeByte(0x2, 4);
+	onCpuTimeChanged(4 / (clockSpeed / 4.0));
+	cycles++;
+}
+
+void CPU::setBreakpoint(int address)
+{
+	breakpointAddress = address;
+}
+
+void CPU::enableBreakpoint(bool enable)
+{
+	breakpointEnabled = enable;
+}
+
+void CPU::processBreakpoint()
+{
+	if (breakpointEnabled && registers.getPc() == breakpointAddress && processorActive) {
 		processorActive = false;
-		return;
 	}
+}
 
-	// check if an interrupt has happened meanwhile
-	if (processInterrupts()) {
-		// jump to interrupt
-		registers.stack.push(programCounter);
-		registers.writeByte(0x2, 4);
-		onCpuTimeChanged(4 / (clockSpeed / 4.0));
-		cycles++;
-		return;
-	}
-
-	// else execute the normal code
+int CPU::executeInstruction(int programCounter)
+{
 	auto& instruction = instructionHandler.decodeAt(programCounter);
 	instruction->execute(registers, instructionHandler.getInstructionData(programCounter));
 	onCpuTimeChanged(instruction->getCycles() / (clockSpeed / 4.0));
-	cycles++;
+	return cycles += instruction->getCycles();
+}
 
+void CPU::enableGlobalInterrupts(bool enable)
+{
+	registers.applyRequest(Request(Registers::Intcon).writeBit(7, enable));
+}
 
-	// TODO: timer inerrupt
+void CPU::processTimerInterrupt(int cyclesPassed)
+{
 	// T0CS
 	static uint8_t lastRA4 = 0;
 	static int counter = 0;
 	if (!registers.readBit(0x81, 5))
 	{
-		counter += instruction->getCycles();
+		counter += cycles;
 	}
 	else { // T0CS == 1
 
@@ -106,58 +177,53 @@ void CPU::singleStep(int programCounter)
 	lastRA4 = registers.readBit(0x5, 4);
 }
 
-bool CPU::processInterrupts()
+void CPU::processPortInterrupts()
 {
-	static uint8_t lastRB0;
-	static uint8_t lastRB4_7;
-	// GIE set
-	if (registers.readBit(0xB, 7))
-	{
-		// RB0 Interrupt
-		// INTE set && Flanke && ((RB0 && IntEdg) || (!RB0 && !IntEdg))
-		if (registers.readBit(0xB, 4)
-			&& lastRB0 != registers.readBit(0x6, 0)
-			&& registers.readBit(0x6, 0) == registers.readBit(0x81, 6)
-			)
-		{
-			// Disable GIE to prevent further Interrupts while executing the current one
-			registers.writeBit(0xB, 7, false);
-			// Set the INTF flag
-			registers.writeBit(0xB, 1, true);
-			return true;
-		}
+	InterruptType type = detectInterrupt();
+	if (type != InterruptType::None) {
+		enableGlobalInterrupts(false);
 
-		// RB4-7 Interrupt
-		// INTE set && Geänderte Flanke
-		if (lastRB4_7 != ((registers.readByte(0x6) & 0xF0) >> 4))
-		{
-			// Disable GIE to prevent further Interrupts while executing the current one
-			registers.writeBit(0xB, 7, false);
-			// Set the RBIF flag
-			registers.writeBit(0xB, 0, true);
-			return true;
-		}
+		if (type == InterruptType::PortB0)
+			setFlagINTF();
+		else if (type == InterruptType::PortB47)
+			setFlagRBIF();
 
-		// Timer0 Interrupt
-		// T0IE set && T0IF
-		if (registers.readBit(0xB, 5) && registers.readBit(0xB, 2))
-		{
-			// Disable GIE to prevent further Interrupts while executing the current one
-			registers.writeBit(0xB, 7, false);
-			return true;
-		}
+		jumpToInterruptRoutine();
 	}
-	lastRB0 = registers.readBit(0x6, 0);
-	lastRB4_7 = (registers.readByte(0x6) & 0xF0) >> 4;
-	return false;
 }
 
-void CPU::setBreakpoint(int address)
+void CPU::setFlagINTF()
 {
-	breakpointAddress = address;
+	registers.applyRequest(Request(Registers::Intcon).writeBit(1, true));
 }
 
-void CPU::enableBreakpoint(bool enable)
+void CPU::setFlagRBIF()
 {
-	breakpointEnabled = enable;
+	registers.applyRequest(Request(Registers::Intcon).writeBit(0, true));
 }
+
+bool CPU::globalInterruptsEnabled()
+{
+	return registers.applyRequest(Request(Registers::Intcon).getBit(7));
+}
+
+bool CPU::portBLowInterruptEnabled()
+{
+	return registers.applyRequest(Request(Registers::Intcon).getBit(4));
+}
+
+bool CPU::portBHighInterruptEnabled()
+{
+	return registers.applyRequest(Request(Registers::Intcon).getBit(3));
+}
+
+bool CPU::timerInterruptEnabled()
+{
+	return registers.applyRequest(Request(Registers::Intcon).getBit(5));
+}
+
+bool CPU::timerInterruptFlagSet()
+{
+	return registers.applyRequest(Request(Registers::Intcon).getBit(2));
+}
+
