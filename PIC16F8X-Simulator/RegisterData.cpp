@@ -33,21 +33,6 @@ void RegisterData::writeByte(const uint8_t& address, unsigned char value, DataSo
 		writeBit(address, i, (value >> i) & 1, source);
 }
 
-void RegisterData::writeByte(const uint8_t& address, const std::string& value, DataSource source) const
-{
-	if (value.length() != 8)
-		throw fatal_exception("Byte string length must equal 8");
-	for (int i = 7; i > 0; i--) {
-		if (value[i] == 's')
-			writeBit(address, 7 - i, true);
-		else if (value[i] == 'c')
-			writeBit(address, 7 - i, false);
-		else if (value[i] != 'x')
-			throw fatal_exception("Unknown byte string character: %c", value[i]);
-
-	}
-}
-
 const uint8_t& RegisterData::readByte(const uint8_t& address) const
 {
 	if (address == 0 && *ram.at(4) != 0)
@@ -76,6 +61,23 @@ void RegisterData::writeByteS(const uint8_t& address, unsigned char value, DataS
 	writeByte(adr, value, source);
 }
 
+int RegisterData::applyRequest(const Request::RequestData& req) const
+{
+	if (!req.initialized) throw fatal_exception("An empty Request is not supported");
+	if (req.writeRequest) {
+		if (req.accessBit)
+			writeBit(req.address, req.bitIndex, req.value, req.source);
+		else
+			writeByte(req.address, req.value, req.source);
+		return true;
+	}
+	else {
+		if (req.accessBit)
+			return readBit(req.address, req.bitIndex);
+		return readByte(req.address);
+	}
+}
+
 const uint8_t& RegisterData::readByteS(const uint8_t& address) const
 {
 	if (address > 0x7F) throw fatal_exception("Simulated address must be smaller than 0x80");
@@ -87,28 +89,27 @@ const uint8_t& RegisterData::readByteS(const uint8_t& address) const
 void RegisterData::resetPowerOn()
 {
 	initialize();
-	writeByte(0x2, 0);
 	cpuRegisters.accumulator = 0;
-	// Set default startup values
-	writeByte(0x03, 0x18); // Status
-	writeByte(0x81, 0xFF);
-	writeByte(0x85, 0xFF);
-	writeByte(0x86, 0xFF);
+
+	applyRequest(Request(0x2).writeFullValue(0));
+	applyRequest(Request(0x3).writeFullValue(0x18));
+	applyRequest(Request(0x81).writeFullValue(0xFF));
+	applyRequest(Request(0x85).writeFullValue(0xFF));
+	applyRequest(Request(0x86).writeFullValue(0xFF));
 }
 
 void RegisterData::otherReset()
 {
-	writeByte(0x2, 0); // PCL
-	writeByte(0x3, "cccxxxxx");
-	writeByte(0x5, "cccxxxxx");
-	writeByte(0xA, 0);
-	writeByte(0xB, "cccccccx");
-	writeByte(0x80, 0);
-	writeByte(0x81, 0xFF);
-	writeByte(0x85, 0xFF);
-	writeByte(0x86, 0xFF);
+	applyRequest(Request(0x2).writeFullValue(0));
+	applyRequest(Request(0x3).writeFullValue(0));
+	applyRequest(Request(0x5).writeFullValue(0));
+	applyRequest(Request(0xA).writeFullValue(0));
+	applyRequest(Request(0xB).writeFullValue(0));
+	applyRequest(Request(0x80).writeFullValue(0));
+	applyRequest(Request(0x81).writeFullValue(0xFF));
+	applyRequest(Request(0x85).writeFullValue(0xFF));
+	applyRequest(Request(0x86).writeFullValue(0xFF));
 }
-
 
 // TODO: code smells long method
 void RegisterData::initialize()
@@ -124,27 +125,27 @@ void RegisterData::initialize()
 		}
 	}
 	if (!localRamConnection.connected()) {
-		localRamConnection = onRamWrite.connect([this](int address, int offset, int value, DataSource source) {
-			if (address == 0 && *ram.at(4) != 0) address = readByte(4);
+		localRamConnection = onRamWrite.connect([this](int destinationAddress, int offset, int value, DataSource source) {
+			if (destinationAddress == 0 && *ram.at(4) != 0) destinationAddress = readByte(4);
 
-			if ((address == 0x5 || address == 0x6) && (readBit(address + 0x80, offset) == static_cast<uint8_t>(source))) {
-				// if trying to set a port bit while its tris bit is set to input buffer the value
-				if (source == FromCpu)
-					portBuffer[address + offset] = value;
+			if ((destinationAddress == Registers::PortA || destinationAddress == Registers::PortB) 
+				&& readBit(destinationAddress + 0x80, offset)
+				&& source == FromCpu) {
+					portBuffer[destinationAddress + offset] = value;
 			}
-			else if ((address == 0x85 || address == 0x86) && value == 0) {
+			else if ((destinationAddress == Registers::TrisA || destinationAddress == Registers::TrisB) && value == 0) {
 				// if a tris bit is set to output write the buffered port value into the corresopnding port (if available)
-				int portAdr = address - 0x80;
+				int portAdr = destinationAddress - 0x80;
 				int portBitAdr = portAdr + offset;
 				if (portBuffer.find(portBitAdr) != portBuffer.end()) {
 					setBit(*ram.at(portAdr), offset, portBuffer[portBitAdr]);
 					portBuffer.erase(portBitAdr);
 				}
-				setBit(*ram.at(address), offset, value);
+				setBit(*ram.at(destinationAddress), offset, value);
 			}
 			else {
-				setBit(*ram.at(address), offset, value);
-				if (address == 0x2 && offset >= 7)
+				setBit(*ram.at(destinationAddress), offset, value);
+				if (destinationAddress == 0x2 && offset >= 7)
 				{
 					// optimization: only set the pc once not 8 times
 					this->cpuRegisters.programCounter = readByte(0x2) & 0xFF;
