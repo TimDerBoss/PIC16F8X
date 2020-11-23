@@ -9,49 +9,44 @@ CpuInterface::CpuInterface(int processorClock)
 {
 }
 
-const uint8_t& CpuInterface::getRegister(Registers r) const
+const uint16_t& CpuInterface::getProgramCounter()
 {
-	return processor.registers.readByte(r);
+	return processor.getRegisters().getPc();
 }
 
-const uint8_t& CpuInterface::getRegister(uint8_t address) const
+const uint16_t& CpuInterface::getLineAtProgramCounter()
 {
-	return processor.registers.readByte(address);
+	return parser.getLineInFile(processor.getRegisters().getPc());
 }
 
-const uint16_t& CpuInterface::getProgramCounter() const
+const std::array<bool, 8> CpuInterface::getRegisterBits(Registers r)
 {
-	return processor.registers.getPc();
+	return processor.getRegisters().getRegisterBits(r);
 }
 
-const uint16_t& CpuInterface::getLineAtProgramCounter() const
+const std::array<bool, 8> CpuInterface::getRegisterBits(uint8_t address)
 {
-	return parser.getLineInFile(processor.registers.getPc());
-}
-
-const std::array<bool, 8> CpuInterface::getRegisterBits(Registers r) const
-{
-	return processor.registers.getRegisterBits(r);
-}
-
-const std::array<bool, 8> CpuInterface::getRegisterBits(uint8_t address) const
-{
-	return processor.registers.getRegisterBits(address);
+	return processor.getRegisters().getRegisterBits(address);
 }
 
 Stack& CpuInterface::getStack()
 {
-	return processor.registers.stack;
+	return processor.getRegisters().stack;
 }
 
-const double& CpuInterface::getCpuTime() const
+int CpuInterface::requestRegisterAccess(const Request::RequestData& request)
 {
-	return processor.timeActive;
+	return processor.getRegisters().applyRequest(request);
 }
 
-int CpuInterface::getW() const
+const double& CpuInterface::getCpuTime()
 {
-	return processor.registers.cpuRegisters.accumulator;
+	return processor.getCpuTime();
+}
+
+int CpuInterface::getW()
+{
+	return processor.getRegisters().cpuRegisters.accumulator;
 }
 
 const std::vector<std::string>& CpuInterface::getLoadedFile() const
@@ -59,29 +54,9 @@ const std::vector<std::string>& CpuInterface::getLoadedFile() const
 	return parser.getFile();
 }
 
-void CpuInterface::setRegister(Registers r, uint8_t value) const
-{
-	processor.registers.writeByte(r, value, DataSource::FromUser);
-}
-
-void CpuInterface::setRegister(uint8_t address, uint8_t value) const
-{
-	processor.registers.writeByte(address, value, DataSource::FromUser);
-}
-
-void CpuInterface::setRegisterBit(Registers r, uint8_t bit, bool value) const
-{
-	processor.registers.writeBit(r, bit, value, DataSource::FromUser);
-}
-
-void CpuInterface::setRegisterBit(uint8_t address, uint8_t bit, bool value) const
-{
-	processor.registers.writeBit(address, bit, value, DataSource::FromUser);
-}
-
 void CpuInterface::resetCpuTime()
 {
-	processor.timeActive = 0;
+	processor.setCpuTime(0);
 }
 
 void CpuInterface::setProcessorClock(double frequency)
@@ -98,8 +73,8 @@ void CpuInterface::loadFile(const std::string& path)
 
 void CpuInterface::resetProcessor()
 {
-	processor.registers.resetPowerOn();
-	processor.registers.cpuRegisters.accumulator = 0;
+	processor.getRegisters().resetPowerOn();
+	processor.getRegisters().cpuRegisters.accumulator = 0;
 }
 
 void CpuInterface::runProcessor()
@@ -114,9 +89,9 @@ void CpuInterface::stopProcessor()
 
 void CpuInterface::executeSingleInstruction()
 {
-	processor.clockSpeed = processorClock;
-	if (parser.getLineInFile(processor.registers.getPc()) != -1) {
-		processor.singleStep(processor.registers.getPc());
+	processor.setClockSpeed(processorClock);
+	if (parser.getLineInFile(processor.getRegisters().getPc()) != -1) {
+		processor.singleStep(processor.getRegisters().getPc());
 	}
 }
 
@@ -142,5 +117,5 @@ bool CpuInterface::isInitialized()
 
 bool CpuInterface::isProcessorActive()
 {
-	return processor.processorActive;
+	return processor.getProcessorActive();
 }

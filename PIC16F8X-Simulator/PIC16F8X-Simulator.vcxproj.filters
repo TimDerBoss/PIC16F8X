@@ -56,6 +56,9 @@
     <ClInclude Include="Stack.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Request.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InstructionBase.cpp">
@@ -83,6 +86,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Watchdog.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Request.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

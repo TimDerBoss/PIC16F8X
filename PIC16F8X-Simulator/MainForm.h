@@ -152,7 +152,7 @@ namespace PIC16F8X_Simulator {
 
 
 
-private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Button^ button1;
 
 
 
@@ -1184,8 +1184,8 @@ private: System::Windows::Forms::Button^ button1;
 			btnStep->Enabled = !cpuInterface->isProcessorActive();
 
 			lpcValue->Text = gcnew String(fmt::format("%04X", cpuInterface->getProgramCounter()).c_str());
-			lpclValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getRegister(Registers::Pcl)).c_str());
-			lpclathValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getRegister(Registers::Pclath)).c_str());
+			lpclValue->Text = gcnew String(fmt::format("%02X", cpuInterface->requestRegisterAccess(UserRequest(Registers::Pcl).fullValue())).c_str());
+			lpclathValue->Text = gcnew String(fmt::format("%02X", cpuInterface->requestRegisterAccess(UserRequest(Registers::Pclath).fullValue())).c_str());
 			lwRegValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getW()).c_str());
 			lRuntime->Text = gcnew String(fmt::format("%.2f us", cpuInterface->getCpuTime()).c_str());
 
@@ -1271,7 +1271,7 @@ private: System::Windows::Forms::Button^ button1;
 				std::string str = fmt::format(" %2X  |", i);
 				for (int n = 0; n < 8; n++)
 				{
-					str += fmt::format(" %2X  |", cpuInterface->getRegister(i + n));
+					str += fmt::format(" %2X  |", cpuInterface->requestRegisterAccess(UserRequest(i + n).fullValue()));
 				}
 				listBox1->Items[i / 8] = gcnew System::String(str.c_str());
 			}
@@ -1356,52 +1356,52 @@ private: System::Windows::Forms::Button^ button1;
 		Application::Exit();
 	}
 	private: System::Void btnRA7_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortA, 7, btnRA7->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(7, btnRA7->Text == "0"));
 	}
 	private: System::Void btnRA6_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortA, 6, btnRA6->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(6, btnRA6->Text == "0"));
 	}
 	private: System::Void btnRA5_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortA, 5, btnRA5->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(5, btnRA5->Text == "0"));
 	}
 	private: System::Void btnRA4_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortA, 4, btnRA4->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(4, btnRA4->Text == "0"));
 	}
 	private: System::Void btnRA3_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortA, 3, btnRA3->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(3, btnRA3->Text == "0"));
 	}
 	private: System::Void btnRA2_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortA, 2, btnRA2->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(2, btnRA2->Text == "0"));
 	}
 	private: System::Void btnRA1_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortA, 1, btnRA1->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(1, btnRA1->Text == "0"));
 	}
 	private: System::Void btnRA0_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortA, 0, btnRA0->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(0, btnRA0->Text == "0"));
 	}
 	private: System::Void btnRB7_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortB, 7, btnRB7->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(7, btnRB7->Text == "0"));
 	}
 	private: System::Void btnRB6_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortB, 6, btnRB6->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(6, btnRB6->Text == "0"));
 	}
 	private: System::Void btnRB5_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortB, 5, btnRB5->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(5, btnRB5->Text == "0"));
 	}
 	private: System::Void btnRB4_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortB, 4, btnRB4->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(4, btnRB4->Text == "0"));
 	}
 	private: System::Void btnRB3_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortB, 3, btnRB3->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(3, btnRB3->Text == "0"));
 	}
 	private: System::Void btnRB2_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortB, 2, btnRB2->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(2, btnRB2->Text == "0"));
 	}
 	private: System::Void btnRB1_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortB, 1, btnRB1->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(1, btnRB1->Text == "0"));
 	}
 	private: System::Void btnRB0_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegisterBit(Registers::PortB, 0, btnRB0->Text == "0");
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(0, btnRB0->Text == "0"));
 	}
 	private: System::Void nudSimSpeed_onValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
@@ -1480,8 +1480,9 @@ private: System::Windows::Forms::Button^ button1;
 		listBox_drawItem(sender, e, listBox1);
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setRegister(Registers::Pcl, cpuInterface->getRegister(Registers::Pcl) + 1);
+		int oldPclValue = cpuInterface->requestRegisterAccess(UserRequest(Registers::Pcl).fullValue());
+		cpuInterface->requestRegisterAccess(UserRequest(Registers::Pcl).writeFullValue(oldPclValue + 1));
 	}
-};
+	};
 }
 
