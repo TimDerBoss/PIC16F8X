@@ -9,7 +9,7 @@
 class Watchdog
 {
 public:
-	Watchdog(struct CPU& cpu, class RegisterData& registers);
+	Watchdog(class CPU& cpu, class RegisterData& registers);
 
 	void start();
 	void stop();
@@ -18,7 +18,7 @@ public:
 private:
 	bool active{ true };
 	double usPassed{ 0 };
-	struct CPU& cpu;
+	class CPU& cpu;
 	class RegisterData& registers;
 };
 
