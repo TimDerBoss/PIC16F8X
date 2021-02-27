@@ -36,7 +36,7 @@ void RegisterData::writeByte(const uint8_t& address, unsigned char value, DataSo
 const uint8_t& RegisterData::readByte(const uint8_t& address) const
 {
 	if (address == 0 && *ram.at(4) != 0)
-		*ram.at(*ram.at(4));
+		return *ram.at(*ram.at(4));
 	return *ram.at(address);
 }
 

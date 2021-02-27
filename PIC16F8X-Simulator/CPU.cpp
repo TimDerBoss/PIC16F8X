@@ -48,7 +48,7 @@ void CPU::singleStep(int programCounter)
 
 int CPU::getCpuTime()
 {
-	return timeActive;
+	return static_cast<int>(timeActive);
 }
 
 bool CPU::getProcessorActive()

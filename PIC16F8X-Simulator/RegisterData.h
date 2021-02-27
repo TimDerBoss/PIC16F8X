@@ -68,7 +68,6 @@ public:
 	Stack stack;
 	std::map<uint8_t, uint8_t> portBuffer;
 
-	boost::signals2::signal<uint8_t(int address)> onRamRead;
 	boost::signals2::signal<void(int address, int offset, int value, DataSource source)> onRamWrite;
 
 protected:
