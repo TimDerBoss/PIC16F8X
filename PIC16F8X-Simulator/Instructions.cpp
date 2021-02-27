@@ -7,7 +7,7 @@
 #include <FormatString.h>
 
 ADDWF::ADDWF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -30,7 +30,7 @@ void ADDWF::execute(RegisterData& rd, InstructionData& data)
 }
 
 ANDWF::ANDWF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -49,7 +49,7 @@ void ANDWF::execute(RegisterData& rd, InstructionData& data)
 }
 
 CLRF::CLRF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -62,7 +62,7 @@ void CLRF::execute(RegisterData& rd, InstructionData& data)
 }
 
 CLRW::CLRW(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -74,7 +74,7 @@ void CLRW::execute(RegisterData& rd, InstructionData& data)
 }
 
 COMF::COMF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -94,7 +94,7 @@ void COMF::execute(RegisterData& rd, InstructionData& data)
 }
 
 DECF::DECF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -114,7 +114,7 @@ void DECF::execute(RegisterData& rd, InstructionData& data)
 }
 
 DECFSZ::DECFSZ(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -139,7 +139,7 @@ void DECFSZ::execute(RegisterData& rd, InstructionData& data)
 }
 
 INCF::INCF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -159,7 +159,7 @@ void INCF::execute(RegisterData& rd, InstructionData& data)
 }
 
 INCFSZ::INCFSZ(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -184,7 +184,7 @@ void INCFSZ::execute(RegisterData& rd, InstructionData& data)
 }
 
 IORWF::IORWF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -204,7 +204,7 @@ void IORWF::execute(RegisterData& rd, InstructionData& data)
 }
 
 MOVF::MOVF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -219,7 +219,7 @@ void MOVF::execute(RegisterData& rd, InstructionData& data)
 }
 
 MOVWF::MOVWF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -232,7 +232,7 @@ void MOVWF::execute(RegisterData& rd, InstructionData& data)
 }
 
 NOP::NOP(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -242,7 +242,7 @@ void NOP::execute(RegisterData& rd, InstructionData& data)
 }
 
 RLF::RLF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -267,7 +267,7 @@ void RLF::execute(RegisterData& rd, InstructionData& data)
 }
 
 RRF::RRF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -292,7 +292,7 @@ void RRF::execute(RegisterData& rd, InstructionData& data)
 }
 
 SUBWF::SUBWF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -317,7 +317,7 @@ void SUBWF::execute(RegisterData& rd, InstructionData& data)
 
 
 SWAPF::SWAPF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -341,7 +341,7 @@ void SWAPF::execute(RegisterData& rd, InstructionData& data)
 }
 
 XORWF::XORWF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -361,7 +361,7 @@ void XORWF::execute(RegisterData& rd, InstructionData& data)
 }
 
 BCF::BCF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -372,7 +372,7 @@ void BCF::execute(RegisterData& rd, InstructionData& data)
 }
 
 BSF::BSF(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -383,7 +383,7 @@ void BSF::execute(RegisterData& rd, InstructionData& data)
 }
 
 BTFSC::BTFSC(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -400,7 +400,7 @@ void BTFSC::execute(RegisterData& rd, InstructionData& data)
 }
 
 BTFSS::BTFSS(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -417,7 +417,7 @@ void BTFSS::execute(RegisterData& rd, InstructionData& data)
 }
 
 ADDLW::ADDLW(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -435,7 +435,7 @@ void ADDLW::execute(RegisterData& rd, InstructionData& data)
 }
 
 ANDLW::ANDLW(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -449,7 +449,7 @@ void ANDLW::execute(RegisterData& rd, InstructionData& data)
 }
 
 CALL::CALL(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value, 2)
+	: Executable(identifier, mask, value, 2)
 {
 }
 
@@ -465,7 +465,7 @@ void CALL::execute(RegisterData& rd, InstructionData& data)
 }
 
 CLRWDT::CLRWDT(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -479,7 +479,7 @@ void CLRWDT::execute(RegisterData& rd, InstructionData& data)
 }
 
 GOTO::GOTO(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value, 2)
+	: Executable(identifier, mask, value, 2)
 {
 }
 
@@ -493,7 +493,7 @@ void GOTO::execute(RegisterData& rd, InstructionData& data)
 }
 
 IORLW::IORLW(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -507,7 +507,7 @@ void IORLW::execute(RegisterData& rd, InstructionData& data)
 }
 
 MOVLW::MOVLW(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -518,7 +518,7 @@ void MOVLW::execute(RegisterData& rd, InstructionData& data)
 }
 
 RETFIE::RETFIE(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value, 2)
+	: Executable(identifier, mask, value, 2)
 {
 }
 
@@ -533,7 +533,7 @@ void RETFIE::execute(RegisterData& rd, InstructionData& data)
 }
 
 RETLW::RETLW(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value, 2)
+	: Executable(identifier, mask, value, 2)
 {
 }
 
@@ -548,7 +548,7 @@ void RETLW::execute(RegisterData& rd, InstructionData& data)
 }
 
 RETURN::RETURN(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value, 2)
+	: Executable(identifier, mask, value, 2)
 {
 }
 
@@ -562,7 +562,7 @@ void RETURN::execute(RegisterData& rd, InstructionData& data)
 }
 
 SLEEP::SLEEP(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -573,7 +573,7 @@ void SLEEP::execute(RegisterData& rd, InstructionData& data)
 }
 
 SUBLW::SUBLW(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 
@@ -590,7 +590,7 @@ void SUBLW::execute(RegisterData& rd, InstructionData& data)
 }
 
 XORLW::XORLW(const std::string& identifier, uint16_t mask, uint16_t value)
-	: InstructionBase(identifier, mask, value)
+	: Executable(identifier, mask, value)
 {
 }
 

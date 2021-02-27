@@ -126,7 +126,7 @@ InstructionData InstructionHandler::getInstructionData(int programCounter)
 }
 
 
-std::shared_ptr<InstructionBase>& InstructionHandler::decodeAt(int programCounter)
+std::shared_ptr<Executable>& InstructionHandler::decodeAt(int programCounter)
 {
 	for (auto& i : instructions) {
 		if (i->match(getOpcodeAtPC(programCounter))) {

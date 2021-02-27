@@ -23,9 +23,6 @@
     <ClInclude Include="CPU.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="InstructionBase.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="InstructionHandler.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -59,11 +56,11 @@
     <ClInclude Include="Request.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Executable.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InstructionBase.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="InstructionHandler.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -89,6 +86,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Request.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Executable.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

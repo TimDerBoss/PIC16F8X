@@ -17,17 +17,17 @@ struct InstructionData
 	uint16_t k;	// can be 11 bits
 };
 
-class InstructionBase
+class Executable
 {
 public:
-	InstructionBase(const std::string& identifier, uint16_t mask, uint16_t value, int cycles = 1);
-	bool match(const uint16_t& opcode);
-	const int& getCycles();
+	Executable(const std::string& identifier, uint16_t mask, uint16_t value, int cycles = 1);
+	virtual bool match(const uint16_t& opcode) final;
+	virtual const int& getCycles() final;
 
 	virtual void execute(RegisterData& rd, InstructionData& data) = 0;
 
 protected:
-	void setCycles(int count);
+	virtual void setCycles(int count) final;
 
 	uint16_t mask;
 	uint16_t value;
