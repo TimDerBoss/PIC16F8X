@@ -12,7 +12,9 @@
 class ProgramController
 {
 public:
-	ProgramController(int processorClock);
+	ProgramController();
+
+	static ProgramController& getInstance();
 
 	const uint16_t& getProgramCounter();
 	const uint16_t& getLineAtProgramCounter();
@@ -40,6 +42,7 @@ public:
 	bool isProcessorActive();
 
 private:
+	static std::shared_ptr<ProgramController> instance;
 	CPU processor;
 	LstParser parser;
 

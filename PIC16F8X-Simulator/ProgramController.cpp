@@ -3,10 +3,22 @@
 
 #include <array>
 
-ProgramController::ProgramController(int processorClock)
-	: processorClock(processorClock)
+std::shared_ptr<ProgramController> ProgramController::instance;
+
+
+ProgramController::ProgramController()
+	: processorClock(0)
 	, processor(parser.getAllOpcodes())
 {
+}
+
+ProgramController& ProgramController::getInstance()
+{
+	if (!instance)
+	{
+		instance = std::make_shared<ProgramController>();
+	}
+	return *instance;
 }
 
 const uint16_t& ProgramController::getProgramCounter()

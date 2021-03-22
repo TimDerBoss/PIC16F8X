@@ -1131,12 +1131,6 @@ namespace PIC16F8X_Simulator {
 		}
 #pragma endregion
 	public:
-		ProgramController* cpuInterface = nullptr;
-
-		void setProcessorInterface(ProgramController& intf)
-		{
-			cpuInterface = &intf;
-		}
 
 		void setProgram(const std::vector<std::string>& program)
 		{
@@ -1148,7 +1142,7 @@ namespace PIC16F8X_Simulator {
 				rtbprogramOutput->Text += "\r\n";
 			}
 			rtbprogramOutput->Text += "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n";
-			highlightConsoleLine(cpuInterface->getLineAtProgramCounter());
+			highlightConsoleLine(ProgramController::getInstance().getLineAtProgramCounter());
 		}
 
 		std::string asIO(bool value) {
@@ -1178,18 +1172,20 @@ namespace PIC16F8X_Simulator {
 
 		void updateUI()
 		{
-			btnStart->Enabled = !cpuInterface->isProcessorActive();
-			btnReset->Enabled = !cpuInterface->isProcessorActive();
-			btnStop->Enabled = cpuInterface->isProcessorActive();
-			btnStep->Enabled = !cpuInterface->isProcessorActive();
+			auto& controller = ProgramController::getInstance();
 
-			lpcValue->Text = gcnew String(fmt::format("%04X", cpuInterface->getProgramCounter()).c_str());
-			lpclValue->Text = gcnew String(fmt::format("%02X", cpuInterface->requestRegisterAccess(UserRequest(Registers::Pcl).fullValue())).c_str());
-			lpclathValue->Text = gcnew String(fmt::format("%02X", cpuInterface->requestRegisterAccess(UserRequest(Registers::Pclath).fullValue())).c_str());
-			lwRegValue->Text = gcnew String(fmt::format("%02X", cpuInterface->getW()).c_str());
-			lRuntime->Text = gcnew String(fmt::format("%.2f us", cpuInterface->getCpuTime()).c_str());
+			btnStart->Enabled = !controller.isProcessorActive();
+			btnReset->Enabled = !controller.isProcessorActive();
+			btnStop->Enabled = controller.isProcessorActive();
+			btnStep->Enabled = !controller.isProcessorActive();
 
-			auto bits = cpuInterface->getRegisterBits(Registers::TrisA);
+			lpcValue->Text = gcnew String(fmt::format("%04X", controller.getProgramCounter()).c_str());
+			lpclValue->Text = gcnew String(fmt::format("%02X", controller.requestRegisterAccess(UserRequest(Registers::Pcl).fullValue())).c_str());
+			lpclathValue->Text = gcnew String(fmt::format("%02X", controller.requestRegisterAccess(UserRequest(Registers::Pclath).fullValue())).c_str());
+			lwRegValue->Text = gcnew String(fmt::format("%02X", controller.getW()).c_str());
+			lRuntime->Text = gcnew String(fmt::format("%.2f us", controller.getCpuTime()).c_str());
+
+			auto bits = controller.getRegisterBits(Registers::TrisA);
 			lTrisA->Text = gcnew String(fmt::format("Tris A |  %s  %s  %s  %s  %s  %s  %s  %s"
 				, asIO(bits[7])
 				, asIO(bits[6])
@@ -1200,7 +1196,7 @@ namespace PIC16F8X_Simulator {
 				, asIO(bits[1])
 				, asIO(bits[0])).c_str());
 
-			bits = cpuInterface->getRegisterBits(Registers::TrisB);
+			bits = controller.getRegisterBits(Registers::TrisB);
 			lTrisB->Text = gcnew String(fmt::format("Tris A |  %s  %s  %s  %s  %s  %s  %s  %s"
 				, asIO(bits[7])
 				, asIO(bits[6])
@@ -1212,7 +1208,7 @@ namespace PIC16F8X_Simulator {
 				, asIO(bits[0])).c_str());
 
 
-			bits = cpuInterface->getRegisterBits(Registers::Status);
+			bits = controller.getRegisterBits(Registers::Status);
 			lStatusValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
 				, bits[7]
 				, bits[6]
@@ -1223,7 +1219,7 @@ namespace PIC16F8X_Simulator {
 				, bits[1]
 				, bits[0]).c_str());
 
-			bits = cpuInterface->getRegisterBits(Registers::Option);
+			bits = controller.getRegisterBits(Registers::Option);
 			lOptionValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
 				, bits[7]
 				, bits[6]
@@ -1235,7 +1231,7 @@ namespace PIC16F8X_Simulator {
 				, bits[0]).c_str());
 
 
-			bits = cpuInterface->getRegisterBits(Registers::Intcon);
+			bits = controller.getRegisterBits(Registers::Intcon);
 			lIntconValues->Text = gcnew String(fmt::format("%d    %d    %d    %d    %d    %d    %d    %d"
 				, bits[7]
 				, bits[6]
@@ -1248,45 +1244,45 @@ namespace PIC16F8X_Simulator {
 
 
 
-			btnRA7->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[7]).c_str());
-			btnRA6->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[6]).c_str());
-			btnRA5->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[5]).c_str());
-			btnRA4->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[4]).c_str());
-			btnRA3->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[3]).c_str());
-			btnRA2->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[2]).c_str());
-			btnRA1->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[1]).c_str());
-			btnRA0->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortA)[0]).c_str());
+			btnRA7->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortA)[7]).c_str());
+			btnRA6->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortA)[6]).c_str());
+			btnRA5->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortA)[5]).c_str());
+			btnRA4->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortA)[4]).c_str());
+			btnRA3->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortA)[3]).c_str());
+			btnRA2->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortA)[2]).c_str());
+			btnRA1->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortA)[1]).c_str());
+			btnRA0->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortA)[0]).c_str());
 
-			btnRB7->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[7]).c_str());
-			btnRB6->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[6]).c_str());
-			btnRB5->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[5]).c_str());
-			btnRB4->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[4]).c_str());
-			btnRB3->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[3]).c_str());
-			btnRB2->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[2]).c_str());
-			btnRB1->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[1]).c_str());
-			btnRB0->Text = gcnew System::String(fmt::format("%d", cpuInterface->getRegisterBits(Registers::PortB)[0]).c_str());
+			btnRB7->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortB)[7]).c_str());
+			btnRB6->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortB)[6]).c_str());
+			btnRB5->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortB)[5]).c_str());
+			btnRB4->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortB)[4]).c_str());
+			btnRB3->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortB)[3]).c_str());
+			btnRB2->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortB)[2]).c_str());
+			btnRB1->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortB)[1]).c_str());
+			btnRB0->Text = gcnew System::String(fmt::format("%d", controller.getRegisterBits(Registers::PortB)[0]).c_str());
 
 
 			for (int i = 0; i < 0xFF; i += 8) {
 				std::string str = fmt::format(" %2X  |", i);
 				for (int n = 0; n < 8; n++)
 				{
-					str += fmt::format(" %2X  |", cpuInterface->requestRegisterAccess(UserRequest(i + n).fullValue()));
+					str += fmt::format(" %2X  |", controller.requestRegisterAccess(UserRequest(i + n).fullValue()));
 				}
 				listBox1->Items[i / 8] = gcnew System::String(str.c_str());
 			}
 
-			for (int n = cpuInterface->getStack().Size(); n > 0; n--)
+			for (int n = controller.getStack().Size(); n > 0; n--)
 			{
-				lbStack->Items[cpuInterface->getStack().Size() - n] = gcnew System::String(fmt::format("%.4X", cpuInterface->getStack().at(n - 1)).c_str());
+				lbStack->Items[controller.getStack().Size() - n] = gcnew System::String(fmt::format("%.4X", controller.getStack().at(n - 1)).c_str());
 			}
-			for (int n = cpuInterface->getStack().Size(); n < 8; n++)
+			for (int n = controller.getStack().Size(); n < 8; n++)
 			{
 				lbStack->Items[n] = gcnew System::String("");
 			}
 
-			if (cpuInterface->isInitialized())
-				highlightConsoleLine(cpuInterface->getLineAtProgramCounter());
+			if (controller.isInitialized())
+				highlightConsoleLine(controller.getLineAtProgramCounter());
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1321,96 +1317,96 @@ namespace PIC16F8X_Simulator {
 	}
 
 	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->resetProcessor();
+		ProgramController::getInstance().resetProcessor();
 		for (int i = 0; i < 0xFF; i += 8) {
 			listBox1->Items->Add(gcnew System::String(""));
 		}
 		for (int i = 0; i < 8; i++) {
 			lbStack->Items->Add(gcnew System::String(""));
 		}
-		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
+		ProgramController::getInstance().setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
 		updateUI();
 	}
 
 	private: System::Void btnStart_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
-		cpuInterface->runProcessor();
+		ProgramController::getInstance().setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
+		ProgramController::getInstance().runProcessor();
 	}
 
 	private: System::Void btnStop_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->stopProcessor();
+		ProgramController::getInstance().stopProcessor();
 	}
 
 	private: System::Void btnStep_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->executeSingleInstruction();
+		ProgramController::getInstance().executeSingleInstruction();
 	}
 	private: System::Void btnReset_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->resetProcessor();
+		ProgramController::getInstance().resetProcessor();
 	}
 	private: System::Void btnIgnore_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	}
 	private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->stopProcessor();
+		ProgramController::getInstance().stopProcessor();
 		this->updateTimer->Enabled = false;
 		Application::Exit();
 	}
 	private: System::Void btnRA7_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(7, btnRA7->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortA).writeBit(7, btnRA7->Text == "0"));
 	}
 	private: System::Void btnRA6_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(6, btnRA6->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortA).writeBit(6, btnRA6->Text == "0"));
 	}
 	private: System::Void btnRA5_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(5, btnRA5->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortA).writeBit(5, btnRA5->Text == "0"));
 	}
 	private: System::Void btnRA4_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(4, btnRA4->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortA).writeBit(4, btnRA4->Text == "0"));
 	}
 	private: System::Void btnRA3_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(3, btnRA3->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortA).writeBit(3, btnRA3->Text == "0"));
 	}
 	private: System::Void btnRA2_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(2, btnRA2->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortA).writeBit(2, btnRA2->Text == "0"));
 	}
 	private: System::Void btnRA1_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(1, btnRA1->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortA).writeBit(1, btnRA1->Text == "0"));
 	}
 	private: System::Void btnRA0_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortA).writeBit(0, btnRA0->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortA).writeBit(0, btnRA0->Text == "0"));
 	}
 	private: System::Void btnRB7_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(7, btnRB7->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortB).writeBit(7, btnRB7->Text == "0"));
 	}
 	private: System::Void btnRB6_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(6, btnRB6->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortB).writeBit(6, btnRB6->Text == "0"));
 	}
 	private: System::Void btnRB5_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(5, btnRB5->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortB).writeBit(5, btnRB5->Text == "0"));
 	}
 	private: System::Void btnRB4_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(4, btnRB4->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortB).writeBit(4, btnRB4->Text == "0"));
 	}
 	private: System::Void btnRB3_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(3, btnRB3->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortB).writeBit(3, btnRB3->Text == "0"));
 	}
 	private: System::Void btnRB2_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(2, btnRB2->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortB).writeBit(2, btnRB2->Text == "0"));
 	}
 	private: System::Void btnRB1_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(1, btnRB1->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortB).writeBit(1, btnRB1->Text == "0"));
 	}
 	private: System::Void btnRB0_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::PortB).writeBit(0, btnRB0->Text == "0"));
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::PortB).writeBit(0, btnRB0->Text == "0"));
 	}
 	private: System::Void nudSimSpeed_onValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
+		ProgramController::getInstance().setProcessorClock(Convert::ToInt32(Math::Round(nudClockSpeed->Value, 0)));
 	}
 	private: System::Void btnRuntimeReset_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->resetCpuTime();
+		ProgramController::getInstance().resetCpuTime();
 	}
 	private: System::Void btnLoadFile_Click(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->stopProcessor();
+		ProgramController::getInstance().stopProcessor();
 		IO::Stream^ myStream;
 		openFileDialog1->Filter = "LST files (*.lst)|*.lst";
 		openFileDialog1->FilterIndex = 2;
@@ -1421,9 +1417,9 @@ namespace PIC16F8X_Simulator {
 			if ((myStream = openFileDialog1->OpenFile()) != nullptr)
 			{
 				msclr::interop::marshal_context ctx;
-				cpuInterface->loadFile(ctx.marshal_as<std::string>(openFileDialog1->FileName));
-				cpuInterface->resetProcessor();
-				setProgram(cpuInterface->getLoadedFile());
+				ProgramController::getInstance().loadFile(ctx.marshal_as<std::string>(openFileDialog1->FileName));
+				ProgramController::getInstance().resetProcessor();
+				setProgram(ProgramController::getInstance().getLoadedFile());
 				updateUI();
 				myStream->Close();
 				updateTimer->Enabled = true;
@@ -1467,11 +1463,11 @@ namespace PIC16F8X_Simulator {
 
 	}
 	private: System::Void cbWatchdog_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		cpuInterface->setWatchdogEnabled(cbWatchdog->Enabled);
+		ProgramController::getInstance().setWatchdogEnabled(cbWatchdog->Enabled);
 	}
 	private: System::Void tbBreakpoint_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 		std::string bpValue = msclr::interop::marshal_as<std::string>(tbBreakpoint->Text);
-		cpuInterface->setBreakPointEnabled(cbBreakpoint->Enabled, stoi(bpValue, nullptr, 16));
+		ProgramController::getInstance().setBreakPointEnabled(cbBreakpoint->Enabled, stoi(bpValue, nullptr, 16));
 	}
 	private: System::Void stackDrawItem(System::Object^ sender, System::Windows::Forms::DrawItemEventArgs^ e) {
 		listBox_drawItem(sender, e, lbStack);
@@ -1480,8 +1476,8 @@ namespace PIC16F8X_Simulator {
 		listBox_drawItem(sender, e, listBox1);
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		int oldPclValue = cpuInterface->requestRegisterAccess(UserRequest(Registers::Pcl).fullValue());
-		cpuInterface->requestRegisterAccess(UserRequest(Registers::Pcl).writeFullValue(oldPclValue + 1));
+		int oldPclValue = ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::Pcl).fullValue());
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::Pcl).writeFullValue(oldPclValue + 1));
 	}
 	};
 }

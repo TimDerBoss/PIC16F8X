@@ -34,12 +34,11 @@ using namespace System::Windows::Forms;
 [STAThreadAttribute]
 int main(array<String^>^ args) {
 	try {
-		ProgramController cpuInterface(20);
-		cpuInterface.resetProcessor();
+		ProgramController::getInstance().setProcessorClock(20);
+		ProgramController::getInstance().resetProcessor();
 		Application::EnableVisualStyles();
 		Application::SetCompatibleTextRenderingDefault(false);
 		PIC16F8X_Simulator::MainForm form;
-		form.setProcessorInterface(cpuInterface);
 		Application::Run(%form);
 	}
 	catch (std::exception& e) {
