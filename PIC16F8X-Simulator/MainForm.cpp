@@ -34,7 +34,7 @@ using namespace System::Windows::Forms;
 [STAThreadAttribute]
 int main(array<String^>^ args) {
 	try {
-		CpuInterface cpuInterface(20);
+		ProgramController cpuInterface(20);
 		cpuInterface.resetProcessor();
 		Application::EnableVisualStyles();
 		Application::SetCompatibleTextRenderingDefault(false);

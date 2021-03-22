@@ -9,10 +9,10 @@
 #include "Watchdog.h"
 
 
-class CpuInterface
+class ProgramController
 {
 public:
-	CpuInterface(int processorClock);
+	ProgramController(int processorClock);
 
 	const uint16_t& getProgramCounter();
 	const uint16_t& getLineAtProgramCounter();

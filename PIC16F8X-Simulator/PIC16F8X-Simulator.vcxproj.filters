@@ -41,9 +41,6 @@
     <ClInclude Include="Exception.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="CpuInterface.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -57,6 +54,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Executable.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgramController.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -79,9 +79,6 @@
     <ClCompile Include="MainForm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="CpuInterface.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Watchdog.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -89,6 +86,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Executable.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgramController.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

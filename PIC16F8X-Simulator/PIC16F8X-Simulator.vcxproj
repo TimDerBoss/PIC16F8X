@@ -163,7 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPU.h" />
-    <ClInclude Include="CpuInterface.h" />
+    <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
@@ -180,7 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPU.cpp" />
-    <ClCompile Include="CpuInterface.cpp" />
+    <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="Executable.cpp" />
     <ClCompile Include="InstructionHandler.cpp" />

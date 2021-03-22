@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CpuInterface.h"
+#include "ProgramController.h"
 #include <FormatString.h>
 #include <assert.h>
 #include <Windows.h>
@@ -1131,9 +1131,9 @@ namespace PIC16F8X_Simulator {
 		}
 #pragma endregion
 	public:
-		CpuInterface* cpuInterface = nullptr;
+		ProgramController* cpuInterface = nullptr;
 
-		void setProcessorInterface(CpuInterface& intf)
+		void setProcessorInterface(ProgramController& intf)
 		{
 			cpuInterface = &intf;
 		}

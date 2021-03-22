@@ -1,93 +1,93 @@
-#include "CpuInterface.h"
+#include "ProgramController.h"
 #include "Exception.h"
 
 #include <array>
 
-CpuInterface::CpuInterface(int processorClock)
+ProgramController::ProgramController(int processorClock)
 	: processorClock(processorClock)
 	, processor(parser.getAllOpcodes())
 {
 }
 
-const uint16_t& CpuInterface::getProgramCounter()
+const uint16_t& ProgramController::getProgramCounter()
 {
 	return processor.getRegisters().getPc();
 }
 
-const uint16_t& CpuInterface::getLineAtProgramCounter()
+const uint16_t& ProgramController::getLineAtProgramCounter()
 {
 	return parser.getLineInFile(processor.getRegisters().getPc());
 }
 
-const std::array<bool, 8> CpuInterface::getRegisterBits(Registers r)
+const std::array<bool, 8> ProgramController::getRegisterBits(Registers r)
 {
 	return processor.getRegisters().getRegisterBits(r);
 }
 
-const std::array<bool, 8> CpuInterface::getRegisterBits(uint8_t address)
+const std::array<bool, 8> ProgramController::getRegisterBits(uint8_t address)
 {
 	return processor.getRegisters().getRegisterBits(address);
 }
 
-Stack& CpuInterface::getStack()
+Stack& ProgramController::getStack()
 {
 	return processor.getRegisters().stack;
 }
 
-int CpuInterface::requestRegisterAccess(const Request::RequestData& request)
+int ProgramController::requestRegisterAccess(const Request::RequestData& request)
 {
 	return processor.getRegisters().applyRequest(request);
 }
 
-const double& CpuInterface::getCpuTime()
+const double& ProgramController::getCpuTime()
 {
 	return processor.getCpuTime();
 }
 
-int CpuInterface::getW()
+int ProgramController::getW()
 {
 	return processor.getRegisters().cpuRegisters.accumulator;
 }
 
-const std::vector<std::string>& CpuInterface::getLoadedFile() const
+const std::vector<std::string>& ProgramController::getLoadedFile() const
 {
 	return parser.getFile();
 }
 
-void CpuInterface::resetCpuTime()
+void ProgramController::resetCpuTime()
 {
 	processor.setCpuTime(0);
 }
 
-void CpuInterface::setProcessorClock(double frequency)
+void ProgramController::setProcessorClock(double frequency)
 {
 	processorClock = frequency;
 }
 
-void CpuInterface::loadFile(const std::string& path)
+void ProgramController::loadFile(const std::string& path)
 {
 	parser.readFile(path);
 	parser.parseLstFile();
 	initialized = true;
 }
 
-void CpuInterface::resetProcessor()
+void ProgramController::resetProcessor()
 {
 	processor.getRegisters().resetPowerOn();
 	processor.getRegisters().cpuRegisters.accumulator = 0;
 }
 
-void CpuInterface::runProcessor()
+void ProgramController::runProcessor()
 {
 	processor.start(processorClock);
 }
 
-void CpuInterface::stopProcessor()
+void ProgramController::stopProcessor()
 {
 	processor.stop();
 }
 
-void CpuInterface::executeSingleInstruction()
+void ProgramController::executeSingleInstruction()
 {
 	processor.setClockSpeed(processorClock);
 	if (parser.getLineInFile(processor.getRegisters().getPc()) != -1) {
@@ -95,13 +95,13 @@ void CpuInterface::executeSingleInstruction()
 	}
 }
 
-void CpuInterface::setBreakPointEnabled(bool enabled, int value)
+void ProgramController::setBreakPointEnabled(bool enabled, int value)
 {
 	processor.setBreakpoint(value);
 	processor.enableBreakpoint(enabled);
 }
 
-void CpuInterface::setWatchdogEnabled(bool enabled)
+void ProgramController::setWatchdogEnabled(bool enabled)
 {
 	// TODO: watchdog
 //	if (enabled)
@@ -110,12 +110,12 @@ void CpuInterface::setWatchdogEnabled(bool enabled)
 //		processor.watchdog.stop();
 }
 
-bool CpuInterface::isInitialized()
+bool ProgramController::isInitialized()
 {
 	return initialized;
 }
 
-bool CpuInterface::isProcessorActive()
+bool ProgramController::isProcessorActive()
 {
 	return processor.getProcessorActive();
 }
