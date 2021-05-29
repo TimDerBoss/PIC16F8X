@@ -12,6 +12,16 @@ RegisterData::RegisterData()
 	cpuRegisters.accumulator = 0;
 }
 
+bool RegisterData::validateSimulatedAddress(const uint8_t& address) const 
+{
+	return address <= 0x7F;
+}
+
+void RegisterData::throwIllegalAddressException() const
+{
+	throw fatal_exception("Simulated address must be smaller than 0x80");
+}
+
 uint8_t& RegisterData::dataReference(const uint8_t& address)
 {
 	return *ram.at(address);
@@ -42,21 +52,21 @@ const uint8_t& RegisterData::readByte(const uint8_t& address) const
 
 uint8_t RegisterData::readBitS(uint8_t address, uint8_t index) const
 {
-	if (address > 0x7F) throw fatal_exception("Simulated address must be smaller than 0x80");
+	if (!validateSimulatedAddress(address)) throwIllegalAddressException();
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	return readBit(adr, index);
 }
 
 void RegisterData::writeBitS(uint8_t address, uint8_t offset, bool value, DataSource source) const
 {
-	if (address > 0x7F) throw fatal_exception("Simulated address must be smaller than 0x80");
+	if (!validateSimulatedAddress(address)) throwIllegalAddressException();
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	writeBit(adr, offset, value, source); // clear bit
 }
 
 void RegisterData::writeByteS(const uint8_t& address, unsigned char value, DataSource source) const
 {
-	if (address > 0x7F) throw fatal_exception("Simulated address must be smaller than 0x80");
+	if (!validateSimulatedAddress(address)) throwIllegalAddressException();
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	writeByte(adr, value, source);
 }
@@ -80,7 +90,7 @@ int RegisterData::applyRequest(const Request::RequestData& req) const
 
 const uint8_t& RegisterData::readByteS(const uint8_t& address) const
 {
-	if (address > 0x7F) throw fatal_exception("Simulated address must be smaller than 0x80");
+	if (!validateSimulatedAddress(address)) throwIllegalAddressException();
 	uint8_t adr = readBit(0x3, 5) ? address + 0x80 : address;
 	return readByte(adr);
 }
@@ -128,10 +138,10 @@ void RegisterData::initialize()
 		localRamConnection = onRamWrite.connect([this](int destinationAddress, int offset, int value, DataSource source) {
 			if (destinationAddress == 0 && *ram.at(4) != 0) destinationAddress = readByte(4);
 
-			if ((destinationAddress == Registers::PortA || destinationAddress == Registers::PortB) 
+			if ((destinationAddress == Registers::PortA || destinationAddress == Registers::PortB)
 				&& readBit(destinationAddress + 0x80, offset)
 				&& source == FromCpu) {
-					portBuffer[destinationAddress + offset] = value;
+				portBuffer[destinationAddress + offset] = value;
 			}
 			else if ((destinationAddress == Registers::TrisA || destinationAddress == Registers::TrisB) && value == 0) {
 				// if a tris bit is set to output write the buffered port value into the corresopnding port (if available)

@@ -70,6 +70,10 @@ public:
 
 	boost::signals2::signal<void(int address, int offset, int value, DataSource source)> onRamWrite;
 
+private:
+	bool validateSimulatedAddress(const uint8_t& address) const;
+	void throwIllegalAddressException() const;
+
 protected:
 	boost::signals2::connection localRamConnection;
 	void setBit(uint8_t& source, int offset, int value);
