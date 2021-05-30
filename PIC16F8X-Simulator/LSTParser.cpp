@@ -21,13 +21,13 @@ void LstParser::loadLstFile(const std::string& fileName)
 	if (file.is_open()) {
 		std::string line;
 		while (getline(file, line)) {
-			std::smatch matches;
-			if (!std::regex_match(line, matches, fileRegex)) {
-				throw fatal_exception("Invalid file format");
-			}
 			lstFile.push_back(line);
 		}
 		file.close();
+		if (!isLstFileValid())
+		{
+			throw fatal_exception("Invalid file format");
+		}
 	}
 	else {
 		throw fatal_exception("File not found: %s", fileName);
@@ -54,6 +54,17 @@ void LstParser::extractLstInfoFromFile()
 			lstOpcodeInfo.push_back(loi);
 		}
 	}
+}
+
+bool LstParser::isLstFileValid()
+{
+	for (auto& line : lstFile) {
+		std::smatch matches;
+		if (!std::regex_match(line, matches, fileRegex)) {
+			return false;
+		}
+	}
+	return true;
 }
 
 

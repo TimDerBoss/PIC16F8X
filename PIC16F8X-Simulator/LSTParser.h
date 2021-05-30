@@ -17,6 +17,7 @@ class LstParser
 		LstParser();
 		void loadLstFile(const std::string& fileName);
 		void extractLstInfoFromFile();
+		bool isLstFileValid();
 
 		const uint16_t& getLineInFileForPC(const uint16_t& pc) const;
 		const std::vector<std::string>& getLstFileData() const;
