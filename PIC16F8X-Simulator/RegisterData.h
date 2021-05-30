@@ -37,11 +37,11 @@ class RegisterData
 {
 public:
 	RegisterData();
-	void resetPowerOn();
-	void otherReset();
+	void powerOnReset();
+	void defaultReset();
 	void initialize();
 
-	uint8_t& dataReference(const uint8_t& address);
+	uint8_t& getReferenceToAddress(const uint8_t& address);
 
 	uint8_t readBitS(uint8_t address, uint8_t offset) const;
 	void writeBitS(uint8_t address, uint8_t offset, bool value, DataSource source = DataSource::FromCpu) const;

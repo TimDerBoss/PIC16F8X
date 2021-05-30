@@ -7,7 +7,7 @@ Request::Request(int address)
 }
 
 
-Request::RequestData& Request::writeFullValue(int val)
+Request::RequestData& Request::writeByte(int val)
 {
 	data.initialized = true;
 	data.accessBit = false;
@@ -17,7 +17,7 @@ Request::RequestData& Request::writeFullValue(int val)
 }
 
 
-Request::RequestData& Request::fullValue()
+Request::RequestData& Request::getByte()
 {
 	data.initialized = true;
 	data.accessBit = false;
@@ -53,9 +53,9 @@ UserRequest::UserRequest(int address)
 }
 
 
-Request::RequestData& UserRequest::writeFullValue(int val)
+Request::RequestData& UserRequest::writeByte(int val)
 {
-	Request::writeFullValue(val);
+	Request::writeByte(val);
 	data.source = DataSource::FromUser;
 	return data;
 }

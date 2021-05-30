@@ -7,8 +7,6 @@
 #include <sstream>
 
 
-
-// Regex for reading in LST files and splitting the file nito the different sections of the file
 LstParser::LstParser()
 	: lineRegex(R"(^([\d|\w]{4})\s([\d|\w]{4})\s+(\d+).*$)")
 	, fileRegex(R"(^(\s{20}\d{5}.*)$|^([\d|\w]{4})\s([\d|\w]{4})\s{11}\d{5}\s.*$)")
@@ -16,7 +14,7 @@ LstParser::LstParser()
 }
 
 // Check if file matched regex, if yes read the file into a buffer
-void LstParser::readFile(const std::string& fileName)
+void LstParser::loadLstFile(const std::string& fileName)
 {
 	lstFile.clear();
 	std::ifstream file(fileName);
@@ -36,11 +34,8 @@ void LstParser::readFile(const std::string& fileName)
 	}
 }
 
-/* Split he lst file into different sections
-* opcode: what to execute
-* lineInFile: where is the opcode located in the lst file?
-*/
-void LstParser::parseLstFile()
+
+void LstParser::extractLstInfoFromFile()
 {
 	lstOpcodeInfo.clear();
 	for (std::string line : lstFile) {
@@ -61,8 +56,8 @@ void LstParser::parseLstFile()
 	}
 }
 
-// get the line in the lst file wherre the opcode is located at
-const uint16_t& LstParser::getLineInFile(const uint16_t& pc) const
+
+const uint16_t& LstParser::getLineInFileForPC(const uint16_t& pc) const
 {
 	for (auto& info : lstOpcodeInfo)
 	{
@@ -72,8 +67,8 @@ const uint16_t& LstParser::getLineInFile(const uint16_t& pc) const
 	throw fatal_exception("Could not find the corresponding line for PC-value '%d'", pc);
 }
 
-// get the raw lst file data
-const std::vector<std::string>& LstParser::getFile() const
+
+const std::vector<std::string>& LstParser::getLstFileData() const
 {
 	return lstFile;
 }

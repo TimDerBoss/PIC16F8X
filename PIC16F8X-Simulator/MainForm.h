@@ -1180,8 +1180,8 @@ namespace PIC16F8X_Simulator {
 			btnStep->Enabled = !controller.isProcessorActive();
 
 			lpcValue->Text = gcnew String(fmt::format("%04X", controller.getProgramCounter()).c_str());
-			lpclValue->Text = gcnew String(fmt::format("%02X", controller.requestRegisterAccess(UserRequest(Registers::Pcl).fullValue())).c_str());
-			lpclathValue->Text = gcnew String(fmt::format("%02X", controller.requestRegisterAccess(UserRequest(Registers::Pclath).fullValue())).c_str());
+			lpclValue->Text = gcnew String(fmt::format("%02X", controller.requestRegisterAccess(UserRequest(Registers::Pcl).getByte())).c_str());
+			lpclathValue->Text = gcnew String(fmt::format("%02X", controller.requestRegisterAccess(UserRequest(Registers::Pclath).getByte())).c_str());
 			lwRegValue->Text = gcnew String(fmt::format("%02X", controller.getW()).c_str());
 			lRuntime->Text = gcnew String(fmt::format("%.2f us", controller.getCpuTime()).c_str());
 
@@ -1267,7 +1267,7 @@ namespace PIC16F8X_Simulator {
 				std::string str = fmt::format(" %2X  |", i);
 				for (int n = 0; n < 8; n++)
 				{
-					str += fmt::format(" %2X  |", controller.requestRegisterAccess(UserRequest(i + n).fullValue()));
+					str += fmt::format(" %2X  |", controller.requestRegisterAccess(UserRequest(i + n).getByte()));
 				}
 				listBox1->Items[i / 8] = gcnew System::String(str.c_str());
 			}
@@ -1476,8 +1476,8 @@ namespace PIC16F8X_Simulator {
 		listBox_drawItem(sender, e, listBox1);
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		int oldPclValue = ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::Pcl).fullValue());
-		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::Pcl).writeFullValue(oldPclValue + 1));
+		int oldPclValue = ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::Pcl).getByte());
+		ProgramController::getInstance().requestRegisterAccess(UserRequest(Registers::Pcl).writeByte(oldPclValue + 1));
 	}
 	};
 }

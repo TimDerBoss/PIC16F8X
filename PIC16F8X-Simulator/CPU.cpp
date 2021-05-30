@@ -76,7 +76,7 @@ InterruptType CPU::detectInterrupt()
 	static bool lastRB0;
 	bool currentRB0 = registers.applyRequest(Request(Registers::PortB).getBit(0));
 	static uint8_t lastRB47;
-	uint8_t currentRB47 = registers.applyRequest(Request(Registers::PortB).fullValue()) & 0xF0;
+	uint8_t currentRB47 = registers.applyRequest(Request(Registers::PortB).getByte()) & 0xF0;
 
 	if (globalInterruptsEnabled())
 	{
@@ -91,7 +91,7 @@ InterruptType CPU::detectInterrupt()
 			return InterruptType::Timer0;
 	}
 	lastRB0 = registers.applyRequest(Request(Registers::PortB).getBit(0));
-	lastRB47 = registers.applyRequest(Request(Registers::PortB).fullValue()) & 0xF0;
+	lastRB47 = registers.applyRequest(Request(Registers::PortB).getByte()) & 0xF0;
 	return InterruptType::None;
 }
 

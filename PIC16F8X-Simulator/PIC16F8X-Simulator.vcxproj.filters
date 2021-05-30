@@ -41,9 +41,6 @@
     <ClInclude Include="Exception.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Watchdog.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>

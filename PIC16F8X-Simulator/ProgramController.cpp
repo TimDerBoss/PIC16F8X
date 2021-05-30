@@ -28,7 +28,7 @@ const uint16_t& ProgramController::getProgramCounter()
 
 const uint16_t& ProgramController::getLineAtProgramCounter()
 {
-	return parser.getLineInFile(processor.getRegisters().getPc());
+	return parser.getLineInFileForPC(processor.getRegisters().getPc());
 }
 
 const std::array<bool, 8> ProgramController::getRegisterBits(Registers r)
@@ -63,7 +63,7 @@ int ProgramController::getW()
 
 const std::vector<std::string>& ProgramController::getLoadedFile() const
 {
-	return parser.getFile();
+	return parser.getLstFileData();
 }
 
 void ProgramController::resetCpuTime()
@@ -78,14 +78,14 @@ void ProgramController::setProcessorClock(double frequency)
 
 void ProgramController::loadFile(const std::string& path)
 {
-	parser.readFile(path);
-	parser.parseLstFile();
+	parser.loadLstFile(path);
+	parser.extractLstInfoFromFile();
 	initialized = true;
 }
 
 void ProgramController::resetProcessor()
 {
-	processor.getRegisters().resetPowerOn();
+	processor.getRegisters().powerOnReset();
 	processor.getRegisters().cpuRegisters.accumulator = 0;
 }
 
@@ -102,7 +102,7 @@ void ProgramController::stopProcessor()
 void ProgramController::executeSingleInstruction()
 {
 	processor.setClockSpeed(processorClock);
-	if (parser.getLineInFile(processor.getRegisters().getPc()) != -1) {
+	if (parser.getLineInFileForPC(processor.getRegisters().getPc()) != -1) {
 		processor.singleStep(processor.getRegisters().getPc());
 	}
 }

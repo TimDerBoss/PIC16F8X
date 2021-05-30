@@ -20,8 +20,8 @@ public:
 
 	Request(int address);
 
-	RequestData& writeFullValue(int val);
-	RequestData& fullValue();
+	RequestData& writeByte(int val);
+	RequestData& getByte();
 	RequestData& writeBit(int index, bool val);
 	RequestData& getBit(int index);
 
@@ -33,6 +33,6 @@ class UserRequest : public Request {
 public:
 	UserRequest(int address);
 
-	RequestData& writeFullValue(int val);
+	RequestData& writeByte(int val);
 	RequestData& writeBit(int index, bool val);
 };

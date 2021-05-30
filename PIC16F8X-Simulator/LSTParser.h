@@ -15,11 +15,11 @@ class LstParser
 {
 	public:
 		LstParser();
-		void readFile(const std::string& fileName);
-		void parseLstFile();
+		void loadLstFile(const std::string& fileName);
+		void extractLstInfoFromFile();
 
-		const uint16_t& getLineInFile(const uint16_t& pc) const;
-		const std::vector<std::string>& getFile() const;
+		const uint16_t& getLineInFileForPC(const uint16_t& pc) const;
+		const std::vector<std::string>& getLstFileData() const;
 		const std::vector<LstOpcodeInfo>& getAllOpcodes();
 
 	private:

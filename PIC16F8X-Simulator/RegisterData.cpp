@@ -8,7 +8,7 @@
 RegisterData::RegisterData()
 {
 	initialize();
-	resetPowerOn();
+	powerOnReset();
 	cpuRegisters.accumulator = 0;
 }
 
@@ -22,7 +22,7 @@ void RegisterData::throwIllegalAddressException() const
 	throw fatal_exception("Simulated address must be smaller than 0x80");
 }
 
-uint8_t& RegisterData::dataReference(const uint8_t& address)
+uint8_t& RegisterData::getReferenceToAddress(const uint8_t& address)
 {
 	return *ram.at(address);
 }
@@ -96,29 +96,29 @@ const uint8_t& RegisterData::readByteS(const uint8_t& address) const
 }
 
 
-void RegisterData::resetPowerOn()
+void RegisterData::powerOnReset()
 {
 	initialize();
 	cpuRegisters.accumulator = 0;
 
-	applyRequest(Request(0x2).writeFullValue(0));
-	applyRequest(Request(0x3).writeFullValue(0x18));
-	applyRequest(Request(0x81).writeFullValue(0xFF));
-	applyRequest(Request(0x85).writeFullValue(0xFF));
-	applyRequest(Request(0x86).writeFullValue(0xFF));
+	applyRequest(Request(0x2).writeByte(0));
+	applyRequest(Request(0x3).writeByte(0x18));
+	applyRequest(Request(0x81).writeByte(0xFF));
+	applyRequest(Request(0x85).writeByte(0xFF));
+	applyRequest(Request(0x86).writeByte(0xFF));
 }
 
-void RegisterData::otherReset()
+void RegisterData::defaultReset()
 {
-	applyRequest(Request(0x2).writeFullValue(0));
-	applyRequest(Request(0x3).writeFullValue(0));
-	applyRequest(Request(0x5).writeFullValue(0));
-	applyRequest(Request(0xA).writeFullValue(0));
-	applyRequest(Request(0xB).writeFullValue(0));
-	applyRequest(Request(0x80).writeFullValue(0));
-	applyRequest(Request(0x81).writeFullValue(0xFF));
-	applyRequest(Request(0x85).writeFullValue(0xFF));
-	applyRequest(Request(0x86).writeFullValue(0xFF));
+	applyRequest(Request(0x2).writeByte(0));
+	applyRequest(Request(0x3).writeByte(0));
+	applyRequest(Request(0x5).writeByte(0));
+	applyRequest(Request(0xA).writeByte(0));
+	applyRequest(Request(0xB).writeByte(0));
+	applyRequest(Request(0x80).writeByte(0));
+	applyRequest(Request(0x81).writeByte(0xFF));
+	applyRequest(Request(0x85).writeByte(0xFF));
+	applyRequest(Request(0x86).writeByte(0xFF));
 }
 
 // TODO: code smells long method

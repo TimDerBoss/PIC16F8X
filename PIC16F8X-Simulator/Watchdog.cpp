@@ -21,7 +21,7 @@ Watchdog::Watchdog(CPU& cpu, RegisterData& registers)
 			// convert passed time to nanoseconds in order to store it in an int
 			usPassed += difference;
 			if (usPassed >= 18000 * prescaleValue) {
-				this->registers.otherReset();
+				this->registers.defaultReset();
 				this->registers.writeBit(0x3, 4, false);
 				usPassed = 0;
 			}
