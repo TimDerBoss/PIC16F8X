@@ -163,15 +163,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPU.h" />
-    <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="Executable.h" />
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="Executable.h" />
     <ClInclude Include="InstructionHandler.h" />
     <ClInclude Include="Instructions.h" />
     <ClInclude Include="LSTParser.h" />
+    <ClInclude Include="ProgramController.h" />
     <ClInclude Include="RegisterData.h" />
     <ClInclude Include="Request.h" />
     <ClInclude Include="Stack.h" />
@@ -179,12 +179,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPU.cpp" />
-    <ClCompile Include="ProgramController.cpp" />
-    <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="Executable.cpp" />
+    <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="InstructionHandler.cpp" />
     <ClCompile Include="Instructions.cpp" />
     <ClCompile Include="LSTParser.cpp" />
+    <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="RegisterData.cpp" />
     <ClCompile Include="Request.cpp" />
     <ClCompile Include="Watchdog.cpp" />

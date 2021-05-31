@@ -50,10 +50,10 @@
     <ClInclude Include="Request.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Executable.h">
+    <ClInclude Include="ProgramController.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ProgramController.h">
+    <ClInclude Include="Executable.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -82,10 +82,10 @@
     <ClCompile Include="Request.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Executable.cpp">
+    <ClCompile Include="ProgramController.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="ProgramController.cpp">
+    <ClCompile Include="Executable.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -42,12 +42,13 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\PIC16F8X-Simulator\CPU.cpp" />
-    <ClCompile Include="..\PIC16F8X-Simulator\CpuInterface.cpp" />
-    <ClCompile Include="..\PIC16F8X-Simulator\InstructionBase.cpp" />
+    <ClCompile Include="..\PIC16F8X-Simulator\Executable.cpp" />
     <ClCompile Include="..\PIC16F8X-Simulator\InstructionHandler.cpp" />
     <ClCompile Include="..\PIC16F8X-Simulator\Instructions.cpp" />
     <ClCompile Include="..\PIC16F8X-Simulator\LSTParser.cpp" />
+    <ClCompile Include="..\PIC16F8X-Simulator\ProgramController.cpp" />
     <ClCompile Include="..\PIC16F8X-Simulator\RegisterData.cpp" />
+    <ClCompile Include="..\PIC16F8X-Simulator\Request.cpp" />
     <ClCompile Include="..\PIC16F8X-Simulator\Watchdog.cpp" />
     <ClCompile Include="Instruction.test.cpp" />
     <ClCompile Include="RegisterData.test.cpp" />
@@ -63,14 +64,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PIC16F8X-Simulator\CPU.h" />
-    <ClInclude Include="..\PIC16F8X-Simulator\CpuInterface.h" />
     <ClInclude Include="..\PIC16F8X-Simulator\Exception.h" />
-    <ClInclude Include="..\PIC16F8X-Simulator\InstructionBase.h" />
+    <ClInclude Include="..\PIC16F8X-Simulator\Executable.h" />
     <ClInclude Include="..\PIC16F8X-Simulator\InstructionHandler.h" />
     <ClInclude Include="..\PIC16F8X-Simulator\Instructions.h" />
     <ClInclude Include="..\PIC16F8X-Simulator\LSTParser.h" />
+    <ClInclude Include="..\PIC16F8X-Simulator\ProgramController.h" />
     <ClInclude Include="..\PIC16F8X-Simulator\RegisterData.h" />
-    <ClInclude Include="..\PIC16F8X-Simulator\Timer.h" />
+    <ClInclude Include="..\PIC16F8X-Simulator\Request.h" />
+    <ClInclude Include="..\PIC16F8X-Simulator\Stack.h" />
     <ClInclude Include="..\PIC16F8X-Simulator\Watchdog.h" />
   </ItemGroup>
   <ItemDefinitionGroup />

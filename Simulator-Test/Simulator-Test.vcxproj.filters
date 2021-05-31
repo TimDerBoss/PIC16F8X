@@ -1,72 +1,81 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\PIC16F8X-Simulator\CPU.cpp">
-      <Filter>Test Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PIC16F8X-Simulator\CpuInterface.cpp">
-      <Filter>Test Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PIC16F8X-Simulator\InstructionBase.cpp">
-      <Filter>Test Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PIC16F8X-Simulator\InstructionHandler.cpp">
-      <Filter>Test Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PIC16F8X-Simulator\Instructions.cpp">
-      <Filter>Test Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PIC16F8X-Simulator\LSTParser.cpp">
-      <Filter>Test Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PIC16F8X-Simulator\RegisterData.cpp">
-      <Filter>Test Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PIC16F8X-Simulator\Watchdog.cpp">
-      <Filter>Test Dependencies</Filter>
-    </ClCompile>
     <ClCompile Include="Instruction.test.cpp" />
     <ClCompile Include="RegisterData.test.cpp" />
     <ClCompile Include="Stack.test.cpp" />
+    <ClCompile Include="..\PIC16F8X-Simulator\CPU.cpp">
+      <Filter>Deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PIC16F8X-Simulator\Executable.cpp">
+      <Filter>Deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PIC16F8X-Simulator\InstructionHandler.cpp">
+      <Filter>Deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PIC16F8X-Simulator\Instructions.cpp">
+      <Filter>Deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PIC16F8X-Simulator\LSTParser.cpp">
+      <Filter>Deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PIC16F8X-Simulator\ProgramController.cpp">
+      <Filter>Deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PIC16F8X-Simulator\RegisterData.cpp">
+      <Filter>Deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PIC16F8X-Simulator\Request.cpp">
+      <Filter>Deps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PIC16F8X-Simulator\Watchdog.cpp">
+      <Filter>Deps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Filter Include="Deps">
+      <UniqueIdentifier>{d916cc02-d41e-41bd-8d09-d93d930f3934}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Test Dependencies">
       <UniqueIdentifier>{443132cf-de0a-4534-9f73-b702387cd05b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PIC16F8X-Simulator\CPU.h">
-      <Filter>Test Dependencies</Filter>
-    </ClInclude>
-    <ClInclude Include="..\PIC16F8X-Simulator\CpuInterface.h">
-      <Filter>Test Dependencies</Filter>
+      <Filter>Deps</Filter>
     </ClInclude>
     <ClInclude Include="..\PIC16F8X-Simulator\Exception.h">
-      <Filter>Test Dependencies</Filter>
+      <Filter>Deps</Filter>
     </ClInclude>
-    <ClInclude Include="..\PIC16F8X-Simulator\InstructionBase.h">
-      <Filter>Test Dependencies</Filter>
+    <ClInclude Include="..\PIC16F8X-Simulator\Executable.h">
+      <Filter>Deps</Filter>
     </ClInclude>
     <ClInclude Include="..\PIC16F8X-Simulator\InstructionHandler.h">
-      <Filter>Test Dependencies</Filter>
+      <Filter>Deps</Filter>
     </ClInclude>
     <ClInclude Include="..\PIC16F8X-Simulator\Instructions.h">
-      <Filter>Test Dependencies</Filter>
+      <Filter>Deps</Filter>
     </ClInclude>
     <ClInclude Include="..\PIC16F8X-Simulator\LSTParser.h">
-      <Filter>Test Dependencies</Filter>
+      <Filter>Deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PIC16F8X-Simulator\ProgramController.h">
+      <Filter>Deps</Filter>
     </ClInclude>
     <ClInclude Include="..\PIC16F8X-Simulator\RegisterData.h">
-      <Filter>Test Dependencies</Filter>
+      <Filter>Deps</Filter>
     </ClInclude>
-    <ClInclude Include="..\PIC16F8X-Simulator\Timer.h">
-      <Filter>Test Dependencies</Filter>
+    <ClInclude Include="..\PIC16F8X-Simulator\Request.h">
+      <Filter>Deps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PIC16F8X-Simulator\Stack.h">
+      <Filter>Deps</Filter>
     </ClInclude>
     <ClInclude Include="..\PIC16F8X-Simulator\Watchdog.h">
-      <Filter>Test Dependencies</Filter>
+      <Filter>Deps</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
